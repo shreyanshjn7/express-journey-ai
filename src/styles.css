@@ -361,7 +361,7 @@ h1 .line:first-child > span { color: var(--foreground); }
 @keyframes tick { from { transform: translateY(-8px) scale(1.4); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes bob { 0%,100% { transform: rotate(-8deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-2px); } }
 @media (max-width: 760px) {
-  .stage-parallax { transform: none; }
+
   .vibe-chips { flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; }
   .station-field.pop:hover, .date-button.pop:hover { transform: none; }
   .station-field::after, .date-button::after { animation: none; }
