@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import trainImage from "@/assets/vande-bharat.jpg";
+import lightsImage from "@/assets/night-rails.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -52,7 +52,7 @@ function Index() {
 
       <main>
         <section ref={stageRef} onMouseMove={tilt} className="journey-stage" aria-label="Plan your rail trip">
-          <div className="train-parallax"><img src={trainImage} width={1264} height={848} alt="A Vande Bharat Express train in white with saffron and green bands, emerging from the dark" className="train-backdrop" /></div>
+          <div className="stage-parallax"><img src={lightsImage} width={1536} height={1024} alt="" aria-hidden="true" className="lights-backdrop" /></div>
           <div className="stage-shade" />
 
           <div className="hero-content">
