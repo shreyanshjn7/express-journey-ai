@@ -381,24 +381,29 @@ h1 .line:first-child > span { color: var(--foreground); }
 }
 @media (max-width: 370px) { .vibe-chip svg { display: none; } }
 
-/* ---- Date picker dialog (reference card style) ---- */
-.date-dialog {
+/* ---- Inline date picker (expands within the booking form) ---- */
+.date-inline {
+  grid-column: 1 / -1;
   background: var(--card);
   border: 1px solid color-mix(in oklch, var(--foreground) 10%, transparent);
   border-radius: 28px;
-  padding: 0;
-  width: min(400px, calc(100vw - 32px));
   overflow: hidden;
   box-shadow: 0 30px 80px -20px oklch(0 0 0 / 0.7);
 }
-.date-dialog-head {
+.date-inline-head {
   display: flex; align-items: center; justify-content: space-between;
   background: var(--primary); color: var(--block-ink);
-  padding: 18px 22px;
+  padding: 14px 22px;
 }
-.date-dialog-title { font-family: var(--font-display); font-size: 22px; letter-spacing: .04em; text-transform: uppercase; font-weight: 600; }
-.date-dialog-nav { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 999px; border: 1.5px solid color-mix(in oklch, var(--block-ink) 55%, transparent); }
-.date-dialog-body { padding: 14px 14px 4px; display: flex; justify-content: center; }
+.date-inline-title { font-family: var(--font-display); font-size: 20px; letter-spacing: .04em; text-transform: uppercase; font-weight: 600; }
+.date-inline-close {
+  display: grid; place-items: center; width: 32px; height: 32px; border-radius: 999px;
+  border: 1.5px solid color-mix(in oklch, var(--block-ink) 55%, transparent);
+  color: var(--block-ink); background: transparent; cursor: pointer;
+  transition: transform .2s ease, background .2s ease;
+}
+.date-inline-close:hover { background: color-mix(in oklch, var(--block-ink) 14%, transparent); transform: rotate(90deg); }
+.date-inline-body { padding: 14px 14px 12px; display: flex; justify-content: center; }
 
 .rail-calendar { background: transparent !important; --cell-size: 2.5rem; }
 .rail-calendar .rdp-month_caption { padding-inline: 0; }
@@ -438,16 +443,10 @@ h1 .line:first-child > span { color: var(--foreground); }
 .rail-calendar .rdp-today:not(.rdp-selected) .rdp-day_button { border: 1px dashed color-mix(in oklch, var(--primary) 60%, transparent); background: transparent; }
 .rail-calendar .rdp-outside { opacity: .35; }
 
-.date-dialog-actions {
-  display: flex; align-items: center; gap: 14px;
-  padding: 10px 18px 18px;
-}
-.date-confirm { flex: 0 0 auto; min-width: 150px; height: 48px; border-radius: 999px; }
-.date-cancel { margin-left: auto; font-weight: 600; }
+.date-button .chev { transition: transform .25s ease; }
+.date-button .chev.up { transform: rotate(180deg); }
 
 @media (max-width: 760px) {
   .rail-calendar { --cell-size: 2.2rem; }
-  .date-dialog-actions { flex-direction: column; align-items: stretch; }
-  .date-confirm { width: 100%; }
-  .date-cancel { margin-left: 0; }
+  .date-inline { border-radius: 22px; }
 }
