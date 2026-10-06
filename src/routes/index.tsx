@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useRef, type FormEvent, type MouseEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, ChevronDown, MapPin, MessageCircle, TrainFront, X, Users, Minus, Plus } from "lucide-react";
 import { format, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -29,13 +29,6 @@ function Index() {
   const [error, setError] = useState("");
   const [travelClass, setTravelClass] = useState("3A");
   const [passengers, setPassengers] = useState(2);
-  const stageRef = useRef<HTMLElement>(null);
-  function tilt(e: MouseEvent<HTMLElement>) {
-    const el = stageRef.current; if (!el) return;
-    const r = el.getBoundingClientRect();
-    el.style.setProperty("--mx", String((e.clientX - r.left) / r.width - .5));
-    el.style.setProperty("--my", String((e.clientY - r.top) / r.height - .5));
-  }
   const [dialog, setDialog] = useState<"journey" | "ai" | "about" | null>(null);
   function submit(event: FormEvent) {
     event.preventDefault();
