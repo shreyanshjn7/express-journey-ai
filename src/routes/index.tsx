@@ -25,7 +25,6 @@ function Index() {
   const [destination, setDestination] = useState("");
   const [date, setDate] = useState<Date>();
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [draftDate, setDraftDate] = useState<Date>();
   const [error, setError] = useState("");
   const [travelClass, setTravelClass] = useState("3A");
   const [passengers, setPassengers] = useState(2);
@@ -68,8 +67,25 @@ function Index() {
               <div className="station-field source-field pop" style={{ ["--d" as string]: "620ms" }}><label htmlFor="source"><MapPin size={16} /> DEPARTING FROM</label><input id="source" list="stations" value={source} onChange={(event) => { setSource(event.target.value); setError(""); }} placeholder="Boarding station" autoComplete="off" /><span className="field-hint">Where the journey begins</span></div>
               <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" onClick={() => { setSource(destination); setDestination(source); }}><ArrowDownUp size={18} /></Button>
               <div className="station-field destination-field pop" style={{ ["--d" as string]: "700ms" }}><label htmlFor="destination"><MapPin size={16} /> ARRIVING AT</label><input id="destination" list="stations" value={destination} onChange={(event) => { setDestination(event.target.value); setError(""); }} placeholder="Destination city" autoComplete="off" /><span className="field-hint">Where you're headed</span></div>
-              <Button variant="date" type="button" aria-label="Choose travel date" className="pop" style={{ ["--d" as string]: "780ms" }} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-label"><CalendarDays size={16} /> TRAVEL DATE</span><span className="date-value">{date ? format(date, "dd MMM, yyyy") : "Pick a date"}<ChevronDown size={18} /></span><span className="field-hint">Countdown begins now</span></Button>
+              <Button variant="date" type="button" aria-label="Choose travel date" aria-expanded={calendarOpen} className="pop" style={{ ["--d" as string]: "780ms" }} onClick={() => setCalendarOpen(open => !open)}><span className="field-label"><CalendarDays size={16} /> TRAVEL DATE</span><span className="date-value">{date ? format(date, "dd MMM, yyyy") : "Pick a date"}<ChevronDown size={18} className={`chev ${calendarOpen ? "up" : ""}`} /></span><span className="field-hint">Countdown begins now</span></Button>
               <datalist id="stations">{["New Delhi", "Mumbai Central", "Bengaluru", "Chennai Central", "Kolkata", "Jaipur", "Hyderabad", "Pune", "Ahmedabad", "Goa", "Varanasi", "Shimla"].map(station => <option key={station} value={station} />)}</datalist>
+              {calendarOpen && (
+                <div className="date-inline pop" role="group" aria-label="Choose travel date">
+                  <div className="date-inline-head"><span className="date-inline-title">Travel Date</span><button type="button" className="date-inline-close" aria-label="Close date picker" onClick={() => setCalendarOpen(false)}><X size={15} /></button></div>
+                  <div className="date-inline-body">
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={(picked) => { if (picked) { setDate(picked); setError(""); setCalendarOpen(false); } }}
+                      disabled={{ before: startOfDay(new Date()) }}
+                      captionLayout="dropdown"
+                      startMonth={new Date()}
+                      endMonth={new Date(new Date().getFullYear() + 1, 11)}
+                      className="rail-calendar"
+                    />
+                  </div>
+                </div>
+              )}
             </form>
             {error && <p className="form-error" role="alert">{error}</p>}
             <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
@@ -89,27 +105,6 @@ function Index() {
       </main>
       <footer className="site-footer"><span>© {new Date().getFullYear()} Rail Daddy. Trips worth the ride.</span><span>TAKE THE SCENIC ROUTE <ArrowUpRight size={13} /></span></footer>
       <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
-      <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
-        <DialogContent className="date-dialog" aria-label="Choose travel date">
-          <div className="date-dialog-head"><span className="date-dialog-title">Travel Date</span><span className="date-dialog-nav" aria-hidden="true"><ArrowRight size={15} /></span></div>
-          <div className="date-dialog-body">
-            <Calendar
-              mode="single"
-              selected={draftDate}
-              onSelect={setDraftDate}
-              disabled={{ before: startOfDay(new Date()) }}
-              captionLayout="dropdown"
-              startMonth={new Date()}
-              endMonth={new Date(new Date().getFullYear() + 1, 11)}
-              className="rail-calendar"
-            />
-          </div>
-          <div className="date-dialog-actions">
-            <Button variant="journey" type="button" className="date-confirm" disabled={!draftDate} onClick={() => { if (draftDate) { setDate(draftDate); setError(""); } setCalendarOpen(false); }}>Confirm</Button>
-            <Button variant="nav" type="button" className="date-cancel" onClick={() => setCalendarOpen(false)}>Cancel</Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
