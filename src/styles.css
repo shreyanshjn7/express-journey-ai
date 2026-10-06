@@ -372,7 +372,7 @@ h1 .line:first-child > span { color: var(--foreground); }
 @keyframes marquee { to { transform: translateX(-50%); } }
 @keyframes bob { 0%,100% { transform: rotate(-8deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-2px); } }
 @media (max-width: 760px) {
-  .train-parallax { transform: none; }
+  .train-parallax { position: relative; inset: auto; height: 250px; order: 2; transform: none; }
   .vibe-chips { flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; }
   .route-marquee span { font-size: 26px; }
   .station-field.pop:hover, .date-button.pop:hover { transform: none; }
