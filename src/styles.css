@@ -278,7 +278,7 @@ h1 > span:first-child { color: var(--foreground); }
   .booking-form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .station-field { height: 118px; border-radius: 18px; padding: 18px 16px; min-width: 0; }
   .station-field label, .field-label { font-size: 11px; }
-  .station-field input { font-size: 20px; min-height: 30px; }
+  .station-field input { font-size: 18px; min-height: 30px; }
   .swap-button { left: calc(50% - 22px); top: 37px; width: 44px; height: 44px; }
   .date-button { grid-column: 1 / -1; height: 100px; border-radius: 18px; padding: 16px 20px; min-width: 0; }
   .date-value { font-size: 21px; margin-top: 5px; }
@@ -306,7 +306,7 @@ h1 > span:first-child { color: var(--foreground); }
   h1 { font-size: 60px; }
   .headline-star { font-size: 26px; }
   .station-field { padding: 18px 13px; }
-  .station-field input { font-size: 18px; }
+  .station-field input { font-size: 16px; }
   .station-field .field-hint { font-size: 9px; }
   .little-nudge { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .little-nudge .nav-button { align-items: flex-start; text-align: left; }
