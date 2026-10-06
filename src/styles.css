@@ -196,7 +196,7 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .little-face { position: relative; display: flex; gap: 4px; width: 20px; height: 19px; border-radius: 7px; background: var(--primary); align-items: center; justify-content: center; transform: rotate(-8deg); }
 .little-face span { width: 3px; height: 4px; background: var(--block-ink); border-radius: 2px; }
 .little-face:after { content: ''; position: absolute; bottom: -3px; left: 4px; border-top: 5px solid var(--primary); border-right: 5px solid transparent; }
-.journey-stage { position: relative; min-height: 700px; padding-top: 18px; padding-bottom: 40px; display: flex; flex-direction: column; justify-content: flex-start; gap: 34px; }
+.journey-stage { position: relative; min-height: calc(100svh - 170px); padding-top: 18px; padding-bottom: 24px; display: flex; flex-direction: column; justify-content: flex-start; gap: 26px; }
 .lights-backdrop { position: absolute; width: 1100px; max-width: none; height: 120%; object-fit: cover; object-position: right center; right: -140px; top: -12%; user-select: none; pointer-events: none; opacity: .95; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(180deg, #000 74%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(180deg, #000 74%, transparent 100%); -webkit-mask-composite: source-in; mask-composite: intersect; }
 .stage-shade { position: absolute; inset: -5px -64px 0; background: linear-gradient(90deg, var(--background) 14%, color-mix(in oklch, var(--background) 60%, transparent) 46%, transparent 74%), linear-gradient(0deg, var(--background) 4%, transparent 40%), linear-gradient(180deg, var(--background) 0%, transparent 26%); pointer-events: none; }
 .hero-content { position: relative; z-index: 1; max-width: 620px; }
@@ -206,8 +206,6 @@ h1 { font-family: var(--font-display); font-weight: 700; font-size: 118px; line-
 h1 > span:first-child { color: var(--foreground); }
 .headline-star { font-family: var(--font-body); position: absolute; color: var(--primary); font-size: 68px; top: 2px; right: -84px; font-weight: 400; animation: star-turn 24s linear infinite; }
 .hero-copy { font-size: 13px; color: var(--muted-foreground); line-height: 1.8; }
-.train-note { position: absolute; top: auto; bottom: 12px; right: 16px; font-size: 8px; display: flex; align-items: center; gap: 12px; color: var(--muted-foreground); }
-.note-line { height: 1px; width: 35px; background: var(--muted-foreground); }
 
 /* Booking spotlight: the inputs are the hero of the page. */
 .booking-area { position: relative; z-index: 2; }
@@ -248,13 +246,13 @@ h1 > span:first-child { color: var(--foreground); }
 .controls-label { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-foreground); white-space: nowrap; flex-shrink: 0; }
 .controls-divider { width: 1px; height: 34px; background: var(--border); flex-shrink: 0; }
 .form-error { color: var(--peach); font-size: 12px; margin: 12px 0 0; }
-.little-nudge { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 24px 0; }
-.little-nudge > div { display: flex; align-items: center; gap: 18px; }
-.nudge-symbol { color: var(--peach); font-size: 48px; line-height: 1; }
-.little-nudge p { font-size: 14px; line-height: 1.6; color: var(--muted-foreground); margin: 0; }
-.little-nudge strong { color: var(--foreground); font-weight: 500; }
-.little-nudge .nav-button { flex-direction: column; align-items: flex-end; font-size: 11px; gap: 7px; }
-.little-nudge .nav-button > span { color: var(--primary); display: flex; align-items: center; gap: 10px; }
+.ai-nudge { display: flex; align-items: center; justify-content: center; gap: 14px; }
+.nudge-symbol { color: var(--peach); font-size: 17px; line-height: 1; }
+.ai-nudge p { font-size: 13px; color: var(--muted-foreground); margin: 0; }
+.ai-nudge strong { color: var(--foreground); font-weight: 500; }
+.ai-nudge .nav-button { font-size: 11px; color: var(--primary); display: flex; align-items: center; gap: 7px; padding: 6px 2px; }
+.ai-nudge .nav-button svg { color: var(--primary); transition: transform .3s cubic-bezier(.16,1,.3,1); }
+.ai-nudge .nav-button:hover svg { transform: translateX(3px); }
 .site-footer { display: flex; align-items: center; justify-content: space-between; padding: 25px 0; font-size: 9px; color: var(--muted-foreground); }
 .site-footer > span:last-child { display: flex; align-items: center; gap: 7px; font-size: 8px; }
 .railway-dialog { border-radius: 24px; box-shadow: var(--shadow-dialog); }
@@ -264,7 +262,7 @@ h1 > span:first-child { color: var(--foreground); }
 .journey-summary p { font-size: 12px; color: var(--muted-foreground); margin-top: 14px; }
 @keyframes lights-arrive { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
 @keyframes star-turn { to { transform: rotate(360deg); } }
-@media (min-width: 1400px) { .journey-stage { min-height: 720px; } .lights-backdrop { width: 1300px; right: -110px; } h1 { font-size: 128px; } }
+@media (min-width: 1400px) { .lights-backdrop { width: 1300px; right: -110px; } h1 { font-size: 128px; } }
 @media (max-width: 1050px) {
   .railway-app { padding: 0 32px; }
   .station-field, .date-button { padding: 20px 22px; height: 146px; }
@@ -284,7 +282,7 @@ h1 > span:first-child { color: var(--foreground); }
   .site-header .travel-button { font-size: 11px; padding: 0 13px; height: 44px; flex-shrink: 0; }
   .journey-stage { padding-top: 16px; min-height: auto; padding-bottom: 32px; gap: 30px; }
   h1 { font-size: 56px; margin: 8px 0 0; width: max-content; max-width: 100%; line-height: 1; }
-  .headline-star, .hero-eyebrow, .hero-copy, .train-note, .booking-intro { display: none; }
+  .headline-star, .hero-eyebrow, .hero-copy, .booking-intro { display: none; }
   .lights-backdrop { width: 640px; height: 380px; right: -140px; top: 40px; opacity: .6; -webkit-mask-image: none; mask-image: none; }
   .stage-shade { inset: 0 -20px; background: linear-gradient(180deg, transparent 22%, var(--background) 66%); }
   .hero-content { width: 100%; }
@@ -303,11 +301,10 @@ h1 > span:first-child { color: var(--foreground); }
   .controls-label, .controls-divider { display: none; }
   .journey-button { grid-column: 1; height: 60px; border-radius: 20px; padding: 12px 20px; font-size: 17px; margin-top: 4px; }
   .journey-arrow { width: 38px; height: 38px; }
-  .little-nudge { display: none; }
-  .little-nudge > div { gap: 10px; min-width: 0; }
-  .nudge-symbol { font-size: 32px; flex-shrink: 0; }
-  .little-nudge p { font-size: 12px; }
-  .little-nudge .nav-button { font-size: 10px; min-height: 44px; white-space: normal; text-align: right; }
+  .ai-nudge { gap: 10px; justify-content: flex-start; flex-wrap: wrap; }
+  .nudge-symbol { font-size: 15px; }
+  .ai-nudge p { font-size: 12px; }
+  .ai-nudge .nav-button { font-size: 10px; min-height: 40px; }
   .site-footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; font-size: 9px; gap: 18px; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
   .site-footer > span:last-child { display: none; }
   .railway-dialog { width: calc(100% - 32px); max-height: calc(100dvh - 40px); overflow-y: auto; }
@@ -354,10 +351,6 @@ h1 .line:first-child > span { color: var(--foreground); }
 .crew-stepper button:hover { background: var(--peach); color: var(--block-ink); transform: scale(1.12); }
 .crew-stepper button:active { transform: scale(.88); }
 .crew-stepper strong { min-width: 16px; text-align: center; font-size: 15px; animation: tick .4s cubic-bezier(.34,1.56,.64,1); }
-.route-marquee { overflow: hidden; border-top: 1px solid var(--border); padding: 18px 0; mask-image: linear-gradient(90deg, transparent, var(--background) 10%, var(--background) 90%, transparent); }
-.route-marquee > div { display: flex; width: max-content; animation: marquee 32s linear infinite; }
-.route-marquee span { font-family: var(--font-display); font-size: 40px; font-weight: 700; color: transparent; -webkit-text-stroke: 1px var(--muted-foreground); white-space: nowrap; padding-right: 0; }
-.route-marquee:hover > div { animation-play-state: paused; }
 .little-face { animation: bob 2.4s ease-in-out infinite; }
 @keyframes rise { from { opacity: 0; transform: translateY(24px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
 @keyframes pop-in { from { opacity: 0; transform: translateY(40px) scale(.92) rotate(2deg); } to { opacity: 1; transform: none; } }
@@ -372,7 +365,6 @@ h1 .line:first-child > span { color: var(--foreground); }
 @media (max-width: 760px) {
   .stage-parallax { transform: none; }
   .vibe-chips { flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; }
-  .route-marquee span { font-size: 26px; }
   .station-field.pop:hover, .date-button.pop:hover { transform: none; }
   .station-field::after, .date-button::after { animation: none; }
 }
