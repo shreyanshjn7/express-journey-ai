@@ -68,15 +68,19 @@ function Index() {
               <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" onClick={() => { setSource(destination); setDestination(source); }}><ArrowDownUp size={18} /></Button>
               <div className="station-field destination-field pop" style={{ ["--d" as string]: "990ms" }}><label htmlFor="destination"><MapPin size={16} /> HEADING TO</label><input id="destination" list="stations" value={destination} onChange={(event) => { setDestination(event.target.value); setError(""); }} placeholder="Dream spot" autoComplete="off" /><span className="field-hint">Your next story</span></div>
               <Popover open={calendarOpen} onOpenChange={setCalendarOpen}><PopoverTrigger asChild><Button variant="date" type="button" aria-label="Choose trip start date" className="pop" style={{ ["--d" as string]: "1080ms" }}><span className="field-label"><CalendarDays size={16} /> TRIP STARTS</span><span className="date-value">{date ? format(date, "dd MMM, yyyy") : "Pick a date"}<ChevronDown size={18} /></span><span className="field-hint">Countdown begins now</span></Button></PopoverTrigger><PopoverContent className="w-auto p-0" align="center"><Calendar mode="single" selected={date} onSelect={(value) => { setDate(value); setCalendarOpen(false); setError(""); }} disabled={{ before: startOfDay(new Date()) }} className="pointer-events-auto" /></PopoverContent></Popover>
-              <Button variant="journey" type="submit" className="pop" style={{ ["--d" as string]: "1170ms" }}><span>Plan my trip</span><ArrowUpRight size={24} /><span className="search-subtitle">Routes + stays + stops</span></Button>
               <datalist id="stations">{["New Delhi", "Mumbai Central", "Bengaluru", "Chennai Central", "Kolkata", "Jaipur", "Hyderabad", "Pune", "Ahmedabad", "Goa", "Varanasi", "Shimla"].map(station => <option key={station} value={station} />)}</datalist>
             </form>
             {error && <p className="form-error" role="alert">{error}</p>}
-            <div className="trip-extras reveal" style={{ ["--d" as string]: "1300ms" }}>
-              <div className="vibe-chips" role="radiogroup" aria-label="Trip vibe">
-                {[["Hills", Mountain], ["Beach", Waves], ["Heritage", Landmark], ["Chill", Coffee]].map(([name, Icon]) => { const I = Icon as typeof Mountain; return <button key={name as string} type="button" role="radio" aria-checked={vibe === name} className={`vibe-chip ${vibe === name ? "on" : ""}`} onClick={() => setVibe(name as string)}><I size={15} />{name as string}</button>; })}
+            <div className="booking-controls reveal" style={{ ["--d" as string]: "1170ms" }}>
+              <div className="controls-panel">
+                <span className="controls-label">The vibe:</span>
+                <div className="vibe-chips" role="radiogroup" aria-label="Trip vibe">
+                  {[["Hills", Mountain], ["Beach", Waves], ["Heritage", Landmark], ["Chill", Coffee]].map(([name, Icon]) => { const I = Icon as typeof Mountain; return <button key={name as string} type="button" role="radio" aria-checked={vibe === name} className={`vibe-chip ${vibe === name ? "on" : ""}`} onClick={() => setVibe(name as string)}><I size={15} />{name as string}</button>; })}
+                </div>
+                <span className="controls-divider" aria-hidden="true" />
+                <div className="crew-stepper"><Users size={15} /><span>Crew</span><button type="button" aria-label="Fewer travellers" onClick={() => setCrew(c => Math.max(1, c - 1))}><Minus size={14} /></button><strong key={crew}>{crew}</strong><button type="button" aria-label="More travellers" onClick={() => setCrew(c => Math.min(9, c + 1))}><Plus size={14} /></button></div>
               </div>
-              <div className="crew-stepper"><Users size={15} /><span>Crew</span><button type="button" aria-label="Fewer travellers" onClick={() => setCrew(c => Math.max(1, c - 1))}><Minus size={14} /></button><strong key={crew}>{crew}</strong><button type="button" aria-label="More travellers" onClick={() => setCrew(c => Math.min(9, c + 1))}><Plus size={14} /></button></div>
+              <Button variant="journey" type="submit" className="pop" style={{ ["--d" as string]: "1260ms" }}><span className="journey-copy"><span className="journey-title">Plan my trip</span><span className="search-subtitle">Routes + stays + stops</span></span><span className="journey-arrow"><ArrowUpRight size={20} /></span></Button>
             </div>
           </div>
         </section>
