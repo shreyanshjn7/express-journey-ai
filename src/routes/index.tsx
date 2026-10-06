@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import lightsImage from "@/assets/night-rails.jpg";
+import lightsImage from "@/assets/night-vista.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -52,7 +52,7 @@ function Index() {
 
       <main>
         <section ref={stageRef} onMouseMove={tilt} className="journey-stage" aria-label="Plan your rail trip">
-          <div className="stage-parallax"><img src={lightsImage} width={1536} height={1024} alt="" aria-hidden="true" className="lights-backdrop" /></div>
+          <div className="stage-parallax"><img src={lightsImage} width={1600} height={1200} alt="" aria-hidden="true" className="lights-backdrop" /></div>
           <div className="stage-shade" />
 
           <div className="hero-content">
