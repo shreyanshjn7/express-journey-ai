@@ -55,17 +55,23 @@ function Index() {
           <div className="train-parallax"><img src={trainImage} width={1264} height={848} alt="A Vande Bharat Express train in white with saffron and green bands, emerging from the dark" className="train-backdrop" /></div>
           <div className="stage-shade" />
 
+          <div className="hero-content">
+            <div className="hero-eyebrow reveal" style={{ ["--d" as string]: "100ms" }}><span className="status-dot" /> YOUR TRIP. OUR TRACKS.</div>
+            <h1><span className="line"><span>PLAN THE</span></span><span className="line accent"><span>TRIP.</span></span><span className="headline-star" aria-hidden="true">✳</span></h1>
+            <p className="hero-copy reveal" style={{ ["--d" as string]: "400ms" }}>Routes, dates, crew and vibe — sorted.<br />Daddy handles the planning. You handle the window seat.</p>
+          </div>
+
           <div className="booking-area" id="booking">
-            <div className="booking-intro reveal" style={{ ["--d" as string]: "100ms" }}><span><span className="mini-track" /> Start with the route. We'll build the trip.</span><span className="booking-step">01 <span>/ TRIP BASICS</span></span></div>
+            <div className="booking-intro reveal" style={{ ["--d" as string]: "550ms" }}><span><span className="mini-track" /> Start with the route. We'll build the trip.</span><span className="booking-step">01 <span>/ TRIP BASICS</span></span></div>
             <form onSubmit={submit} className="booking-form">
-              <div className="station-field source-field pop" style={{ ["--d" as string]: "180ms" }}><label htmlFor="source"><MapPin size={16} /> STARTING FROM</label><input id="source" list="stations" value={source} onChange={(event) => { setSource(event.target.value); setError(""); }} placeholder="Home base" autoComplete="off" /><span className="field-hint">Where the trip begins</span></div>
+              <div className="station-field source-field pop" style={{ ["--d" as string]: "620ms" }}><label htmlFor="source"><MapPin size={16} /> STARTING FROM</label><input id="source" list="stations" value={source} onChange={(event) => { setSource(event.target.value); setError(""); }} placeholder="Home base" autoComplete="off" /><span className="field-hint">Where the trip begins</span></div>
               <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" onClick={() => { setSource(destination); setDestination(source); }}><ArrowDownUp size={18} /></Button>
-              <div className="station-field destination-field pop" style={{ ["--d" as string]: "260ms" }}><label htmlFor="destination"><MapPin size={16} /> HEADING TO</label><input id="destination" list="stations" value={destination} onChange={(event) => { setDestination(event.target.value); setError(""); }} placeholder="Dream spot" autoComplete="off" /><span className="field-hint">Your next story</span></div>
-              <Popover open={calendarOpen} onOpenChange={setCalendarOpen}><PopoverTrigger asChild><Button variant="date" type="button" aria-label="Choose trip start date" className="pop" style={{ ["--d" as string]: "340ms" }}><span className="field-label"><CalendarDays size={16} /> TRIP STARTS</span><span className="date-value">{date ? format(date, "dd MMM, yyyy") : "Pick a date"}<ChevronDown size={18} /></span><span className="field-hint">Countdown begins now</span></Button></PopoverTrigger><PopoverContent className="w-auto p-0" align="center"><Calendar mode="single" selected={date} onSelect={(value) => { setDate(value); setCalendarOpen(false); setError(""); }} disabled={{ before: startOfDay(new Date()) }} className="pointer-events-auto" /></PopoverContent></Popover>
+              <div className="station-field destination-field pop" style={{ ["--d" as string]: "700ms" }}><label htmlFor="destination"><MapPin size={16} /> HEADING TO</label><input id="destination" list="stations" value={destination} onChange={(event) => { setDestination(event.target.value); setError(""); }} placeholder="Dream spot" autoComplete="off" /><span className="field-hint">Your next story</span></div>
+              <Popover open={calendarOpen} onOpenChange={setCalendarOpen}><PopoverTrigger asChild><Button variant="date" type="button" aria-label="Choose trip start date" className="pop" style={{ ["--d" as string]: "780ms" }}><span className="field-label"><CalendarDays size={16} /> TRIP STARTS</span><span className="date-value">{date ? format(date, "dd MMM, yyyy") : "Pick a date"}<ChevronDown size={18} /></span><span className="field-hint">Countdown begins now</span></Button></PopoverTrigger><PopoverContent className="w-auto p-0" align="center"><Calendar mode="single" selected={date} onSelect={(value) => { setDate(value); setCalendarOpen(false); setError(""); }} disabled={{ before: startOfDay(new Date()) }} className="pointer-events-auto" /></PopoverContent></Popover>
               <datalist id="stations">{["New Delhi", "Mumbai Central", "Bengaluru", "Chennai Central", "Kolkata", "Jaipur", "Hyderabad", "Pune", "Ahmedabad", "Goa", "Varanasi", "Shimla"].map(station => <option key={station} value={station} />)}</datalist>
             </form>
             {error && <p className="form-error" role="alert">{error}</p>}
-            <div className="booking-controls reveal" style={{ ["--d" as string]: "430ms" }}>
+            <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
               <div className="controls-panel">
                 <span className="controls-label">The vibe:</span>
                 <div className="vibe-chips" role="radiogroup" aria-label="Trip vibe">
@@ -74,16 +80,10 @@ function Index() {
                 <span className="controls-divider" aria-hidden="true" />
                 <div className="crew-stepper"><Users size={15} /><span>Crew</span><button type="button" aria-label="Fewer travellers" onClick={() => setCrew(c => Math.max(1, c - 1))}><Minus size={14} /></button><strong key={crew}>{crew}</strong><button type="button" aria-label="More travellers" onClick={() => setCrew(c => Math.min(9, c + 1))}><Plus size={14} /></button></div>
               </div>
-              <Button variant="journey" type="submit" className="pop" style={{ ["--d" as string]: "520ms" }}><span className="journey-copy"><span className="journey-title">Plan my trip</span><span className="search-subtitle">Routes + stays + stops</span></span><span className="journey-arrow"><ArrowUpRight size={20} /></span></Button>
+              <Button variant="journey" type="submit" className="pop" style={{ ["--d" as string]: "960ms" }}><span className="journey-copy"><span className="journey-title">Plan my trip</span><span className="search-subtitle">Routes + stays + stops</span></span><span className="journey-arrow"><ArrowUpRight size={20} /></span></Button>
             </div>
           </div>
-
-          <div className="hero-content">
-            <div className="hero-eyebrow reveal" style={{ ["--d" as string]: "850ms" }}><span className="status-dot" /> YOUR TRIP. OUR TRACKS.</div>
-            <h1><span className="line"><span>PLAN THE</span></span><span className="line accent"><span>TRIP.</span></span><span className="headline-star" aria-hidden="true">✳</span></h1>
-            <p className="hero-copy reveal" style={{ ["--d" as string]: "1250ms" }}>Routes, dates, crew and vibe — sorted.<br />Daddy handles the planning. You handle the window seat.</p>
-          </div>
-          <div className="train-note reveal" style={{ ["--d" as string]: "1400ms" }}><span className="note-line" /><span>NOW BOARDING YOUR NEXT ESCAPE</span></div>
+          <div className="train-note reveal" style={{ ["--d" as string]: "1100ms" }}><span className="note-line" /><span>NOW BOARDING YOUR NEXT ESCAPE</span></div>
         </section>
 
         <div className="route-marquee" aria-hidden="true"><div>{Array.from({ length: 2 }).map((_, k) => <span key={k}>DELHI ✳ JAIPUR ✳ GOA ✳ VARANASI ✳ SHIMLA ✳ MUMBAI ✳ KOCHI ✳ DARJEELING ✳ UDAIPUR ✳ </span>)}</div></div>
