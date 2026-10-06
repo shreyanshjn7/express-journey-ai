@@ -196,8 +196,8 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .little-face { position: relative; display: flex; gap: 4px; width: 20px; height: 19px; border-radius: 7px; background: var(--primary); align-items: center; justify-content: center; transform: rotate(-8deg); }
 .little-face span { width: 3px; height: 4px; background: var(--block-ink); border-radius: 2px; }
 .little-face:after { content: ''; position: absolute; bottom: -3px; left: 4px; border-top: 5px solid var(--primary); border-right: 5px solid transparent; }
-.journey-stage { position: relative; min-height: 700px; padding-top: 34px; }
-.train-backdrop { position: absolute; width: 1050px; max-width: none; height: 700px; object-fit: cover; right: -139px; top: -51px; user-select: none; pointer-events: none; animation: train-arrive 1.4s ease-out both; }
+.journey-stage { position: relative; min-height: 740px; padding-top: 10px; padding-bottom: 30px; display: flex; flex-direction: column; justify-content: space-between; }
+.train-backdrop { position: absolute; width: 1050px; max-width: none; height: 700px; object-fit: cover; right: -139px; top: 60px; user-select: none; pointer-events: none; animation: train-arrive 1.4s ease-out both; }
 .stage-shade { position: absolute; inset: -5px -64px 0; background: linear-gradient(90deg, var(--background) 1%, transparent 47%), linear-gradient(0deg, var(--background) 0%, transparent 30%); pointer-events: none; }
 .hero-content { position: relative; z-index: 1; }
 .hero-eyebrow { font-size: 10px; font-weight: 500; display: flex; gap: 9px; align-items: center; }
@@ -206,11 +206,11 @@ h1 { font-family: var(--font-display); font-weight: 700; font-size: 128px; line-
 h1 > span:first-child { color: var(--foreground); }
 .headline-star { font-family: var(--font-body); position: absolute; color: var(--primary); font-size: 74px; top: 2px; right: -90px; font-weight: 400; animation: star-turn 24s linear infinite; }
 .hero-copy { font-size: 13px; color: var(--muted-foreground); line-height: 1.8; }
-.train-note { position: absolute; top: 377px; right: 16px; font-size: 8px; display: flex; align-items: center; gap: 12px; color: var(--muted-foreground); }
+.train-note { position: absolute; top: auto; bottom: 328px; right: 16px; font-size: 8px; display: flex; align-items: center; gap: 12px; color: var(--muted-foreground); }
 .note-line { height: 1px; width: 35px; background: var(--muted-foreground); }
 
 /* Booking spotlight: the inputs are the hero of the page. */
-.booking-area { position: relative; z-index: 2; margin-top: 30px; }
+.booking-area { position: relative; z-index: 2; margin-top: 8px; }
 .booking-area::before { content: ''; position: absolute; inset: -70px -40px -50px; background:
   radial-gradient(55% 85% at 24% 55%, color-mix(in oklch, var(--primary) 16%, transparent), transparent 70%),
   radial-gradient(45% 75% at 62% 40%, color-mix(in oklch, var(--peach) 13%, transparent), transparent 70%),
@@ -264,7 +264,7 @@ h1 > span:first-child { color: var(--foreground); }
 .journey-summary p { font-size: 12px; color: var(--muted-foreground); margin-top: 14px; }
 @keyframes train-arrive { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
 @keyframes star-turn { to { transform: rotate(360deg); } }
-@media (min-width: 1400px) { .journey-stage { min-height: 780px; } .train-backdrop { width: 1220px; height: 810px; top: -60px; } h1 { font-size: 140px; } }
+@media (min-width: 1400px) { .journey-stage { min-height: 780px; } .train-backdrop { width: 1220px; height: 810px; top: 30px; } h1 { font-size: 140px; } }
 @media (max-width: 1050px) {
   .railway-app { padding: 0 32px; }
   .station-field, .date-button { padding: 20px 22px; height: 156px; }
@@ -285,10 +285,11 @@ h1 > span:first-child { color: var(--foreground); }
   .journey-stage { padding-top: 12px; min-height: auto; padding-bottom: 32px; }
   h1 { font-size: 56px; margin: 8px 0 0; width: max-content; max-width: 100%; line-height: 1; }
   .headline-star, .hero-eyebrow, .hero-copy, .train-note, .booking-intro { display: none; }
-  .train-backdrop { width: 450px; height: 300px; right: -62px; top: 15px; opacity: .85; }
-  .stage-shade { inset: 0 -20px; background: linear-gradient(0deg,var(--background) 55%,transparent 72%); }
-  .hero-content { background: var(--background); width: 100%; padding-bottom: 12px; }
-  .booking-area { margin-top: 110px; }
+  .train-backdrop { width: 450px; height: 300px; right: -62px; top: -30px; opacity: .85; }
+  .stage-shade { display: none; }
+  .train-parallax { position: relative; height: 250px; order: 2; transform: none; }
+  .hero-content { background: var(--background); width: 100%; padding-bottom: 12px; order: 3; }
+  .booking-area { margin-top: 4px; order: 1; }
   .booking-area::before { inset: -30px -10px -20px; }
   .booking-form { grid-template-columns: minmax(0, 1fr); gap: 14px; }
   .station-field { height: 92px; border-radius: 20px; padding: 14px 22px; min-width: 0; }
@@ -332,10 +333,10 @@ h1 > span:first-child { color: var(--foreground); }
 .station-field:focus-within::after, .date-button:focus-visible::after { opacity: .9; animation: none; }
 @keyframes halo-breathe { 0%,100% { opacity: .1; } 50% { opacity: .55; } }
 h1 .line { display: block; overflow: hidden; padding-bottom: .04em; }
-h1 .line > span { display: inline-block; animation: mask-up 1.1s cubic-bezier(.16,1,.3,1) both; animation-delay: 250ms; }
-h1 .line.accent > span { animation-delay: 400ms; color: var(--headline); }
+h1 .line > span { display: inline-block; animation: mask-up 1.1s cubic-bezier(.16,1,.3,1) both; animation-delay: 950ms; }
+h1 .line.accent > span { animation-delay: 1100ms; color: var(--headline); }
 h1 .line:first-child > span { color: var(--foreground); }
-.headline-star { animation: star-in 1.2s cubic-bezier(.34,1.56,.64,1) 700ms both, star-turn 24s linear 1.9s infinite; }
+.headline-star { animation: star-in 1.2s cubic-bezier(.34,1.56,.64,1) 1500ms both, star-turn 24s linear 2.6s infinite; }
 .train-parallax { position: absolute; inset: 0; transform: translate3d(calc(var(--mx,0) * -28px), calc(var(--my,0) * -16px), 0); transition: transform .8s cubic-bezier(.16,1,.3,1); pointer-events: none; }
 .train-backdrop { animation: train-arrive 1.8s cubic-bezier(.16,1,.3,1) both, train-hum 6s ease-in-out 1.8s infinite; }
 .status-dot { animation: pulse 1.8s ease-out infinite; }
