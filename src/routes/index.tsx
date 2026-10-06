@@ -25,6 +25,7 @@ function Index() {
   const [destination, setDestination] = useState("");
   const [date, setDate] = useState<Date>();
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const [draftDate, setDraftDate] = useState<Date>();
   const [error, setError] = useState("");
   const [travelClass, setTravelClass] = useState("3A");
   const [passengers, setPassengers] = useState(2);
