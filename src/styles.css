@@ -142,3 +142,121 @@
     color: var(--color-foreground);
   }
 }
+
+/* Railway: cinematic charcoal, mint, peach and butter-yellow. */
+:root {
+  --background: oklch(0.115 0.004 165);
+  --foreground: oklch(0.97 0.006 100);
+  --card: oklch(0.18 0.005 165);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.2 0.006 165);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.88 0.12 159);
+  --primary-foreground: oklch(0.2 0.027 159);
+  --secondary: oklch(0.23 0.005 165);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.2 0.005 165);
+  --muted-foreground: oklch(0.65 0.005 165);
+  --accent: oklch(0.28 0.01 165);
+  --accent-foreground: var(--foreground);
+  --border: oklch(0.29 0.005 165);
+  --input: var(--border);
+  --ring: var(--primary);
+  --peach: oklch(0.84 0.095 38);
+  --butter: oklch(0.91 0.11 98);
+  --block-ink: oklch(0.21 0.024 160);
+  --headline: oklch(0.84 0.008 130);
+  --radius: 1rem;
+  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --shadow-dialog: 0 24px 100px oklch(0 0 0 / 60%);
+}
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --color-peach: var(--peach);
+  --color-butter: var(--butter);
+  --color-block-ink: var(--block-ink);
+}
+body { font-family: var(--font-body); margin: 0; letter-spacing: 0; }
+button, input { font: inherit; }
+button, a, input { -webkit-tap-highlight-color: transparent; }
+.railway-app { max-width: 1600px; margin: auto; padding: 0 64px; overflow: hidden; }
+.site-header { height: 108px; display: flex; align-items: center; justify-content: space-between; gap: 24px; position: relative; z-index: 5; }
+.wordmark { display: inline-flex; align-items: center; gap: 10px; font-size: 28px; font-weight: 700; color: var(--foreground); text-decoration: none; }
+.brand-icon { background: var(--primary); color: var(--block-ink); display: grid; place-items: center; width: 35px; height: 35px; border-radius: 11px; transform: rotate(-8deg); }
+.brand-dot { font-size: 10px; align-self: flex-start; margin-top: 7px; margin-left: -6px; }
+.site-header nav { display: flex; gap: 27px; }
+.nav-button { background: transparent; color: var(--muted-foreground); height: auto; border-radius: 0; padding: 8px 0; font-size: 12px; box-shadow: none; }
+.nav-button:hover { color: var(--foreground); }
+.nav-button.active { color: var(--foreground); position: relative; }
+.nav-button.active:after { content: ''; position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--primary); bottom: -3px; left: 50%; }
+.travel-button { border: 1px solid var(--border); background: var(--secondary); color: var(--foreground); border-radius: 30px; height: 44px; padding: 0 18px; font-size: 12px; }
+.travel-button:hover { border-color: var(--primary); background: var(--accent); }
+.little-face { position: relative; display: flex; gap: 4px; width: 20px; height: 19px; border-radius: 7px; background: var(--primary); align-items: center; justify-content: center; transform: rotate(-8deg); }
+.little-face span { width: 3px; height: 4px; background: var(--block-ink); border-radius: 2px; }
+.little-face:after { content: ''; position: absolute; bottom: -3px; left: 4px; border-top: 5px solid var(--primary); border-right: 5px solid transparent; }
+.journey-stage { position: relative; min-height: 700px; padding-top: 43px; }
+.train-backdrop { position: absolute; width: 1050px; max-width: none; height: 700px; object-fit: cover; right: -139px; top: -51px; user-select: none; pointer-events: none; animation: train-arrive 1.4s ease-out both; }
+.stage-shade { position: absolute; inset: -5px -64px 0; background: linear-gradient(90deg, var(--background) 1%, transparent 47%), linear-gradient(0deg, var(--background) 10%, transparent 47%); pointer-events: none; }
+.hero-content { position: relative; z-index: 1; }
+.hero-eyebrow { font-size: 10px; font-weight: 500; display: flex; gap: 9px; align-items: center; }
+.status-dot { height: 6px; width: 6px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 0 4px color-mix(in oklch,var(--primary) 10%,transparent); }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: 128px; line-height: .92; color: var(--headline); margin: 27px 0 20px; position: relative; width: fit-content; }
+h1 > span:first-child { color: var(--foreground); }
+.headline-star { font-family: var(--font-body); position: absolute; color: var(--primary); font-size: 74px; top: 2px; right: -90px; font-weight: 400; animation: star-turn 24s linear infinite; }
+.hero-copy { font-size: 13px; color: var(--muted-foreground); line-height: 1.8; }
+.train-note { position: absolute; top: 377px; right: 16px; font-size: 8px; display: flex; align-items: center; gap: 12px; color: var(--muted-foreground); }
+.note-line { height: 1px; width: 35px; background: var(--muted-foreground); }
+.booking-area { position: relative; z-index: 2; margin-top: 72px; }
+.booking-intro { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 12px; }
+.booking-intro > span:first-child { display: flex; align-items: center; gap: 9px; }
+.mini-track { width: 16px; height: 12px; border-top: 2px solid var(--primary); border-bottom: 2px solid var(--primary); transform: rotate(-20deg); }
+.booking-step { font-size: 10px; color: var(--primary); }
+.booking-step > span { color: var(--muted-foreground); margin-left: 8px; font-size: 9px; }
+.booking-form { display: grid; grid-template-columns: 1fr 1fr 1fr .86fr; gap: 9px; position: relative; }
+.station-field, .date-button, .journey-button { height: 133px; border-radius: 19px; padding: 21px 24px; }
+.station-field { color: var(--block-ink); display: flex; flex-direction: column; }
+.source-field { background: var(--primary); padding-right: 30px; }
+.destination-field { background: var(--peach); }
+.station-field label, .field-label { display: flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 600; }
+.station-field input { border: 0; background: transparent; width: 100%; min-width: 0; font-size: 23px; font-weight: 600; margin-top: 10px; outline: none; padding: 0; border-radius: 2px; }
+.station-field input:focus-visible { box-shadow: 0 2px 0 var(--block-ink); }
+.station-field input::placeholder { color: var(--block-ink); opacity: 1; }
+.field-hint { font-size: 10px; opacity: .6; font-weight: 400; margin-top: 5px; }
+.swap-button { position: absolute; left: calc((100% - 27px) / 3.86 - 15px); top: 47px; z-index: 3; border-radius: 50%; background: var(--background); color: var(--foreground); height: 35px; width: 35px; border: 3px solid var(--background); transform: rotate(90deg); padding: 0; }
+.swap-button:hover { background: var(--accent); transform: rotate(270deg); transition: transform .4s; }
+.date-button { background: var(--butter); color: var(--block-ink); display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 0; text-align: left; white-space: normal; }
+.date-button:hover { filter: brightness(1.05); }
+.date-value { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 23px; font-weight: 600; line-height: 29px; }
+.journey-button { background: var(--secondary); color: var(--foreground); display: grid; grid-template-columns: 1fr auto; grid-template-rows: 1fr auto; align-items: center; gap: 0; text-align: left; border: 1px solid var(--border); font-size: 18px; font-weight: 500; }
+.journey-button svg { width: 25px; height: 25px; transition: transform .25s; }
+.journey-button:hover { background: var(--accent); border-color: var(--primary); }
+.journey-button:hover svg { transform: translate(3px,-3px); }
+.search-subtitle { grid-column: 1 / -1; font-size: 10px; color: var(--muted-foreground); font-weight: 400; padding-bottom: 2px; }
+.booking-bottom { display: flex; justify-content: space-between; margin-top: 16px; font-size: 10px; color: var(--muted-foreground); }
+.booking-bottom > span:first-child { display: flex; align-items: center; gap: 5px; }
+.booking-bottom > span:last-child { font-size: 8px; }
+.booking-bottom > span:last-child span { color: var(--primary); margin-left: 5px; }
+.form-error { color: var(--peach); font-size: 12px; margin: 12px 0 0; }
+.little-nudge { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 24px 0; }
+.little-nudge > div { display: flex; align-items: center; gap: 18px; }
+.nudge-symbol { color: var(--peach); font-size: 48px; line-height: 1; }
+.little-nudge p { font-size: 14px; line-height: 1.6; color: var(--muted-foreground); margin: 0; }
+.little-nudge strong { color: var(--foreground); font-weight: 500; }
+.little-nudge .nav-button { flex-direction: column; align-items: flex-end; font-size: 11px; gap: 7px; }
+.little-nudge .nav-button > span { color: var(--primary); display: flex; align-items: center; gap: 10px; }
+.site-footer { display: flex; align-items: center; justify-content: space-between; padding: 25px 0; font-size: 9px; color: var(--muted-foreground); }
+.site-footer > span:last-child { display: flex; align-items: center; gap: 7px; font-size: 8px; }
+.railway-dialog { border-radius: 24px; box-shadow: var(--shadow-dialog); }
+.dialog-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 16px; background: var(--primary); color: var(--block-ink); margin-bottom: 14px; }
+.journey-summary { background: var(--secondary); padding: 20px; border-radius: 15px; }
+.journey-summary > div, .journey-summary p { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.journey-summary p { font-size: 12px; color: var(--muted-foreground); margin-top: 14px; }
+@keyframes train-arrive { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes star-turn { to { transform: rotate(360deg); } }
+@media (min-width: 1400px) { .journey-stage { min-height: 780px; } .train-backdrop { width: 1220px; height: 810px; top: -60px; } .booking-area { margin-top: 130px; } h1 { font-size: 148px; } }
+@media (max-width: 1050px) { .railway-app { padding: 0 32px; } .station-field,.date-button,.journey-button { padding: 20px 17px; } .station-field input,.date-value { font-size: 20px; } .journey-button { font-size: 16px; } h1 { font-size: 110px; } .train-backdrop { right: -245px; } }
+@media (max-width: 760px) { .railway-app { padding: 0 22px; } .site-header { height: 87px; } .site-header nav { display: none; } .wordmark { font-size: 24px; } .travel-button { font-size: 11px; padding: 0 13px; height: 40px; } .journey-stage { padding-top: 32px; min-height: auto; padding-bottom: 34px; } h1 { font-size: 76px; margin-top: 27px; } .headline-star { font-size: 32px; right: 0; top: -32px; } .hero-eyebrow { font-size: 8px; } .hero-copy { font-size: 12px; } .train-backdrop { width: 830px; height: 553px; right: -280px; top: 65px; opacity: .7; } .stage-shade { inset: 0 -22px; background: linear-gradient(90deg,var(--background),transparent 90%),linear-gradient(0deg,var(--background) 8%,transparent 55%); } .train-note { display: none; } .booking-area { margin-top: 175px; } .booking-intro { font-size: 10px; } .booking-step { display: none; } .booking-form { grid-template-columns: 1fr 1fr; gap: 10px; } .station-field,.date-button,.journey-button { height: 122px; border-radius: 18px; padding: 18px; } .station-field input,.date-value { font-size: 20px; } .swap-button { left: calc(50% - 17px); top: 42px; } .field-hint { font-size: 9px; } .journey-button { font-size: 17px; } .booking-bottom { font-size: 8px; gap: 10px; } .booking-bottom > span:last-child { font-size: 7px; } .little-nudge { padding: 22px 0; gap: 15px; } .little-nudge > div { gap: 10px; } .nudge-symbol { font-size: 33px; } .little-nudge p { font-size: 11px; } .little-nudge .nav-button { font-size: 9px; } .site-footer { font-size: 8px; gap: 20px; } .site-footer > span:last-child { font-size: 7px; } }
+@media (max-width: 370px) { h1 { font-size: 68px; } .headline-star { right: 0; font-size: 28px; } .station-field input,.date-value { font-size: 17px; } .station-field,.date-button,.journey-button { padding: 16px 13px; } .journey-button { font-size: 15px; } }
+@media (prefers-reduced-motion: reduce) { *, *:before, *:after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
