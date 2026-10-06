@@ -210,7 +210,7 @@ h1 > span:first-child { color: var(--foreground); }
 .note-line { height: 1px; width: 35px; background: var(--muted-foreground); }
 
 /* Booking spotlight: the inputs are the hero of the page. */
-.booking-area { position: relative; z-index: 2; margin-top: 40px; }
+.booking-area { position: relative; z-index: 2; margin-top: 30px; }
 .booking-area::before { content: ''; position: absolute; inset: -70px -40px -50px; background:
   radial-gradient(55% 85% at 24% 55%, color-mix(in oklch, var(--primary) 16%, transparent), transparent 70%),
   radial-gradient(45% 75% at 62% 40%, color-mix(in oklch, var(--peach) 13%, transparent), transparent 70%),
