@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep the booking experience on the index route with local form state; this project currently provides a UI preview, not live train inventory or AI services.
+- Define the cinematic palette, typography, control shapes, and motion in src/styles.css and use shared UI primitives for interactions to keep presentation consistent.
