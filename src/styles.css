@@ -301,10 +301,10 @@ h1 > span:first-child { color: var(--foreground); }
   .controls-label, .controls-divider { display: none; }
   .journey-button { grid-column: 1; height: 60px; border-radius: 20px; padding: 12px 20px; font-size: 17px; margin-top: 4px; }
   .journey-arrow { width: 38px; height: 38px; }
-  .ai-nudge { gap: 10px; justify-content: flex-start; flex-wrap: wrap; }
-  .nudge-symbol { font-size: 15px; }
-  .ai-nudge p { font-size: 12px; }
-  .ai-nudge .nav-button { font-size: 10px; min-height: 40px; }
+  .ai-nudge { gap: 8px; justify-content: flex-start; white-space: nowrap; }
+  .nudge-symbol { font-size: 13px; }
+  .ai-nudge p { font-size: 10.5px; }
+  .ai-nudge .nav-button { font-size: 10px; min-height: 36px; padding: 4px 0; }
   .site-footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; font-size: 9px; gap: 18px; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
   .site-footer > span:last-child { display: none; }
   .railway-dialog { width: calc(100% - 32px); max-height: calc(100dvh - 40px); overflow-y: auto; }
