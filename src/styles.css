@@ -222,7 +222,7 @@ h1 > span:first-child { color: var(--foreground); }
 .booking-step { font-size: 10px; color: var(--primary); }
 .booking-step > span { color: var(--muted-foreground); margin-left: 8px; font-size: 9px; }
 .booking-form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; position: relative; }
-.station-field, .date-button { height: 188px; border-radius: 34px; padding: 26px 30px; }
+.station-field, .date-button { height: 178px; border-radius: 34px; padding: 26px 30px; }
 .station-field { color: var(--block-ink); display: flex; flex-direction: column; position: relative; }
 .source-field { background: var(--primary); padding-right: 30px; --halo: var(--primary); }
 .destination-field { background: var(--peach); --halo: var(--peach); }
