@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import trainImage from "@/assets/night-train.jpg";
+import trainImage from "@/assets/vande-bharat.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -43,7 +43,7 @@ function Index() {
 
       <main>
         <section className="journey-stage" aria-label="Book your train journey">
-          <img src={trainImage} width={1536} height={1024} alt="A sleek modern train with mint-colored headlights emerging from the dark" className="train-backdrop" />
+          <img src={trainImage} width={1264} height={848} alt="A Vande Bharat Express train in white with saffron and green bands, emerging from the dark" className="train-backdrop" />
           <div className="stage-shade" />
           <div className="hero-content">
             <div className="hero-eyebrow"><span className="status-dot" /> LESS SCROLLING. MORE GOING.</div>
