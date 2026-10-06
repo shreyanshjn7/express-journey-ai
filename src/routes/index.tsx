@@ -45,7 +45,7 @@ function Index() {
       </header>
 
       <main>
-        <section ref={stageRef} onMouseMove={tilt} className="journey-stage" aria-label="Find your train">
+        <section className="journey-stage" aria-label="Find your train">
           <div className="stage-parallax"><img src={lightsImage} width={1600} height={1200} alt="" aria-hidden="true" className="lights-backdrop" /></div>
           <div className="stage-shade" />
 
@@ -61,25 +61,8 @@ function Index() {
               <div className="station-field source-field pop" style={{ ["--d" as string]: "620ms" }}><label htmlFor="source"><MapPin size={16} /> DEPARTING FROM</label><input id="source" list="stations" value={source} onChange={(event) => { setSource(event.target.value); setError(""); }} placeholder="Boarding station" autoComplete="off" /><span className="field-hint">Where the journey begins</span></div>
               <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" onClick={() => { setSource(destination); setDestination(source); }}><ArrowDownUp size={18} /></Button>
               <div className="station-field destination-field pop" style={{ ["--d" as string]: "700ms" }}><label htmlFor="destination"><MapPin size={16} /> ARRIVING AT</label><input id="destination" list="stations" value={destination} onChange={(event) => { setDestination(event.target.value); setError(""); }} placeholder="Destination city" autoComplete="off" /><span className="field-hint">Where you're headed</span></div>
-              <Button variant="date" type="button" aria-label="Choose travel date" aria-expanded={calendarOpen} className="pop" style={{ ["--d" as string]: "780ms" }} onClick={() => setCalendarOpen(open => !open)}><span className="field-label"><CalendarDays size={16} /> TRAVEL DATE</span><span className="date-value">{date ? format(date, "dd MMM, yyyy") : "Pick a date"}<ChevronDown size={18} className={`chev ${calendarOpen ? "up" : ""}`} /></span><span className="field-hint">Countdown begins now</span></Button>
+              <Button variant="date" type="button" aria-label="Choose travel date" className="pop" style={{ ["--d" as string]: "780ms" }} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-label"><CalendarDays size={16} /> TRAVEL DATE</span><span className="date-value">{date ? format(date, "dd MMM, yyyy") : "Pick a date"}<ChevronDown size={18} /></span><span className="field-hint">Countdown begins now</span></Button>
               <datalist id="stations">{["New Delhi", "Mumbai Central", "Bengaluru", "Chennai Central", "Kolkata", "Jaipur", "Hyderabad", "Pune", "Ahmedabad", "Goa", "Varanasi", "Shimla"].map(station => <option key={station} value={station} />)}</datalist>
-              {calendarOpen && (
-                <div className="date-inline pop" role="group" aria-label="Choose travel date">
-                  <div className="date-inline-head"><span className="date-inline-title">Travel Date</span><button type="button" className="date-inline-close" aria-label="Close date picker" onClick={() => setCalendarOpen(false)}><X size={15} /></button></div>
-                  <div className="date-inline-body">
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      onSelect={(picked) => { if (picked) { setDate(picked); setError(""); setCalendarOpen(false); } }}
-                      disabled={{ before: startOfDay(new Date()) }}
-                      captionLayout="dropdown"
-                      startMonth={new Date()}
-                      endMonth={new Date(new Date().getFullYear() + 1, 11)}
-                      className="rail-calendar"
-                    />
-                  </div>
-                </div>
-              )}
             </form>
             {error && <p className="form-error" role="alert">{error}</p>}
             <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
