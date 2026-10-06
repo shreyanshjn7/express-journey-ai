@@ -282,14 +282,12 @@ h1 > span:first-child { color: var(--foreground); }
   .wordmark { font-size: 24px; min-width: 0; gap: 8px; }
   .brand-icon, .little-face, .site-header svg { flex-shrink: 0; }
   .site-header .travel-button { font-size: 11px; padding: 0 13px; height: 44px; flex-shrink: 0; }
-  .journey-stage { padding-top: 12px; min-height: auto; padding-bottom: 32px; }
+  .journey-stage { padding-top: 16px; min-height: auto; padding-bottom: 32px; gap: 30px; }
   h1 { font-size: 56px; margin: 8px 0 0; width: max-content; max-width: 100%; line-height: 1; }
   .headline-star, .hero-eyebrow, .hero-copy, .train-note, .booking-intro { display: none; }
-  .train-backdrop { width: 450px; height: 300px; right: -62px; top: -30px; opacity: .85; }
-  .stage-shade { display: none; }
-  .train-parallax { position: relative; height: 250px; order: 2; transform: none; }
-  .hero-content { background: var(--background); width: 100%; padding-bottom: 12px; order: 3; }
-  .booking-area { margin-top: 4px; order: 1; }
+  .train-backdrop { width: 430px; height: 300px; right: -70px; top: -10px; opacity: .55; }
+  .stage-shade { inset: 0 -20px; background: linear-gradient(180deg, transparent 30%, var(--background) 62%); }
+  .hero-content { width: 100%; }
   .booking-area::before { inset: -30px -10px -20px; }
   .booking-form { grid-template-columns: minmax(0, 1fr); gap: 14px; }
   .station-field { height: 92px; border-radius: 20px; padding: 14px 22px; min-width: 0; }
@@ -372,7 +370,7 @@ h1 .line:first-child > span { color: var(--foreground); }
 @keyframes marquee { to { transform: translateX(-50%); } }
 @keyframes bob { 0%,100% { transform: rotate(-8deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-2px); } }
 @media (max-width: 760px) {
-  .train-parallax { position: relative; inset: auto; height: 250px; order: 2; transform: none; }
+  .train-parallax { transform: none; }
   .vibe-chips { flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; }
   .route-marquee span { font-size: 26px; }
   .station-field.pop:hover, .date-button.pop:hover { transform: none; }
