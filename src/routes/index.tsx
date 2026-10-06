@@ -89,6 +89,27 @@ function Index() {
       </main>
       <footer className="site-footer"><span>© {new Date().getFullYear()} Rail Daddy. Trips worth the ride.</span><span>TAKE THE SCENIC ROUTE <ArrowUpRight size={13} /></span></footer>
       <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
+      <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
+        <DialogContent className="date-dialog" aria-label="Choose travel date">
+          <div className="date-dialog-head"><span className="date-dialog-title">Travel Date</span><span className="date-dialog-nav" aria-hidden="true"><ArrowRight size={15} /></span></div>
+          <div className="date-dialog-body">
+            <Calendar
+              mode="single"
+              selected={draftDate}
+              onSelect={setDraftDate}
+              disabled={{ before: startOfDay(new Date()) }}
+              captionLayout="dropdown"
+              startMonth={new Date()}
+              endMonth={new Date(new Date().getFullYear() + 1, 11)}
+              className="rail-calendar"
+            />
+          </div>
+          <div className="date-dialog-actions">
+            <Button variant="journey" type="button" className="date-confirm" disabled={!draftDate} onClick={() => { if (draftDate) { setDate(draftDate); setError(""); } setCalendarOpen(false); }}>Confirm</Button>
+            <Button variant="nav" type="button" className="date-cancel" onClick={() => setCalendarOpen(false)}>Cancel</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
