@@ -196,27 +196,27 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .little-face { position: relative; display: flex; gap: 4px; width: 20px; height: 19px; border-radius: 7px; background: var(--primary); align-items: center; justify-content: center; transform: rotate(-8deg); }
 .little-face span { width: 3px; height: 4px; background: var(--block-ink); border-radius: 2px; }
 .little-face:after { content: ''; position: absolute; bottom: -3px; left: 4px; border-top: 5px solid var(--primary); border-right: 5px solid transparent; }
-.journey-stage { position: relative; min-height: 740px; padding-top: 10px; padding-bottom: 30px; display: flex; flex-direction: column; justify-content: space-between; }
-.train-backdrop { position: absolute; width: 1050px; max-width: none; height: 700px; object-fit: cover; right: -139px; top: 60px; user-select: none; pointer-events: none; animation: train-arrive 1.4s ease-out both; }
-.stage-shade { position: absolute; inset: -5px -64px 0; background: linear-gradient(90deg, var(--background) 1%, transparent 47%), linear-gradient(0deg, var(--background) 0%, transparent 30%); pointer-events: none; }
-.hero-content { position: relative; z-index: 1; }
+.journey-stage { position: relative; min-height: 720px; padding-top: 26px; padding-bottom: 34px; display: flex; flex-direction: column; justify-content: space-between; gap: 56px; }
+.train-backdrop { position: absolute; width: 880px; max-width: none; height: 100%; object-fit: cover; object-position: center; right: -90px; top: 0; user-select: none; pointer-events: none; animation: train-arrive 1.4s ease-out both; }
+.stage-shade { position: absolute; inset: -5px -64px 0; background: linear-gradient(90deg, var(--background) 8%, color-mix(in oklch, var(--background) 55%, transparent) 42%, transparent 70%), linear-gradient(0deg, var(--background) 2%, transparent 34%), linear-gradient(180deg, var(--background) 0%, transparent 22%); pointer-events: none; }
+.hero-content { position: relative; z-index: 1; max-width: 620px; }
 .hero-eyebrow { font-size: 10px; font-weight: 500; display: flex; gap: 9px; align-items: center; }
 .status-dot { height: 6px; width: 6px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 0 4px color-mix(in oklch,var(--primary) 10%,transparent); }
-h1 { font-family: var(--font-display); font-weight: 700; font-size: 128px; line-height: .92; color: var(--headline); margin: 22px 0 16px; position: relative; width: fit-content; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: 118px; line-height: .92; color: var(--headline); margin: 20px 0 14px; position: relative; width: fit-content; }
 h1 > span:first-child { color: var(--foreground); }
-.headline-star { font-family: var(--font-body); position: absolute; color: var(--primary); font-size: 74px; top: 2px; right: -90px; font-weight: 400; animation: star-turn 24s linear infinite; }
+.headline-star { font-family: var(--font-body); position: absolute; color: var(--primary); font-size: 68px; top: 2px; right: -84px; font-weight: 400; animation: star-turn 24s linear infinite; }
 .hero-copy { font-size: 13px; color: var(--muted-foreground); line-height: 1.8; }
-.train-note { position: absolute; top: auto; bottom: 328px; right: 16px; font-size: 8px; display: flex; align-items: center; gap: 12px; color: var(--muted-foreground); }
+.train-note { position: absolute; top: auto; bottom: 300px; right: 16px; font-size: 8px; display: flex; align-items: center; gap: 12px; color: var(--muted-foreground); }
 .note-line { height: 1px; width: 35px; background: var(--muted-foreground); }
 
 /* Booking spotlight: the inputs are the hero of the page. */
-.booking-area { position: relative; z-index: 2; margin-top: 8px; }
-.booking-area::before { content: ''; position: absolute; inset: -70px -40px -50px; background:
-  radial-gradient(55% 85% at 24% 55%, color-mix(in oklch, var(--primary) 16%, transparent), transparent 70%),
-  radial-gradient(45% 75% at 62% 40%, color-mix(in oklch, var(--peach) 13%, transparent), transparent 70%),
-  radial-gradient(45% 70% at 92% 55%, color-mix(in oklch, var(--butter) 11%, transparent), transparent 72%);
+.booking-area { position: relative; z-index: 2; }
+.booking-area::before { content: ''; position: absolute; inset: -60px -40px -44px; background:
+  radial-gradient(55% 85% at 24% 55%, color-mix(in oklch, var(--primary) 14%, transparent), transparent 70%),
+  radial-gradient(45% 75% at 62% 40%, color-mix(in oklch, var(--peach) 11%, transparent), transparent 70%),
+  radial-gradient(45% 70% at 92% 55%, color-mix(in oklch, var(--butter) 10%, transparent), transparent 72%);
   filter: blur(34px); pointer-events: none; z-index: -1; }
-.booking-intro { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 12px; }
+.booking-intro { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 12px; }
 .booking-intro > span:first-child { display: flex; align-items: center; gap: 9px; }
 .mini-track { width: 16px; height: 12px; border-top: 2px solid var(--primary); border-bottom: 2px solid var(--primary); transform: rotate(-20deg); }
 .booking-step { font-size: 10px; color: var(--primary); }
