@@ -367,3 +367,16 @@ h1 .line:first-child > span { color: var(--foreground); }
   .station-field::after, .date-button::after { animation: none; }
 }
 @media (prefers-reduced-motion: reduce) { *, *:before, *:after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+@media (max-width: 760px) {
+  .lights-backdrop { top: 0; right: -120px; width: 620px; height: 420px; opacity: .55; }
+  .controls-panel { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 14px; }
+  .controls-label, .controls-divider { display: none; }
+  .vibe-chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; overflow: visible; }
+  .vibe-chip { justify-content: center; padding: 0 6px; gap: 4px; font-size: 11px; height: 38px; }
+  .vibe-chip.on { transform: none; }
+  .crew-stepper { justify-content: space-between; width: 100%; }
+  .crew-stepper > span { margin-right: auto; }
+  .journey-button { background: var(--primary); color: var(--block-ink); border-color: transparent; }
+  .journey-button > * { color: var(--block-ink); }
+}
+@media (max-width: 370px) { .vibe-chip svg { display: none; } }
