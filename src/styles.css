@@ -183,8 +183,8 @@ button, input { font: inherit; }
 button, a, input { -webkit-tap-highlight-color: transparent; }
 .railway-app { max-width: 1600px; margin: auto; padding: 0 64px; overflow: hidden; }
 .site-header { height: 108px; display: flex; align-items: center; justify-content: space-between; gap: 24px; position: relative; z-index: 5; }
-.wordmark { display: inline-flex; align-items: center; gap: 10px; font-size: 28px; font-weight: 700; color: var(--foreground); text-decoration: none; }
-.brand-icon { background: var(--primary); color: var(--block-ink); display: grid; place-items: center; width: 35px; height: 35px; border-radius: 11px; transform: rotate(-8deg); }
+.wordmark { display: inline-flex; align-items: center; text-decoration: none; }
+.wordmark-logo { display: block; height: 46px; width: auto; }
 .brand-dot { font-size: 10px; align-self: flex-start; margin-top: 7px; margin-left: -6px; }
 .site-header nav { display: flex; gap: 27px; }
 .nav-button { background: transparent; color: var(--muted-foreground); height: auto; border-radius: 0; padding: 8px 0; font-size: 12px; box-shadow: none; }
@@ -278,8 +278,9 @@ h1 > span:first-child { color: var(--foreground); }
   .railway-app { padding: 0 20px; }
   .site-header { height: 80px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; }
   .site-header nav { display: none; }
-  .wordmark { font-size: 24px; min-width: 0; gap: 8px; }
-  .brand-icon, .little-face, .site-header svg { flex-shrink: 0; }
+  .wordmark { min-width: 0; }
+  .wordmark-logo { height: 38px; }
+  .little-face, .site-header svg { flex-shrink: 0; }
   .site-header .travel-button { padding: 0 14px; height: 50px; flex-shrink: 0; }
   .journey-stage { padding-top: 16px; min-height: auto; padding-bottom: 32px; gap: 30px; }
   h1 { font-size: 56px; margin: 8px 0 0; width: max-content; max-width: 100%; line-height: 1; }
@@ -311,8 +312,7 @@ h1 > span:first-child { color: var(--foreground); }
 }
 @media (max-width: 370px) {
   .railway-app { padding: 0 16px; }
-  .wordmark { font-size: 21px; gap: 6px; }
-  .brand-icon { width: 30px; height: 32px; }
+  .wordmark-logo { height: 32px; }
   .site-header .travel-button { padding: 0 10px; gap: 6px; height: 46px; } .travel-kicker { display: none; } .travel-title { font-size: 12px; }
   h1 { font-size: 52px; }
   .site-footer { grid-template-columns: minmax(0, 1fr); gap: 10px; }

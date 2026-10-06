@@ -7,6 +7,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import lightsImage from "@/assets/night-vista.jpg";
+import logoImage from "@/assets/rail-daddy-logo-wink-2.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -45,7 +46,7 @@ function Index() {
   return (
     <div className="railway-app">
       <header className="site-header reveal" style={{ ["--d" as string]: "0ms" }}>
-        <a href="/" className="wordmark" aria-label="Rail Daddy home"><span className="brand-icon"><TrainFront size={21} strokeWidth={2.5} /></span>rail<span className="wordmark-accent">daddy</span></a>
+        <a href="/" className="wordmark" aria-label="Rail Daddy home"><img src={logoImage} width={1024} height={1024} alt="Rail Daddy logo" className="wordmark-logo" loading="lazy" /></a>
         <nav aria-label="Main navigation"><Button variant="nav" className="active" onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth", block: "center" })}>Find a train</Button><Button variant="nav" onClick={() => setDialog("about")}>Why rail? <ArrowUpRight size={13} /></Button></nav>
         <Button variant="travel" onClick={() => setDialog("ai")}><span className="little-face"><span /><span /></span><span className="travel-copy"><span className="travel-kicker">No plan? No problem.</span><span className="travel-title">Ask Daddy AI <ArrowUpRight size={14} /></span></span></Button>
       </header>
