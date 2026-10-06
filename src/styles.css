@@ -191,12 +191,15 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .nav-button:hover { color: var(--foreground); }
 .nav-button.active { color: var(--foreground); position: relative; }
 .nav-button.active:after { content: ''; position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--primary); bottom: -3px; left: 50%; }
-.travel-button { border: 1px solid var(--border); background: var(--secondary); color: var(--foreground); border-radius: 30px; height: 44px; padding: 0 18px; font-size: 12px; }
+.travel-button { border: 1px solid var(--border); background: var(--secondary); color: var(--foreground); border-radius: 30px; height: 54px; padding: 0 20px; font-size: 12px; }
 .travel-button:hover { border-color: var(--primary); background: var(--accent); }
+.travel-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.travel-kicker { font-size: 8px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--muted-foreground); line-height: 1; }
+.travel-title { font-size: 13px; display: flex; align-items: center; gap: 6px; line-height: 1; }
 .little-face { position: relative; display: flex; gap: 4px; width: 20px; height: 19px; border-radius: 7px; background: var(--primary); align-items: center; justify-content: center; transform: rotate(-8deg); }
 .little-face span { width: 3px; height: 4px; background: var(--block-ink); border-radius: 2px; }
 .little-face:after { content: ''; position: absolute; bottom: -3px; left: 4px; border-top: 5px solid var(--primary); border-right: 5px solid transparent; }
-.journey-stage { position: relative; min-height: calc(100svh - 170px); padding-top: 18px; padding-bottom: 24px; display: flex; flex-direction: column; justify-content: flex-start; gap: 26px; }
+.journey-stage { position: relative; min-height: calc(100svh - 250px); padding-top: 18px; padding-bottom: 24px; display: flex; flex-direction: column; justify-content: flex-start; gap: 30px; }
 .lights-backdrop { position: absolute; width: 1100px; max-width: none; height: 120%; object-fit: cover; object-position: right center; right: -140px; top: -12%; user-select: none; pointer-events: none; opacity: .95; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(180deg, #000 74%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(180deg, #000 74%, transparent 100%); -webkit-mask-composite: source-in; mask-composite: intersect; }
 .stage-shade { position: absolute; inset: -5px -64px 0; background: linear-gradient(90deg, var(--background) 14%, color-mix(in oklch, var(--background) 60%, transparent) 46%, transparent 74%), linear-gradient(0deg, var(--background) 4%, transparent 40%), linear-gradient(180deg, var(--background) 0%, transparent 26%); pointer-events: none; }
 .hero-content { position: relative; z-index: 1; max-width: 620px; }
@@ -246,13 +249,11 @@ h1 > span:first-child { color: var(--foreground); }
 .controls-label { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-foreground); white-space: nowrap; flex-shrink: 0; }
 .controls-divider { width: 1px; height: 34px; background: var(--border); flex-shrink: 0; }
 .form-error { color: var(--peach); font-size: 12px; margin: 12px 0 0; }
-.ai-nudge { display: flex; align-items: center; justify-content: center; gap: 14px; }
-.nudge-symbol { color: var(--peach); font-size: 17px; line-height: 1; }
-.ai-nudge p { font-size: 13px; color: var(--muted-foreground); margin: 0; }
-.ai-nudge strong { color: var(--foreground); font-weight: 500; }
-.ai-nudge .nav-button { font-size: 11px; color: var(--primary); display: flex; align-items: center; gap: 7px; padding: 6px 2px; }
-.ai-nudge .nav-button svg { color: var(--primary); transition: transform .3s cubic-bezier(.16,1,.3,1); }
-.ai-nudge .nav-button:hover svg { transform: translateX(3px); }
+.route-marquee { overflow: hidden; border-top: 1px solid var(--border); padding: 18px 0; mask-image: linear-gradient(90deg, transparent, var(--background) 10%, var(--background) 90%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, var(--background) 10%, var(--background) 90%, transparent); }
+.route-marquee > div { display: flex; width: max-content; animation: marquee 32s linear infinite; }
+.route-marquee span { font-family: var(--font-display); font-size: 40px; font-weight: 700; color: transparent; -webkit-text-stroke: 1px var(--muted-foreground); white-space: nowrap; padding-right: 0; }
+.route-marquee:hover > div { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
 .site-footer { display: flex; align-items: center; justify-content: space-between; padding: 25px 0; font-size: 9px; color: var(--muted-foreground); }
 .site-footer > span:last-child { display: flex; align-items: center; gap: 7px; font-size: 8px; }
 .railway-dialog { border-radius: 24px; box-shadow: var(--shadow-dialog); }
@@ -279,7 +280,7 @@ h1 > span:first-child { color: var(--foreground); }
   .site-header nav { display: none; }
   .wordmark { font-size: 24px; min-width: 0; gap: 8px; }
   .brand-icon, .little-face, .site-header svg { flex-shrink: 0; }
-  .site-header .travel-button { font-size: 11px; padding: 0 13px; height: 44px; flex-shrink: 0; }
+  .site-header .travel-button { padding: 0 14px; height: 50px; flex-shrink: 0; }
   .journey-stage { padding-top: 16px; min-height: auto; padding-bottom: 32px; gap: 30px; }
   h1 { font-size: 56px; margin: 8px 0 0; width: max-content; max-width: 100%; line-height: 1; }
   .headline-star, .hero-eyebrow, .hero-copy, .booking-intro { display: none; }
@@ -301,10 +302,8 @@ h1 > span:first-child { color: var(--foreground); }
   .controls-label, .controls-divider { display: none; }
   .journey-button { grid-column: 1; height: 60px; border-radius: 20px; padding: 12px 20px; font-size: 17px; margin-top: 4px; }
   .journey-arrow { width: 38px; height: 38px; }
-  .ai-nudge { gap: 8px; justify-content: flex-start; white-space: nowrap; }
-  .nudge-symbol { font-size: 13px; }
-  .ai-nudge p { font-size: 10.5px; }
-  .ai-nudge .nav-button { font-size: 10px; min-height: 36px; padding: 4px 0; }
+  .route-marquee { padding: 12px 0; }
+  .route-marquee span { font-size: 26px; }
   .site-footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; font-size: 9px; gap: 18px; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
   .site-footer > span:last-child { display: none; }
   .railway-dialog { width: calc(100% - 32px); max-height: calc(100dvh - 40px); overflow-y: auto; }
@@ -314,7 +313,7 @@ h1 > span:first-child { color: var(--foreground); }
   .railway-app { padding: 0 16px; }
   .wordmark { font-size: 21px; gap: 6px; }
   .brand-icon { width: 30px; height: 32px; }
-  .site-header .travel-button { padding: 0 10px; gap: 6px; }
+  .site-header .travel-button { padding: 0 10px; gap: 6px; height: 46px; } .travel-kicker { display: none; } .travel-title { font-size: 12px; }
   h1 { font-size: 52px; }
   .site-footer { grid-template-columns: minmax(0, 1fr); gap: 10px; }
 }
