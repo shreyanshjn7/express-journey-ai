@@ -264,37 +264,31 @@ h1 > span:first-child { color: var(--foreground); }
   .wordmark { font-size: 24px; min-width: 0; gap: 8px; }
   .brand-icon, .little-face, .site-header svg { flex-shrink: 0; }
   .site-header .travel-button { font-size: 11px; padding: 0 13px; height: 44px; flex-shrink: 0; }
-  .journey-stage { padding-top: 22px; min-height: auto; padding-bottom: 28px; }
-  h1 { font-size: 72px; margin: 24px 0 16px; width: max-content; max-width: 100%; }
-  .headline-star { font-size: 30px; right: 0; top: -28px; }
-  .hero-eyebrow { font-size: 9px; }
-  .hero-copy { font-size: 12px; line-height: 1.7; }
-  .train-backdrop { width: 640px; height: 426px; right: -230px; top: 8px; opacity: .65; }
-  .stage-shade { inset: 0 -20px; background: linear-gradient(90deg,var(--background),transparent 95%),linear-gradient(0deg,var(--background) 18%,transparent 68%); }
-  .train-note { display: none; }
-  .booking-area { margin-top: 82px; }
-  .booking-intro { font-size: 11px; margin-bottom: 14px; }
-  .booking-step { display: none; }
-  .booking-form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .station-field { height: 118px; border-radius: 18px; padding: 18px 16px; min-width: 0; }
+  .journey-stage { padding-top: 12px; min-height: auto; padding-bottom: 32px; }
+  h1 { font-size: 56px; margin: 8px 0 0; width: max-content; max-width: 100%; line-height: 1; }
+  .headline-star, .hero-eyebrow, .hero-copy, .train-note, .booking-intro { display: none; }
+  .train-backdrop { width: 450px; height: 300px; right: -62px; top: 15px; opacity: .85; }
+  .stage-shade { inset: 0 -20px; background: linear-gradient(0deg,var(--background) 55%,transparent 72%); }
+  .hero-content { background: var(--background); width: 100%; padding-bottom: 12px; }
+  .booking-area { margin-top: 110px; }
+  .booking-form { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .station-field { height: 84px; border-radius: 16px; padding: 14px 22px; min-width: 0; }
   .station-field label, .field-label { font-size: 11px; }
-  .station-field input { font-size: 18px; min-height: 30px; }
-  .swap-button { left: calc(50% - 22px); top: 37px; width: 44px; height: 44px; }
-  .date-button { grid-column: 1 / -1; height: 100px; border-radius: 18px; padding: 16px 20px; min-width: 0; }
-  .date-value { font-size: 21px; margin-top: 5px; }
-  .field-hint { font-size: 10px; }
-  .journey-button { grid-column: 1 / -1; height: 70px; border-radius: 18px; padding: 12px 20px; font-size: 18px; grid-template-rows: auto auto; }
-  .journey-button > svg { grid-row: 1 / 3; grid-column: 2; }
-  .search-subtitle { grid-column: 1; font-size: 10px; padding-bottom: 0; }
-  .booking-bottom { font-size: 10px; gap: 10px; margin-top: 14px; }
-  .booking-bottom > span:last-child { display: none; }
-  .little-nudge { padding: 22px 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; }
+  .station-field input { font-size: 20px; min-height: 28px; margin-top: 5px; padding-right: 28px; }
+  .swap-button { left: auto; right: 16px; top: 69px; width: 44px; height: 44px; transform: none; }
+  .swap-button:hover { transform: rotate(180deg); }
+  .date-button { grid-column: 1; height: 84px; border-radius: 16px; padding: 14px 22px; min-width: 0; }
+  .date-value { font-size: 20px; margin-top: 5px; }
+  .field-hint, .search-subtitle, .booking-bottom { display: none; }
+  .journey-button { grid-column: 1; height: 56px; border-radius: 16px; padding: 12px 22px; font-size: 17px; grid-template-rows: auto; margin-top: 6px; }
+  .journey-button > svg { grid-row: 1; grid-column: 2; }
+  .little-nudge { display: none; }
   .little-nudge > div { gap: 10px; min-width: 0; }
   .nudge-symbol { font-size: 32px; flex-shrink: 0; }
   .little-nudge p { font-size: 12px; }
   .little-nudge .nav-button { font-size: 10px; min-height: 44px; white-space: normal; text-align: right; }
   .site-footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; font-size: 9px; gap: 18px; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
-  .site-footer > span:last-child { font-size: 8px; }
+  .site-footer > span:last-child { display: none; }
   .railway-dialog { width: calc(100% - 32px); max-height: calc(100dvh - 40px); overflow-y: auto; }
   .journey-summary > div { overflow-wrap: anywhere; }
 }
@@ -303,13 +297,7 @@ h1 > span:first-child { color: var(--foreground); }
   .wordmark { font-size: 21px; gap: 6px; }
   .brand-icon { width: 30px; height: 32px; }
   .site-header .travel-button { padding: 0 10px; gap: 6px; }
-  h1 { font-size: 60px; }
-  .headline-star { font-size: 26px; }
-  .station-field { padding: 18px 13px; }
-  .station-field input { font-size: 16px; }
-  .station-field .field-hint { font-size: 9px; }
-  .little-nudge { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-  .little-nudge .nav-button { align-items: flex-start; text-align: left; }
+  h1 { font-size: 52px; }
   .site-footer { grid-template-columns: minmax(0, 1fr); gap: 10px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *:before, *:after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
