@@ -335,7 +335,7 @@ h1 .line > span { display: inline-block; animation: mask-up 1.1s cubic-bezier(.1
 h1 .line.accent > span { animation-delay: 1100ms; color: var(--headline); }
 h1 .line:first-child > span { color: var(--foreground); }
 .headline-star { animation: star-in 1.2s cubic-bezier(.34,1.56,.64,1) 1500ms both, star-turn 24s linear 2.6s infinite; }
-.train-parallax { position: absolute; inset: 0; transform: translate3d(calc(var(--mx,0) * -22px), calc(var(--my,0) * -12px), 0); transition: transform .8s cubic-bezier(.16,1,.3,1); pointer-events: none; }
+.stage-parallax { position: absolute; inset: 0; transform: translate3d(calc(var(--mx,0) * -22px), calc(var(--my,0) * -12px), 0); transition: transform .8s cubic-bezier(.16,1,.3,1); pointer-events: none; }
 .lights-backdrop { animation: lights-arrive 1.8s cubic-bezier(.16,1,.3,1) both, train-hum 6s ease-in-out 1.8s infinite; }
 .status-dot { animation: pulse 1.8s ease-out infinite; }
 .journey-button { overflow: hidden; position: relative; }
@@ -370,7 +370,7 @@ h1 .line:first-child > span { color: var(--foreground); }
 @keyframes marquee { to { transform: translateX(-50%); } }
 @keyframes bob { 0%,100% { transform: rotate(-8deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-2px); } }
 @media (max-width: 760px) {
-  .train-parallax { transform: none; }
+  .stage-parallax { transform: none; }
   .vibe-chips { flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; }
   .route-marquee span { font-size: 26px; }
   .station-field.pop:hover, .date-button.pop:hover { transform: none; }
