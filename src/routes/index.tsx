@@ -82,13 +82,13 @@ function Index() {
               </div>
               <Button variant="journey" type="submit" className="pop" style={{ ["--d" as string]: "960ms" }}><span className="journey-copy"><span className="journey-title">Plan my trip</span><span className="search-subtitle">Routes + stays + stops</span></span><span className="journey-arrow"><ArrowUpRight size={20} /></span></Button>
             </div>
+            <div className="ai-nudge reveal" style={{ ["--d" as string]: "1040ms" }}>
+              <span className="nudge-symbol" aria-hidden="true">✳</span>
+              <p>No plan? No problem. <strong>Daddy's got ideas.</strong></p>
+              <Button variant="nav" onClick={() => setDialog("ai")}>Let's plan it together <MoveRight size={15} /></Button>
+            </div>
           </div>
-          <div className="train-note reveal" style={{ ["--d" as string]: "1100ms" }}><span className="note-line" /><span>NOW BOARDING YOUR NEXT ESCAPE</span></div>
         </section>
-
-        <div className="route-marquee" aria-hidden="true"><div>{Array.from({ length: 2 }).map((_, k) => <span key={k}>DELHI ✳ JAIPUR ✳ GOA ✳ VARANASI ✳ SHIMLA ✳ MUMBAI ✳ KOCHI ✳ DARJEELING ✳ UDAIPUR ✳ </span>)}</div></div>
-
-        <section className="little-nudge"><div><span className="nudge-symbol" aria-hidden="true">✳</span><p>No plan? No problem.<br /><strong>Daddy's got a few ideas.</strong></p></div><Button variant="nav" onClick={() => setDialog("ai")}>Tell us your mood <span>Let's plan it together <MoveRight size={18} /></span></Button></section>
       </main>
       <footer className="site-footer"><span>© {new Date().getFullYear()} Rail Daddy. Trips worth the ride.</span><span>TAKE THE SCENIC ROUTE <ArrowUpRight size={13} /></span></footer>
       <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your trip plan." : "Why plan by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "Tell me your budget, mood and dates and I’ll sketch a rail trip for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `A ${vibe.toLowerCase()} trip for ${crew}. Live trains, stays and itineraries aren’t connected in this design preview.` : "Rail trips mean no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy plans the whole thing around the train."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to planning" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
