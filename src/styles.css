@@ -191,10 +191,10 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .site-header { height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 24px; position: relative; z-index: 5; }
 .wordmark { display: inline-flex; align-items: center; text-decoration: none; }
 .wordmark-type { display: block; font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1; white-space: nowrap; color: var(--foreground); letter-spacing: 0; }
-.wordmark-daddy { display: inline-block; color: var(--headline); transform: skewX(-7deg); }
+.wordmark-daddy { display: inline-block; color: var(--foreground); transform: skewX(-7deg); }
 .wordmark-wink { position: relative; display: inline-block; }
-.wordmark-wink::before { content: ''; position: absolute; width: 9px; height: 3px; border-radius: 3px; background: var(--primary); top: -3px; left: 3px; transform: rotate(-15deg); }
-.wordmark-stop { color: var(--primary); }
+.wordmark-wink::before { content: ''; position: absolute; width: 9px; height: 3px; border-radius: 3px; background: var(--foreground); top: -3px; left: 3px; transform: rotate(-15deg); }
+.wordmark-stop { color: var(--foreground); }
 .wordmark:focus-visible { outline: 2px solid var(--primary); outline-offset: 6px; border-radius: 4px; }
 .brand-dot { font-size: 10px; align-self: flex-start; margin-top: 7px; margin-left: -6px; }
 .site-header nav { display: flex; gap: 27px; }
@@ -218,13 +218,13 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .status-dot { height: 6px; width: 6px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 0 4px color-mix(in oklch,var(--primary) 10%,transparent); }
 h1 { font-family: var(--font-display); font-weight: 700; font-size: 96px; line-height: .95; color: var(--headline); margin: 12px 0 8px; position: relative; width: fit-content; white-space: nowrap; }
 h1 > span:first-child { color: var(--foreground); }
-.h1-accent { color: var(--headline); }
+.h1-accent { color: var(--foreground); }
 .headline-star { font-family: var(--font-body); position: absolute; color: var(--primary); font-size: 54px; top: 2px; right: -66px; font-weight: 400; animation: star-turn 24s linear infinite; }
 .hero-copy { font-size: 13px; color: var(--text-helper); line-height: 1.8; }
 
 /* Booking spotlight: the inputs are the hero of the page. */
 .booking-area { position: relative; z-index: 2; max-width: 1200px; margin-inline: auto; width: 100%; }
-.booking-area::before { content: none; }
+.booking-area::before { content: ''; position: absolute; inset: -56px -48px -28px; z-index: -1; pointer-events: none; border-radius: 48px; background: radial-gradient(ellipse 62% 95% at 50% 42%, color-mix(in oklch, var(--background) 84%, transparent) 0%, color-mix(in oklch, var(--background) 46%, transparent) 58%, transparent 100%); }
 .booking-intro { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 12px; }
 .booking-intro > span:first-child { display: flex; align-items: center; gap: 9px; }
 .mini-track { width: 16px; height: 12px; border-top: 2px solid var(--primary); border-bottom: 2px solid var(--primary); transform: rotate(-20deg); }
@@ -256,7 +256,7 @@ h1 > span:first-child { color: var(--foreground); }
 .controls-panel { display: flex; align-items: center; gap: 14px; height: 68px; padding: 0 22px; border-radius: 24px; border: 1px solid var(--border); background: color-mix(in oklch, var(--secondary) 72%, transparent); backdrop-filter: blur(10px); min-width: 0; }
 .controls-label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-helper); white-space: nowrap; flex-shrink: 0; }
 .controls-divider { width: 1px; height: 34px; background: var(--border); flex-shrink: 0; }
-.form-error { color: var(--peach); font-size: 13px; margin: 12px 0 0; }
+.form-error { color: var(--destructive); font-size: 13px; margin: 12px 0 0; }
 .route-marquee { overflow: hidden; border-top: 1px solid var(--border); padding: 12px 0; mask-image: linear-gradient(90deg, transparent, var(--background) 10%, var(--background) 90%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, var(--background) 10%, var(--background) 90%, transparent); }
 .route-marquee > div { display: flex; width: max-content; animation: marquee 32s linear infinite; }
 .route-marquee span { font-family: var(--font-display); font-size: 30px; font-weight: 700; color: color-mix(in oklch, var(--foreground) 78%, transparent); -webkit-text-stroke: 0; white-space: nowrap; padding-right: 0; }
@@ -297,7 +297,7 @@ h1 > span:first-child { color: var(--foreground); }
   .lights-backdrop { width: 640px; height: 380px; right: -140px; top: 40px; opacity: .6; -webkit-mask-image: none; mask-image: none; }
   .stage-shade { inset: 0 -20px; background: linear-gradient(180deg, transparent 22%, var(--background) 66%); }
   .hero-content { width: 100%; }
-  .booking-area::before { inset: -30px -10px -20px; }
+  .booking-area::before { inset: -28px -16px -16px; border-radius: 32px; }
   .booking-form { grid-template-columns: minmax(0, 1fr); gap: 14px; }
   .station-field { height: 92px; border-radius: 20px; padding: 14px 22px; min-width: 0; }
   .station-field label, .field-label { font-size: 12px; }
@@ -496,12 +496,14 @@ h1 .line:first-child > span { color: var(--foreground); }
 }
 .source-field { border-radius: 26px 0 0; }
 .destination-field, .date-button { border-left: 1px solid var(--border); }
-.station-field label, .field-label { color: var(--primary); }
+.station-field label, .field-label { color: var(--text-helper); }
 .station-field input::placeholder { color: var(--foreground); }
 .station-field input:focus-visible { box-shadow: 0 2px 0 var(--primary); }
 .field-hint { color: var(--text-helper); opacity: 1; }
-.station-field.pop:hover, .date-button.pop:hover, .station-field:focus-within {
-  transform: none; background: var(--console-control);
+.station-field.pop:hover, .date-button.pop:hover { background: var(--console-control); }
+.station-field:focus-within, .date-button:focus-visible {
+  background: var(--console-control);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--primary) 45%, transparent), 0 0 38px -10px color-mix(in oklch, var(--primary) 55%, transparent);
 }
 .station-field::after, .date-button::after { content: none; }
 .swap-button { left: calc(100% / 3 - 24px); width: 48px; height: 48px; margin-top: -24px; border: 1px solid var(--border); background: var(--card); box-shadow: 0 10px 28px oklch(0 0 0 / 35%); transition: transform .45s cubic-bezier(.34,1.56,.64,1), background .25s, border-color .25s; }
@@ -556,8 +558,8 @@ h1 .line:first-child > span { color: var(--foreground); }
 .route-card:hover { transform: translateY(-6px); border-color: var(--primary); background: var(--console-control); }
 .route-card:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
 .route-names { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 700; color: var(--foreground); white-space: nowrap; max-width: 100%; overflow: hidden; }
-.route-names svg { color: var(--primary); flex-shrink: 0; }
-.route-to { color: var(--headline); }
+.route-names svg { color: var(--muted-foreground); flex-shrink: 0; }
+.route-to { color: var(--foreground); }
 .route-note { font-size: 13px; color: var(--text-helper); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 @media (max-width: 940px) and (min-width: 761px) {
   .booking-controls { grid-template-columns: 1fr; }
