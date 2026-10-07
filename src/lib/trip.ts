@@ -15,17 +15,17 @@ export type Trip = {
 const str = (v: unknown, d = "") => (typeof v === "string" && v.length < 80 ? v : d);
 
 export function parseTrip(s: Record<string, unknown>): Trip {
-  const pax = Number(s.pax);
-  const date = str(s.date);
+  const pax = Number(s["pax"]);
+  const date = str(s["date"]);
   return {
-    from: str(s.from, "New Delhi"),
-    to: str(s.to, "Jaipur"),
+    from: str(s["from"], "New Delhi"),
+    to: str(s["to"], "Jaipur"),
     date: isValid(parseISO(date)) ? date : format(addDays(new Date(), 1), "yyyy-MM-dd"),
-    cls: ["SL", "3A", "2A", "1A"].includes(str(s.cls)) ? str(s.cls) : "3A",
+    cls: ["SL", "3A", "2A", "1A"].includes(str(s["cls"])) ? str(s["cls"]) : "3A",
     pax: Number.isInteger(pax) && pax >= 1 && pax <= 9 ? pax : 1,
-    quota: ["General", "Tatkal", "Ladies", "Senior Citizen"].includes(str(s.quota)) ? str(s.quota) : "General",
-    train: str(s.train) || undefined,
-    seats: str(s.seats) || undefined,
+    quota: ["General", "Tatkal", "Ladies", "Senior Citizen"].includes(str(s["quota"])) ? str(s["quota"]) : "General",
+    train: str(s["train"]) || undefined,
+    seats: str(s["seats"]) || undefined,
   };
 }
 
