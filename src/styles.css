@@ -143,29 +143,32 @@
   }
 }
 
-/* Railway: cinematic charcoal, mint, peach and butter-yellow. */
-:root {
-  --background: oklch(0.115 0.004 165);
-  --foreground: oklch(0.97 0.006 100);
-  --card: oklch(0.18 0.005 165);
+/* Rail Daddy: midnight graphite, warm gold, and clear neutral surfaces. */
+:root, .dark {
+  --background: oklch(0.13 0.008 260);
+  --foreground: oklch(0.97 0.004 95);
+  --card: oklch(0.21 0.005 260);
   --card-foreground: var(--foreground);
-  --popover: oklch(0.2 0.006 165);
+  --popover: var(--card);
   --popover-foreground: var(--foreground);
-  --primary: oklch(0.88 0.12 159);
-  --primary-foreground: oklch(0.2 0.027 159);
-  --secondary: oklch(0.23 0.005 165);
+  --primary: oklch(0.82 0.15 85);
+  --primary-foreground: oklch(0.16 0.006 260);
+  --secondary: oklch(0.25 0.005 260);
   --secondary-foreground: var(--foreground);
-  --muted: oklch(0.2 0.005 165);
-  --muted-foreground: oklch(0.65 0.005 165);
-  --accent: oklch(0.28 0.01 165);
+  --muted: var(--secondary);
+  --muted-foreground: oklch(0.71 0.008 95);
+  --accent: oklch(0.3 0.008 260);
   --accent-foreground: var(--foreground);
-  --border: oklch(0.29 0.005 165);
+  --border: oklch(0.97 0.004 95 / 14%);
   --input: var(--border);
   --ring: var(--primary);
-  --peach: oklch(0.84 0.095 38);
-  --butter: oklch(0.91 0.11 98);
-  --block-ink: oklch(0.21 0.024 160);
-  --headline: oklch(0.84 0.008 130);
+  --peach: var(--primary);
+  --butter: var(--primary);
+  --block-ink: var(--primary-foreground);
+  --headline: oklch(0.9 0.1 85);
+  --console-surface: oklch(0.19 0.005 260 / 86%);
+  --console-control: oklch(0.97 0.004 95 / 4%);
+  --shadow-console: 0 24px 64px oklch(0 0 0 / 30%);
   --radius: 1rem;
   --font-body: 'DM Sans', sans-serif;
   --font-display: 'Barlow Condensed', sans-serif;
@@ -212,11 +215,7 @@ h1 > span:first-child { color: var(--foreground); }
 
 /* Booking spotlight: the inputs are the hero of the page. */
 .booking-area { position: relative; z-index: 2; }
-.booking-area::before { content: ''; position: absolute; inset: -60px -40px -44px; background:
-  radial-gradient(55% 85% at 24% 55%, color-mix(in oklch, var(--primary) 14%, transparent), transparent 70%),
-  radial-gradient(45% 75% at 62% 40%, color-mix(in oklch, var(--peach) 11%, transparent), transparent 70%),
-  radial-gradient(45% 70% at 92% 55%, color-mix(in oklch, var(--butter) 10%, transparent), transparent 72%);
-  filter: blur(34px); pointer-events: none; z-index: -1; }
+.booking-area::before { content: none; }
 .booking-intro { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 12px; }
 .booking-intro > span:first-child { display: flex; align-items: center; gap: 9px; }
 .mini-track { width: 16px; height: 12px; border-top: 2px solid var(--primary); border-bottom: 2px solid var(--primary); transform: rotate(-20deg); }
@@ -450,4 +449,76 @@ h1 .line:first-child > span { color: var(--foreground); }
   .date-dialog-actions { flex-direction: column; align-items: stretch; }
   .date-confirm { width: 100%; }
   .date-cancel { margin-left: 0; }
+}
+
+/* Unified midnight-gold booking console; image remains completely still. */
+.lights-backdrop {
+  inset: 0 -64px auto; width: calc(100% + 128px); height: 100%;
+  object-position: center 60%; opacity: .58;
+  mask-image: none; -webkit-mask-image: none; animation: none;
+}
+.stage-shade {
+  background: linear-gradient(90deg, var(--background), color-mix(in oklch, var(--background) 55%, transparent) 55%, transparent),
+    linear-gradient(180deg, var(--background), transparent 42%, var(--background));
+}
+.hero-content { max-width: 100%; }
+.headline-star { display: none; }
+.hero-eyebrow, .hero-copy, .booking-intro { display: none; }
+.journey-stage { gap: 42px; }
+.booking-console {
+  border: 1px solid var(--border); border-radius: 32px;
+  background: var(--console-surface); backdrop-filter: blur(24px);
+  box-shadow: var(--shadow-console);
+}
+.booking-form { gap: 0; }
+.station-field, .date-button {
+  height: 164px; border-radius: 0; background: transparent; color: var(--foreground);
+  padding: 28px 32px; --halo: transparent;
+}
+.source-field { border-radius: 32px 0 0; }
+.destination-field, .date-button { border-left: 1px solid var(--border); }
+.station-field label, .field-label { color: var(--primary); }
+.station-field input::placeholder { color: var(--foreground); }
+.station-field input:focus-visible { box-shadow: 0 2px 0 var(--primary); }
+.field-hint { color: var(--muted-foreground); opacity: 1; }
+.station-field.pop:hover, .date-button.pop:hover, .station-field:focus-within {
+  transform: none; background: var(--console-control);
+}
+.station-field::after, .date-button::after { content: none; }
+.swap-button { left: calc(100% / 3 - 22px); width: 44px; height: 44px; margin-top: -22px; border: 1px solid var(--border); background: var(--card); box-shadow: none; }
+.booking-controls {
+  border-top: 1px solid var(--border); background: var(--console-control);
+  border-radius: 0 0 32px 32px; padding: 20px; gap: 20px;
+  grid-template-columns: minmax(0, 1fr) 300px;
+}
+.controls-panel { border: 0; border-radius: 0; background: transparent; padding: 0 8px; height: 68px; gap: 12px; backdrop-filter: none; }
+.vibe-chip { height: 36px; padding: 0 12px; border-radius: 10px; background: transparent; }
+.vibe-chip.on { background: var(--primary); color: var(--primary-foreground); transform: none; }
+.crew-stepper { background: transparent; border: 0; padding-left: 4px; gap: 8px; }
+.crew-stepper button { padding: 0; }
+.journey-button { height: 68px; border-radius: 999px; background: var(--foreground); color: var(--background); border: 0; padding: 0 18px 0 26px; }
+.journey-arrow { background: var(--background); color: var(--foreground); }
+.journey-button .search-subtitle { color: color-mix(in oklch, var(--background) 65%, transparent); }
+.date-confirm { height: 48px; }
+.form-error { padding: 0 24px 12px; color: var(--destructive); }
+@media (max-width: 1150px) and (min-width: 761px) {
+  .booking-controls { grid-template-columns: 1fr; }
+  .controls-panel { justify-content: flex-start; }
+}
+@media (max-width: 760px) {
+  .journey-stage { gap: 26px; }
+  .lights-backdrop { inset: 0 -20px auto; width: calc(100% + 40px); height: 100%; opacity: .35; object-position: 65% center; }
+  .stage-shade { background: linear-gradient(180deg, var(--background), transparent 40%, var(--background)); }
+  .booking-console { border-radius: 24px; }
+  .station-field, .date-button { height: 100px; padding: 18px 22px; border-left: 0; border-radius: 0; }
+  .source-field { border-radius: 24px 24px 0 0; }
+  .destination-field, .date-button { border-top: 1px solid var(--border); }
+  .swap-button { left: auto; right: 18px; top: 78px; margin-top: 0; }
+  .booking-controls { grid-template-columns: 1fr; padding: 16px; gap: 12px; border-radius: 0 0 24px 24px; }
+  .controls-panel { height: auto; display: grid; padding: 0; gap: 12px; }
+  .vibe-chip { height: 38px; }
+  .crew-stepper { padding: 0; }
+  .journey-button { margin: 0; height: 58px; background: var(--foreground); color: var(--background); }
+  .journey-button > * { color: var(--background); }
+  .journey-button .journey-arrow { color: var(--foreground); }
 }
