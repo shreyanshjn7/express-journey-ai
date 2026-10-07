@@ -24,11 +24,11 @@ export const Route = createFileRoute("/")({
 });
 
 const popularRoutes = [
-  { from: "New Delhi", to: "Jaipur", fromLabel: "Delhi", toLabel: "Jaipur", note: "Daddy's pick" },
-  { from: "Mumbai Central", to: "Goa", fromLabel: "Mumbai", toLabel: "Goa", note: "Weekend favourite" },
-  { from: "New Delhi", to: "Varanasi", fromLabel: "Delhi", toLabel: "Varanasi", note: "Overnighter" },
-  { from: "Bengaluru", to: "Chennai Central", fromLabel: "Bengaluru", toLabel: "Chennai", note: "Quick getaway" },
-  { from: "New Delhi", to: "Shimla", fromLabel: "Delhi", toLabel: "Shimla", note: "Hill escape" },
+  { from: "New Delhi", to: "Jaipur", fromLabel: "Delhi", toLabel: "Jaipur", note: "~4h 25m · from ₹350" },
+  { from: "Mumbai Central", to: "Goa", fromLabel: "Mumbai", toLabel: "Goa", note: "~8h 30m · from ₹485" },
+  { from: "New Delhi", to: "Varanasi", fromLabel: "Delhi", toLabel: "Varanasi", note: "~8h · from ₹420" },
+  { from: "Bengaluru", to: "Chennai Central", fromLabel: "Bengaluru", toLabel: "Chennai", note: "~4h 25m · from ₹190" },
+  { from: "New Delhi", to: "Shimla", fromLabel: "Delhi", toLabel: "Shimla", note: "~5h 30m · from ₹290" },
 ];
 
 type Station = { name: string; code: string; city: string };
@@ -329,8 +329,8 @@ function Index() {
             <div className="routes-head"><span className="routes-label">Popular routes</span><span className="routes-sub">Tap one — it fills the form</span></div>
             <div className="routes-row">
               {popularRoutes.map((route) => (
-                <button key={route.from + route.to} type="button" className="route-card" onClick={() => { setSource(route.from); setDestination(route.to); setInvalidFields({ source: false, destination: false, date: false }); setError(""); }}>
-                  <span className="route-names"><span>{route.fromLabel}</span><ArrowRight size={14} /><span className="route-to">{route.toLabel}</span></span>
+                <button key={route.from + route.to} type="button" className="route-card" onClick={() => { setSource(route.from); setDestination(route.to); setInvalidFields({ source: false, destination: false, date: false }); setError(""); document.querySelector(".booking-console")?.scrollIntoView({ behavior: "smooth", block: "center" }); }}>
+                  <span className="route-names"><span>{route.fromLabel}</span><ArrowRight size={14} /><span className="route-to">{route.toLabel}</span><ArrowUpRight className="route-go" size={15} aria-hidden="true" /></span>
                   <span className="route-note">{route.note}</span>
                 </button>
               ))}
