@@ -824,3 +824,11 @@ body { font-size: var(--text-body); line-height: 1.5; }
   .content-light { padding-top: var(--space-3); gap: var(--space-3); }
   .theme-toggle { width: 44px; height: 44px; flex-shrink: 0; }
 }
+@media (max-width: 760px) {
+  .site-header { gap: var(--space-1); }
+  .wordmark { flex-shrink: 0; }
+  .header-actions { margin-left: auto; min-width: 0; }
+  .site-header .travel-button { padding: 0 12px; height: 44px; }
+  .travel-kicker { display: none; }
+}
+@media (max-width: 370px) { .site-header .little-face { display: none; } }
