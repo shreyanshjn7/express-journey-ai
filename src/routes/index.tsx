@@ -21,6 +21,14 @@ export const Route = createFileRoute("/")({
 
 const stations = ["New Delhi", "Mumbai Central", "Bengaluru", "Chennai Central", "Kolkata", "Jaipur", "Hyderabad", "Pune", "Ahmedabad", "Goa", "Varanasi", "Shimla"];
 
+const popularRoutes = [
+  { from: "New Delhi", to: "Jaipur", fromLabel: "Delhi", toLabel: "Jaipur", note: "Daddy's pick" },
+  { from: "Mumbai Central", to: "Goa", fromLabel: "Mumbai", toLabel: "Goa", note: "Weekend favourite" },
+  { from: "New Delhi", to: "Varanasi", fromLabel: "Delhi", toLabel: "Varanasi", note: "Overnighter" },
+  { from: "Bengaluru", to: "Chennai Central", fromLabel: "Bengaluru", toLabel: "Chennai", note: "Quick getaway" },
+  { from: "New Delhi", to: "Shimla", fromLabel: "Delhi", toLabel: "Shimla", note: "Hill escape" },
+];
+
 type StationFieldProps = {
   id: "source" | "destination";
   label: string;
@@ -163,6 +171,18 @@ function Index() {
                <Button variant="journey" type="submit" className="pop" style={{ ["--d" as string]: "960ms" }}><span className="journey-title">Find my train</span></Button>
             </div>
             </form>
+          </div>
+
+          <div className="popular-routes reveal" style={{ ["--d" as string]: "1080ms" }}>
+            <div className="routes-head"><span className="routes-label">Popular routes</span><span className="routes-sub">Tap one — it fills the form</span></div>
+            <div className="routes-row">
+              {popularRoutes.map((route) => (
+                <button key={route.from + route.to} type="button" className="route-card" onClick={() => { setSource(route.from); setDestination(route.to); setInvalidFields({ source: false, destination: false, date: false }); setError(""); }}>
+                  <span className="route-names"><span>{route.fromLabel}</span><ArrowRight size={14} /><span className="route-to">{route.toLabel}</span></span>
+                  <span className="route-note">{route.note}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </section>
         <div className="route-marquee" aria-hidden="true"><div>{Array.from({ length: 2 }).map((_, k) => <span key={k}>DELHI ✳ JAIPUR ✳ GOA ✳ VARANASI ✳ SHIMLA ✳ MUMBAI ✳ KOCHI ✳ DARJEELING ✳ UDAIPUR ✳ </span>)}</div></div>
