@@ -434,7 +434,7 @@ h1 > span:first-child { color: var(--foreground); }
   .marquee-track { animation: none !important; transform: none !important; }
   .marquee-run[aria-hidden="true"] { display: none; }
   .marquee-city { min-height: 44px; font-size: 13px; padding: 0 14px; }
-  .site-footer { padding-top: 20px; }
+  .site-footer { padding-top: 20px; padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
   .footer-top { flex-direction: column; gap: 14px; }
   .footer-links { gap: 6px 16px; }
   .railway-dialog { width: calc(100% - 32px); max-height: calc(100dvh - 40px); overflow-y: auto; }
