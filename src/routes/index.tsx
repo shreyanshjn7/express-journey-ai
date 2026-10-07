@@ -82,9 +82,10 @@ function StationField({ id, label, hint, placeholder, value, invalid, onChange }
       {open && matches.length > 0 && (
         <div id={`${id}-suggestions`} className="station-suggestions" role="listbox">
           {matches.map((station, index) => (
-            <button
+            <Button
               id={`${id}-option-${index}`}
               key={station}
+              variant="ghost"
               type="button"
               role="option"
               aria-selected={activeIndex === index}
@@ -93,7 +94,7 @@ function StationField({ id, label, hint, placeholder, value, invalid, onChange }
               onClick={() => choose(station)}
             >
               <MapPin size={14} /> {station}
-            </button>
+            </Button>
           ))}
         </div>
       )}
