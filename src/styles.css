@@ -187,7 +187,12 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .railway-app { max-width: 1600px; margin: auto; padding: 0 64px; overflow: hidden; }
 .site-header { height: 108px; display: flex; align-items: center; justify-content: space-between; gap: 24px; position: relative; z-index: 5; }
 .wordmark { display: inline-flex; align-items: center; text-decoration: none; }
-.wordmark-logo { display: block; height: 46px; width: auto; }
+.wordmark-type { display: block; font-family: var(--font-display); font-size: 42px; font-weight: 700; line-height: 1; white-space: nowrap; color: var(--foreground); letter-spacing: 0; }
+.wordmark-daddy { display: inline-block; color: var(--headline); transform: skewX(-7deg); }
+.wordmark-wink { position: relative; display: inline-block; }
+.wordmark-wink::before { content: ''; position: absolute; width: 9px; height: 3px; border-radius: 3px; background: var(--primary); top: -3px; left: 3px; transform: rotate(-15deg); }
+.wordmark-stop { color: var(--primary); }
+.wordmark:focus-visible { outline: 2px solid var(--primary); outline-offset: 6px; border-radius: 4px; }
 .brand-dot { font-size: 10px; align-self: flex-start; margin-top: 7px; margin-left: -6px; }
 .site-header nav { display: flex; gap: 27px; }
 .nav-button { background: transparent; color: var(--muted-foreground); height: auto; border-radius: 0; padding: 8px 0; font-size: 12px; box-shadow: none; }
@@ -278,7 +283,7 @@ h1 > span:first-child { color: var(--foreground); }
   .site-header { height: 80px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; }
   .site-header nav { display: none; }
   .wordmark { min-width: 0; }
-  .wordmark-logo { height: 38px; }
+  .wordmark-type { font-size: 32px; }
   .little-face, .site-header svg { flex-shrink: 0; }
   .site-header .travel-button { padding: 0 14px; height: 50px; flex-shrink: 0; }
   .journey-stage { padding-top: 16px; min-height: auto; padding-bottom: 32px; gap: 30px; }
@@ -311,7 +316,7 @@ h1 > span:first-child { color: var(--foreground); }
 }
 @media (max-width: 370px) {
   .railway-app { padding: 0 16px; }
-  .wordmark-logo { height: 32px; }
+  .wordmark-type { font-size: 28px; }
   .site-header .travel-button { padding: 0 10px; gap: 6px; height: 46px; } .travel-kicker { display: none; } .travel-title { font-size: 12px; }
   h1 { font-size: 52px; }
   .site-footer { grid-template-columns: minmax(0, 1fr); gap: 10px; }
