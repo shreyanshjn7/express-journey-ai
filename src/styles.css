@@ -290,7 +290,7 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .railway-app { width: 100%; min-height: 100svh; margin: auto; padding: 0 40px; overflow: clip; display: flex; flex-direction: column; }
 .railway-app > main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .site-header, .site-footer, .route-marquee { width: 100%; max-width: 1200px; margin-inline: auto; flex-shrink: 0; }
-.site-header { height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 24px; position: relative; z-index: 5; }
+.site-header { height: 88px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 24px; position: relative; z-index: 5; }
 .wordmark { display: inline-flex; align-items: center; text-decoration: none; }
 .wordmark-type { display: block; font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1; white-space: nowrap; color: var(--foreground); letter-spacing: 0; }
 .wordmark-daddy { display: inline-block; color: var(--foreground); transform: skewX(-7deg); }
@@ -299,19 +299,14 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .wordmark-stop { color: var(--foreground); }
 .wordmark:focus-visible { outline: 2px solid var(--primary); outline-offset: 6px; border-radius: 4px; }
 .brand-dot { font-size: 10px; align-self: flex-start; margin-top: 7px; margin-left: -6px; }
-.site-header nav { display: flex; gap: 27px; }
+.site-header nav { display: flex; gap: 27px; justify-self: center; }
 .nav-button { background: transparent; color: var(--muted-foreground); height: auto; border-radius: 0; padding: 8px 0; font-size: 13px; box-shadow: none; }
 .nav-button:hover { color: var(--foreground); }
 .nav-button.active { color: var(--foreground); position: relative; }
-.nav-button.active:after { content: ''; position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--primary); bottom: -3px; left: 50%; }
+.nav-button.active:after { content: ''; position: absolute; left: 0; right: 0; height: 2px; border-radius: 2px; background: var(--primary); bottom: -6px; transform-origin: left center; animation: underline-in .7s cubic-bezier(.16,1,.3,1) .35s both; }
+@keyframes underline-in { from { transform: scaleX(0); } to { transform: none; } }
 .travel-button { border: 1px solid var(--border); background: var(--secondary); color: var(--foreground); border-radius: var(--radius-lg-ui); height: 46px; padding: 0 16px; font-size: 13px; }
 .travel-button:hover { border-color: var(--primary); background: var(--accent); }
-.travel-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
-.travel-kicker { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-helper); line-height: 1; }
-.travel-title { font-size: 13px; display: flex; align-items: center; gap: 6px; line-height: 1; }
-.little-face { position: relative; display: flex; gap: 4px; width: 20px; height: 19px; border-radius: var(--radius-sm-ui); background: var(--primary); align-items: center; justify-content: center; transform: rotate(-8deg); }
-.little-face span { width: 3px; height: 4px; background: var(--block-ink); border-radius: 2px; }
-.little-face:after { content: ''; position: absolute; bottom: -3px; left: 4px; border-top: 5px solid var(--primary); border-right: 5px solid transparent; }
 .journey-stage { position: relative; flex: 1; min-height: 360px; padding: 32px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 30px; }
 .lights-backdrop { position: absolute; width: 1100px; max-width: none; height: 120%; object-fit: cover; object-position: right center; right: -140px; top: -12%; user-select: none; pointer-events: none; opacity: .95; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(180deg, #000 74%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(180deg, #000 74%, transparent 100%); -webkit-mask-composite: source-in; mask-composite: intersect; }
 .stage-shade { position: absolute; inset: -5px -64px 0; background: linear-gradient(90deg, var(--background) 14%, color-mix(in oklch, var(--background) 60%, transparent) 46%, transparent 74%), linear-gradient(0deg, var(--background) 4%, transparent 40%), linear-gradient(180deg, var(--background) 0%, transparent 26%); pointer-events: none; }
@@ -387,12 +382,12 @@ h1 > span:first-child { color: var(--foreground); }
 }
 @media (max-width: 760px) {
   .railway-app { padding: 0 20px; }
-  .site-header { height: 80px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; }
+  .site-header { height: 80px; gap: 12px; }
   .site-header nav { display: none; }
   .wordmark { min-width: 0; }
-  .wordmark-type { font-size: 32px; }
-  .little-face, .site-header svg { flex-shrink: 0; }
-  .site-header .travel-button { padding: 0 14px; height: 50px; flex-shrink: 0; }
+  .wordmark-type { font-size: 28px; }
+  .site-header svg { flex-shrink: 0; }
+  .site-header .travel-button { padding: 0 12px; height: 44px; flex-shrink: 0; }
   .journey-stage { padding-top: 16px; min-height: auto; padding-bottom: 24px; gap: 30px; }
   h1 { font-size: 32px; margin: 8px 0 0; width: max-content; max-width: 100%; line-height: 1; }
   .headline-star, .hero-eyebrow, .hero-copy, .booking-intro { display: none; }
@@ -424,7 +419,7 @@ h1 > span:first-child { color: var(--foreground); }
 @media (max-width: 370px) {
   .railway-app { padding: 0 16px; }
   .wordmark-type { font-size: 28px; }
-  .site-header .travel-button { padding: 0 10px; gap: 6px; height: 46px; } .travel-kicker { display: none; } .travel-title { font-size: 12px; }
+  .site-header .ai-cta { display: none; }
   h1 { font-size: 26px; }
   .site-footer { grid-template-columns: minmax(0, 1fr); gap: 10px; }
 }
@@ -461,7 +456,6 @@ h1 .line:first-child > span { color: var(--foreground); }
 .crew-stepper button:hover { background: var(--peach); color: var(--block-ink); transform: scale(1.12); }
 .crew-stepper button:active { transform: scale(.88); }
 .crew-stepper strong { min-width: 16px; text-align: center; font-size: 15px; animation: tick .4s cubic-bezier(.34,1.56,.64,1); }
-.little-face { animation: bob 2.4s ease-in-out infinite; }
 @keyframes rise { from { opacity: 0; transform: translateY(24px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
 @keyframes pop-in { from { opacity: 0; transform: translateY(40px) scale(.92) rotate(2deg); } to { opacity: 1; transform: none; } }
 @keyframes mask-up { from { transform: translateY(105%) skewY(6deg); } to { transform: none; } }
@@ -470,7 +464,6 @@ h1 .line:first-child > span { color: var(--foreground); }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in oklch,var(--primary) 60%,transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
 @keyframes wiggle { 0%,100% { transform: rotate(0); } 30% { transform: rotate(-14deg); } 60% { transform: rotate(10deg); } }
 @keyframes tick { from { transform: translateY(-8px) scale(1.4); opacity: 0; } to { transform: none; opacity: 1; } }
-@keyframes bob { 0%,100% { transform: rotate(-8deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-2px); } }
 @media (max-width: 760px) {
 
   .vibe-chips { flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; }
@@ -634,18 +627,27 @@ h1 .line:first-child > span { color: var(--foreground); }
 .station-suggestions button { width: 100%; height: 38px; justify-content: flex-start; border-radius: var(--radius-sm-ui); padding: 0 12px; color: var(--text-helper); font-size: 14px; }
 .station-suggestions button:hover, .station-suggestions button.active, .station-suggestions button[aria-selected="true"] { background: var(--accent); color: var(--foreground); }
 
-/* ---- Nav hierarchy: gold AI call-to-action outranks the nav links ---- */
-.site-header .travel-button {
-  background: var(--primary); color: var(--primary-foreground); border-color: transparent;
-  box-shadow: 0 10px 30px -8px color-mix(in oklch, var(--primary) 55%, transparent);
-  transition: transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .3s, filter .3s;
-}
-.site-header .travel-button:hover { filter: brightness(1.06); transform: translateY(-2px); box-shadow: 0 14px 36px -8px color-mix(in oklch, var(--primary) 65%, transparent); }
-.site-header .travel-kicker { color: color-mix(in oklch, var(--block-ink) 72%, transparent); }
-.site-header .travel-title { font-weight: 700; }
-.site-header .little-face { box-shadow: 0 0 0 2px var(--block-ink); }
+/* ---- Header: centered nav, ghost AI call-to-action quieter than the primary CTA ---- */
+.header-actions { position: relative; }
+.ai-cta { position: relative; background: transparent; color: var(--foreground); border: 1px solid color-mix(in oklch, var(--primary) 50%, transparent); border-radius: 999px; box-shadow: none; transition: border-color .25s, box-shadow .3s, background .25s, transform .3s; }
+.ai-cta:hover { border-color: var(--primary); background: color-mix(in oklch, var(--primary) 9%, transparent); box-shadow: 0 6px 26px -8px color-mix(in oklch, var(--primary) 45%, transparent); transform: translateY(-1px); }
+.ai-cta svg { color: var(--text-helper); }
+.ai-tip { position: absolute; top: calc(100% + 10px); right: 0; white-space: nowrap; font-size: 13px; font-weight: 500; padding: 8px 12px; border-radius: 12px; background: var(--card); color: var(--card-foreground); border: 1px solid var(--border); box-shadow: var(--shadow-soft); opacity: 0; transform: translateY(-4px); pointer-events: none; transition: opacity .25s ease .4s, transform .25s ease .4s; z-index: 60; }
+.ai-cta:hover .ai-tip, .ai-cta:focus-visible .ai-tip { opacity: 1; transform: none; }
+.ai-cta:not(:hover):not(:focus-visible) .ai-tip { transition-delay: 0s; }
 .nav-button:not(.active) { opacity: .78; }
 .nav-button.active { font-weight: 600; }
+
+/* ---- Mobile menu: nav links collapse behind the menu button ---- */
+.menu-toggle { display: none; place-items: center; width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--foreground); cursor: pointer; flex-shrink: 0; transition: background .2s, transform .3s; }
+.menu-toggle:hover { background: var(--accent); }
+.mobile-menu { position: absolute; top: calc(100% + 10px); right: 0; min-width: 220px; padding: 8px; display: flex; flex-direction: column; gap: 2px; background: var(--card); color: var(--card-foreground); border: 1px solid var(--border); border-radius: var(--radius-lg-ui); box-shadow: var(--shadow-console); z-index: 70; animation: menu-in .28s cubic-bezier(.16,1,.3,1) both; }
+@keyframes menu-in { from { opacity: 0; transform: translateY(-8px) scale(.98); } to { opacity: 1; transform: none; } }
+.mobile-menu .nav-button { width: 100%; height: 48px; padding: 0 16px; border-radius: var(--radius-sm-ui); font-size: 15px; justify-content: flex-start; opacity: 1; }
+.mobile-menu .nav-button:hover, .mobile-menu .nav-button.active { background: var(--accent); color: var(--foreground); }
+.mobile-menu .nav-button.active:after { display: none; }
+@media (max-width: 760px) { .ai-tip { display: none; } .menu-toggle { display: inline-grid; } }
+@media (max-width: 370px) { .mobile-menu { min-width: 190px; } }
 
 /* ---- Popular routes strip: fills the gap between the form and the marquee ---- */
 .popular-routes { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin-inline: auto; }
@@ -779,20 +781,17 @@ body { font-size: var(--text-body); line-height: 1.5; }
 .content-light .popular-routes { padding: 0; }
 
 /* Typography scale */
-.station-field label, .field-label, .controls-label, .travel-kicker { font-size: var(--text-label); text-transform: uppercase; letter-spacing: .08em; }
+.station-field label, .field-label, .controls-label { font-size: var(--text-label); text-transform: uppercase; letter-spacing: .08em; }
 .field-hint, .routes-sub, .route-note, .site-footer, .form-error, .hero-copy { font-size: var(--text-helper-size); }
-.nav-button, .travel-title, .vibe-chip { font-size: 14px; }
+.nav-button, .vibe-chip { font-size: 14px; }
 .journey-title { font-size: 16px; }
 
 /* Marigold only on primary buttons and selected states */
-.status-dot, .little-face, .nav-button.active:after { background: var(--foreground); }
-.little-face:after { border-top-color: var(--foreground); }
-.little-face span { background: var(--background); }
+.status-dot { background: var(--foreground); }
+.nav-button.active:after { background: var(--primary); }
 .headline-star, .booking-step, .marquee-city:hover, .marquee-city:focus-visible { color: var(--foreground); }
 .mini-track { border-color: var(--foreground); }
 .dialog-icon { background: var(--secondary); color: var(--foreground); }
-.site-header .travel-button { background: transparent; color: var(--foreground); border: 1px solid var(--border); box-shadow: none; }
-.site-header .travel-button:hover { background: var(--accent); border-color: var(--foreground); box-shadow: none; }
 .journey-button, .content-light .journey-button { background: var(--primary); color: var(--primary-foreground); box-shadow: 0 8px 24px -8px color-mix(in oklch, var(--primary) 60%, transparent); }
 .journey-button:hover { background: var(--primary); color: var(--primary-foreground); filter: brightness(1.05); }
 .swap-button:hover { border-color: var(--foreground); }
@@ -815,9 +814,11 @@ body { font-size: var(--text-body); line-height: 1.5; }
 .form-error { display: flex; align-items: center; gap: var(--space-1); color: var(--destructive); font-weight: 500; }
 .form-error strong { font-weight: 700; }
 
-/* Theme toggle */
+/* Theme toggle + mobile menu button */
 .theme-toggle { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--foreground); cursor: pointer; transition: background .2s, transform .3s; }
 .theme-toggle:hover { background: var(--accent); transform: rotate(-12deg); }
+.menu-toggle { display: none; place-items: center; width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--foreground); cursor: pointer; flex-shrink: 0; transition: background .2s, transform .3s; }
+.menu-toggle:hover { background: var(--accent); }
 .header-actions { display: flex; align-items: center; gap: var(--space-1); }
 @media (max-width: 760px) {
   .hero-dark { min-height: 0; }
@@ -825,11 +826,10 @@ body { font-size: var(--text-body); line-height: 1.5; }
   .theme-toggle { width: 44px; height: 44px; flex-shrink: 0; }
 }
 @media (max-width: 760px) {
-  .site-header { display: flex; gap: var(--space-1); }
-  .site-header .travel-kicker { display: none; }
+  .site-header { display: flex; gap: 6px; }
   .wordmark { flex-shrink: 0; }
-  .header-actions { margin-left: auto; min-width: 0; }
-  .site-header .travel-button { padding: 0 12px; height: 44px; }
-  .travel-kicker { display: none; }
+  .header-actions { margin-left: auto; min-width: 0; gap: 6px; }
+  .site-header .travel-button { padding: 0 12px; height: 42px; font-size: 12px; }
+  .theme-toggle, .menu-toggle { width: 42px; height: 42px; }
+  .menu-toggle { display: inline-grid; }
 }
-@media (max-width: 760px) { .site-header .little-face { display: none; } }
