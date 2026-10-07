@@ -16,3 +16,4 @@
 - Use a viewport-height flex layout with a growing main stage and bounded centered content; this keeps the footer on screen without clipping the booking controls on smaller displays.
 - Serve the background through an AVIF/WebP picture with intrinsic dimensions and a same-size blurred loading layer; this reduces transfer size without shifting the booking layout.
 - Keep swap-font definitions and metric-adjusted local fallback faces in the global typography system; this preserves shared heading and control geometry during font loading.
+- Theme is hybrid: `:root` holds light content tokens, `.dark`/`.hero-dark` hold dark tokens; the header + booking stage live inside `.hero-dark` so they stay dark regardless of the user's theme toggle. Why: one token set themes both zones.
