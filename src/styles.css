@@ -168,6 +168,7 @@
   --headline: oklch(0.9 0.1 85);
   --console-surface: oklch(0.19 0.005 260 / 86%);
   --console-control: oklch(0.97 0.004 95 / 4%);
+  --text-helper: oklch(0.8 0.01 95);
   --shadow-console: 0 24px 64px oklch(0 0 0 / 30%);
   --radius: 1rem;
   --font-body: 'DM Sans', sans-serif;
@@ -197,14 +198,14 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .wordmark:focus-visible { outline: 2px solid var(--primary); outline-offset: 6px; border-radius: 4px; }
 .brand-dot { font-size: 10px; align-self: flex-start; margin-top: 7px; margin-left: -6px; }
 .site-header nav { display: flex; gap: 27px; }
-.nav-button { background: transparent; color: var(--muted-foreground); height: auto; border-radius: 0; padding: 8px 0; font-size: 12px; box-shadow: none; }
+.nav-button { background: transparent; color: var(--muted-foreground); height: auto; border-radius: 0; padding: 8px 0; font-size: 13px; box-shadow: none; }
 .nav-button:hover { color: var(--foreground); }
 .nav-button.active { color: var(--foreground); position: relative; }
 .nav-button.active:after { content: ''; position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--primary); bottom: -3px; left: 50%; }
-.travel-button { border: 1px solid var(--border); background: var(--secondary); color: var(--foreground); border-radius: 30px; height: 46px; padding: 0 16px; font-size: 12px; }
+.travel-button { border: 1px solid var(--border); background: var(--secondary); color: var(--foreground); border-radius: 30px; height: 46px; padding: 0 16px; font-size: 13px; }
 .travel-button:hover { border-color: var(--primary); background: var(--accent); }
 .travel-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
-.travel-kicker { font-size: 8px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--muted-foreground); line-height: 1; }
+.travel-kicker { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-helper); line-height: 1; }
 .travel-title { font-size: 13px; display: flex; align-items: center; gap: 6px; line-height: 1; }
 .little-face { position: relative; display: flex; gap: 4px; width: 20px; height: 19px; border-radius: 7px; background: var(--primary); align-items: center; justify-content: center; transform: rotate(-8deg); }
 .little-face span { width: 3px; height: 4px; background: var(--block-ink); border-radius: 2px; }
@@ -219,7 +220,7 @@ h1 { font-family: var(--font-display); font-weight: 700; font-size: 96px; line-h
 h1 > span:first-child { color: var(--foreground); }
 .h1-accent { color: var(--headline); }
 .headline-star { font-family: var(--font-body); position: absolute; color: var(--primary); font-size: 54px; top: 2px; right: -66px; font-weight: 400; animation: star-turn 24s linear infinite; }
-.hero-copy { font-size: 12px; color: var(--muted-foreground); line-height: 1.8; }
+.hero-copy { font-size: 13px; color: var(--text-helper); line-height: 1.8; }
 
 /* Booking spotlight: the inputs are the hero of the page. */
 .booking-area { position: relative; z-index: 2; max-width: 1200px; margin-inline: auto; width: 100%; }
