@@ -280,6 +280,7 @@ h1 > span:first-child { color: var(--foreground); }
   .journey-button { height: 60px; }
   .journey-title { font-size: 16px; }
   h1 { font-size: 56px; }
+  .routes-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .lights-backdrop { right: -320px; width: 900px; }
 }
 @media (max-width: 760px) {
@@ -566,6 +567,11 @@ h1 .line:first-child > span { color: var(--foreground); }
   .journey-stage { gap: 20px; }
   .lights-backdrop { inset: 0 -20px auto; width: calc(100% + 40px); height: 100%; opacity: .35; object-position: 65% center; }
   .stage-shade { background: linear-gradient(180deg, var(--background), transparent 40%, var(--background)); }
+  .routes-head { margin-bottom: 8px; }
+  .routes-label { font-size: 17px; }
+  .routes-sub { display: none; }
+  .routes-row { display: flex; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .route-card { flex: 0 0 auto; min-width: 205px; padding: 12px 14px; border-radius: 16px; }
   .booking-console { border-radius: 24px; }
   .station-field, .date-button { height: 86px; padding: 16px 20px; border-left: 0; border-radius: 0; }
   .source-field { border-radius: 24px 24px 0 0; }
