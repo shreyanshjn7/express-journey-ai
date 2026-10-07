@@ -12,3 +12,4 @@
 - Keep the booking experience on the index route with local form state; this project currently provides a UI preview, not live train inventory or AI services.
 - Define the cinematic palette, typography, control shapes, and motion in src/styles.css and use shared UI primitives for interactions to keep presentation consistent.
 - Keep route inputs and the search action inside one booking form styled as a unified console, so submission and visual grouping stay aligned.
+- Render the header wordmark as live typography using the shared display-font token, so it stays matched to the page headings at every screen size.
