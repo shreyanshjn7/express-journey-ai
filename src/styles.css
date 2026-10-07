@@ -276,7 +276,7 @@ h1 > span:first-child { color: var(--foreground); }
 
 /* Booking spotlight: the inputs are the hero of the page. */
 .booking-area { position: relative; z-index: 2; max-width: 1200px; margin-inline: auto; width: 100%; }
-.booking-area::before { content: ''; position: absolute; inset: -56px -48px -28px; z-index: -1; pointer-events: none; border-radius: 48px; background: radial-gradient(ellipse 62% 95% at 50% 42%, color-mix(in oklch, var(--background) 84%, transparent) 0%, color-mix(in oklch, var(--background) 46%, transparent) 58%, transparent 100%); }
+.booking-area::before { content: ''; position: absolute; inset: 0 -48px -28px; z-index: -1; pointer-events: none; border-radius: 48px; background: radial-gradient(ellipse 62% 95% at 50% 42%, color-mix(in oklch, var(--background) 84%, transparent) 0%, color-mix(in oklch, var(--background) 46%, transparent) 58%, transparent 100%); }
 .booking-intro { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 12px; }
 .booking-intro > span:first-child { display: flex; align-items: center; gap: 9px; }
 .mini-track { width: 16px; height: 12px; border-top: 2px solid var(--primary); border-bottom: 2px solid var(--primary); transform: rotate(-20deg); }
@@ -349,7 +349,7 @@ h1 > span:first-child { color: var(--foreground); }
   .lights-backdrop { width: 640px; height: 380px; right: -140px; top: 40px; opacity: .6; -webkit-mask-image: none; mask-image: none; }
   .stage-shade { inset: 0 -20px; background: linear-gradient(180deg, transparent 22%, var(--background) 66%); }
   .hero-content { width: 100%; }
-  .booking-area::before { inset: -28px -16px -16px; border-radius: 32px; }
+  .booking-area::before { inset: 0 -16px -16px; border-radius: 32px; }
   .booking-form { grid-template-columns: minmax(0, 1fr); gap: 14px; }
   .station-field { height: 92px; border-radius: 20px; padding: 14px 22px; min-width: 0; }
   .station-field label, .field-label { font-size: 12px; }
