@@ -546,7 +546,7 @@ h1 .line:first-child > span { color: var(--foreground); }
   height: 128px; border-radius: 0; background: transparent; color: var(--foreground);
   padding: 20px 24px; --halo: transparent;
 }
-.source-field { border-radius: 26px 0 0; }
+.source-field { border-radius: 26px 0 0; padding-right: 46px; }
 .destination-field, .date-button { border-left: 1px solid var(--border); }
 .destination-field { padding-left: 46px; }
 
