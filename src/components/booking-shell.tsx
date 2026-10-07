@@ -9,9 +9,9 @@ const steps = ["Search", "Choose train", "Passengers", "Pay"];
 export function BookingShell({ step, trip, back, children, bar }: {
   step: 1 | 2 | 3;
   trip: Trip;
-  back?: ReactNode;
+  back?: ReactNode | undefined;
   children: ReactNode;
-  bar?: ReactNode;
+  bar?: ReactNode | undefined;
 }) {
   return (
     <div className="flow-app">

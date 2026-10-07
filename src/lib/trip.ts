@@ -8,8 +8,8 @@ export type Trip = {
   cls: string;
   pax: number;
   quota: string;
-  train?: string;
-  seats?: string; // comma-separated seat ids
+  train?: string | undefined;
+  seats?: string | undefined; // comma-separated seat ids
 };
 
 const str = (v: unknown, d = "") => (typeof v === "string" && v.length < 80 ? v : d);

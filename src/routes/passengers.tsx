@@ -32,7 +32,7 @@ const contactSchema = z.object({
 type Pax = { name: string; age: string; gender: string };
 type Errors = Record<string, string>;
 
-function Field({ id, label, error, children, hint }: { id: string; label: string; error?: string; hint?: string; children: React.ReactNode }) {
+function Field({ id, label, error, children, hint }: { id: string; label: string; error?: string | undefined; hint?: string | undefined; children: React.ReactNode }) {
   return (
     <div className={`form-field ${error ? "invalid" : ""}`}>
       <label htmlFor={id}>{label}</label>
@@ -104,10 +104,10 @@ function Passengers() {
         <fieldset className="flow-card">
           <legend className="pax-legend">Contact for ticket updates</legend>
           <div className="form-grid two">
-            <Field id="phone" label="Mobile number" error={errors.phone} hint="We’ll send the PNR by SMS.">
+            <Field id="phone" label="Mobile number" error={errors["phone"]} hint="We’ll send the PNR by SMS.">
               <input {...aria("phone")} type="tel" inputMode="numeric" autoComplete="tel-national" maxLength={10} value={contact.phone} placeholder="10-digit number" onChange={(e) => { setContact((c) => ({ ...c, phone: e.target.value.replace(/\D/g, "") })); setErrors((x) => ({ ...x, phone: "" })); }} onBlur={() => checkContact("phone")} />
             </Field>
-            <Field id="email" label="Email" error={errors.email} hint="Your e-ticket goes here.">
+            <Field id="email" label="Email" error={errors["email"]} hint="Your e-ticket goes here.">
               <input {...aria("email")} type="email" autoComplete="email" maxLength={255} value={contact.email} placeholder="name@mail.com" onChange={(e) => { setContact((c) => ({ ...c, email: e.target.value })); setErrors((x) => ({ ...x, email: "" })); }} onBlur={() => checkContact("email")} />
             </Field>
           </div>
