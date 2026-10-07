@@ -342,10 +342,10 @@ h1 .line:first-child > span { color: var(--foreground); }
 .lights-backdrop { animation: lights-arrive 1.8s cubic-bezier(.16,1,.3,1) both, train-hum 6s ease-in-out 1.8s infinite; }
 .status-dot { animation: pulse 1.8s ease-out infinite; }
 .journey-button { overflow: hidden; position: relative; }
-.journey-button:before { content: ''; position: absolute; inset: 0; background: var(--primary); transform: translateY(101%); border-radius: inherit; transition: transform .55s cubic-bezier(.16,1,.3,1); z-index: 0; }
+.journey-button:before { content: none; }
 .journey-button > * { position: relative; z-index: 1; transition: color .3s; }
-.journey-button:hover > * { color: var(--block-ink); }
-.journey-button:hover:before { transform: translateY(0); }
+.journey-button:hover { background: var(--primary); color: var(--primary-foreground); }
+.journey-button:hover > * { color: var(--primary-foreground); }
 .journey-button:hover .search-subtitle { color: color-mix(in oklch, var(--block-ink) 70%, transparent); }
 .vibe-chips { display: flex; gap: 8px; flex-wrap: nowrap; overflow-x: auto; min-width: 0; scrollbar-width: none; }
 .vibe-chip, .crew-stepper { display: inline-flex; align-items: center; gap: 7px; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--secondary); color: var(--muted-foreground); font-size: 12px; font-weight: 500; transition: all .4s cubic-bezier(.34,1.56,.64,1); cursor: pointer; flex-shrink: 0; }
@@ -521,6 +521,7 @@ h1 .line:first-child > span { color: var(--foreground); }
 .form-error { padding: 0 24px 12px; color: var(--destructive); }
 .station-field.field-invalid, .date-button.field-invalid { background: color-mix(in oklch, var(--destructive) 12%, var(--console-control)); box-shadow: inset 0 0 0 2px var(--destructive); }
 .station-field.field-invalid label, .date-button.field-invalid .field-label, .station-field.field-invalid .field-hint, .date-button.field-invalid .field-hint { color: var(--destructive); }
+.station-field:focus-within { z-index: 10; }
 .station-suggestions { position: absolute; z-index: 20; top: calc(100% - 8px); left: 14px; right: 14px; padding: 7px; border: 1px solid var(--border); border-radius: 14px; background: var(--popover); color: var(--popover-foreground); box-shadow: var(--shadow-console); }
 .station-suggestions button { width: 100%; height: 38px; justify-content: flex-start; border-radius: 9px; padding: 0 12px; color: var(--muted-foreground); }
 .station-suggestions button:hover, .station-suggestions button.active, .station-suggestions button[aria-selected="true"] { background: var(--accent); color: var(--foreground); }
