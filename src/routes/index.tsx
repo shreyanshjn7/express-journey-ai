@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
-import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, ChevronDown, MapPin, MessageCircle, TrainFront, X, Users, Minus, Plus } from "lucide-react";
-import { format, startOfDay } from "date-fns";
+import { useState, type FormEvent, type KeyboardEvent } from "react";
+import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, MapPin, MessageCircle, TrainFront, X, Users, Minus, Plus } from "lucide-react";
+import { addDays, format, nextSaturday, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -19,19 +19,106 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const stations = ["New Delhi", "Mumbai Central", "Bengaluru", "Chennai Central", "Kolkata", "Jaipur", "Hyderabad", "Pune", "Ahmedabad", "Goa", "Varanasi", "Shimla"];
+
+type StationFieldProps = {
+  id: "source" | "destination";
+  label: string;
+  hint: string;
+  placeholder: string;
+  value: string;
+  invalid: boolean;
+  onChange: (value: string) => void;
+};
+
+function StationField({ id, label, hint, placeholder, value, invalid, onChange }: StationFieldProps) {
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const matches = stations.filter((station) => station.toLowerCase().includes(value.trim().toLowerCase())).slice(0, 6);
+
+  function choose(station: string) {
+    onChange(station);
+    setOpen(false);
+    setActiveIndex(-1);
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setOpen(true);
+      setActiveIndex((current) => Math.min(current + 1, matches.length - 1));
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setActiveIndex((current) => Math.max(current - 1, 0));
+    } else if (event.key === "Enter" && open && activeIndex >= 0) {
+      event.preventDefault();
+      const station = matches[activeIndex];
+      if (station) choose(station);
+    } else if (event.key === "Escape") {
+      setOpen(false);
+      setActiveIndex(-1);
+    }
+  }
+
+  return (
+    <div className={`station-field ${id}-field pop${invalid ? " field-invalid" : ""}`}>
+      <label htmlFor={id}><MapPin size={16} /> {label}</label>
+      <input
+        id={id}
+        value={value}
+        onChange={(event) => { onChange(event.target.value); setOpen(true); setActiveIndex(-1); }}
+        onFocus={() => setOpen(true)}
+        onBlur={() => window.setTimeout(() => setOpen(false), 120)}
+        onKeyDown={handleKeyDown}
+        placeholder={placeholder}
+        autoComplete="off"
+        role="combobox"
+        aria-expanded={open && matches.length > 0}
+        aria-controls={`${id}-suggestions`}
+        aria-activedescendant={activeIndex >= 0 ? `${id}-option-${activeIndex}` : undefined}
+        aria-invalid={invalid}
+      />
+      <span className="field-hint">{invalid ? "This field is required" : hint}</span>
+      {open && matches.length > 0 && (
+        <div id={`${id}-suggestions`} className="station-suggestions" role="listbox">
+          {matches.map((station, index) => (
+            <Button
+              id={`${id}-option-${index}`}
+              key={station}
+              variant="ghost"
+              type="button"
+              role="option"
+              aria-selected={activeIndex === index}
+              className={activeIndex === index ? "active" : ""}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => choose(station)}
+            >
+              <MapPin size={14} /> {station}
+            </Button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Index() {
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
-  const [date, setDate] = useState<Date>();
+  const tomorrow = startOfDay(addDays(new Date(), 1));
+  const [date, setDate] = useState<Date | undefined>(tomorrow);
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [draftDate, setDraftDate] = useState<Date>();
+  const [draftDate, setDraftDate] = useState<Date | undefined>(tomorrow);
   const [error, setError] = useState("");
+  const [invalidFields, setInvalidFields] = useState({ source: false, destination: false, date: false });
   const [travelClass, setTravelClass] = useState("3A");
   const [passengers, setPassengers] = useState(2);
   const [dialog, setDialog] = useState<"journey" | "ai" | "about" | null>(null);
   function submit(event: FormEvent) {
     event.preventDefault();
-    if (!source.trim() || !destination.trim() || !date) { setError("Choose your departure, destination and travel date."); return; }
+    const invalid = { source: !source.trim(), destination: !destination.trim(), date: !date };
+    setInvalidFields(invalid);
+    if (invalid.source || invalid.destination || invalid.date) { setError("Complete the highlighted fields to search."); return; }
     if (source.trim().toLowerCase() === destination.trim().toLowerCase()) { setError("Choose a destination different from your departure."); return; }
     setError(""); setDialog("journey");
   }
@@ -58,11 +145,10 @@ function Index() {
             <div className="booking-intro reveal" style={{ ["--d" as string]: "550ms" }}><span><span className="mini-track" /> Start with the route. We'll find the trains.</span><span className="booking-step">01 <span>/ ROUTE BASICS</span></span></div>
             <form onSubmit={submit} className="booking-console">
               <div className="booking-form">
-              <div className="station-field source-field pop" style={{ ["--d" as string]: "620ms" }}><label htmlFor="source"><MapPin size={16} /> DEPARTING FROM</label><input id="source" list="stations" value={source} onChange={(event) => { setSource(event.target.value); setError(""); }} placeholder="Boarding station" autoComplete="off" /><span className="field-hint">Where the journey begins</span></div>
+              <StationField id="source" label="DEPARTING FROM" hint="Where the journey begins" placeholder="Boarding station" value={source} invalid={invalidFields.source} onChange={(value) => { setSource(value); setInvalidFields((fields) => ({ ...fields, source: false })); setError(""); }} />
               <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" onClick={() => { setSource(destination); setDestination(source); }}><ArrowDownUp size={18} /></Button>
-              <div className="station-field destination-field pop" style={{ ["--d" as string]: "700ms" }}><label htmlFor="destination"><MapPin size={16} /> ARRIVING AT</label><input id="destination" list="stations" value={destination} onChange={(event) => { setDestination(event.target.value); setError(""); }} placeholder="Destination city" autoComplete="off" /><span className="field-hint">Where you're headed</span></div>
-              <Button variant="date" type="button" aria-label="Choose travel date" className="pop" style={{ ["--d" as string]: "780ms" }} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-label"><CalendarDays size={16} /> TRAVEL DATE</span><span className="date-value">{date ? format(date, "dd MMM, yyyy") : "Pick a date"}<ChevronDown size={18} /></span><span className="field-hint">Countdown begins now</span></Button>
-              <datalist id="stations">{["New Delhi", "Mumbai Central", "Bengaluru", "Chennai Central", "Kolkata", "Jaipur", "Hyderabad", "Pune", "Ahmedabad", "Goa", "Varanasi", "Shimla"].map(station => <option key={station} value={station} />)}</datalist>
+              <StationField id="destination" label="ARRIVING AT" hint="Where you're headed" placeholder="Destination city" value={destination} invalid={invalidFields.destination} onChange={(value) => { setDestination(value); setInvalidFields((fields) => ({ ...fields, destination: false })); setError(""); }} />
+              <Button variant="date" type="button" aria-label="Open travel calendar" aria-haspopup="dialog" className={`pop${invalidFields.date ? " field-invalid" : ""}`} style={{ ["--d" as string]: "780ms" }} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-label"><CalendarDays size={16} /> TRAVEL DATE</span><span className="date-value">{date ? format(date, "dd MMM, yyyy") : "Pick a date"}<CalendarDays size={18} /></span><span className="field-hint">{invalidFields.date ? "This field is required" : "Tap to open calendar"}</span></Button>
               </div>
             {error && <p className="form-error" role="alert">{error}</p>}
             <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
@@ -74,7 +160,7 @@ function Index() {
                 <span className="controls-divider" aria-hidden="true" />
                 <div className="crew-stepper"><Users size={15} /><span>Passengers</span><Button variant="ghost" size="icon" type="button" aria-label="Fewer passengers" onClick={() => setPassengers(c => Math.max(1, c - 1))}><Minus size={14} /></Button><strong key={passengers}>{passengers}</strong><Button variant="ghost" size="icon" type="button" aria-label="More passengers" onClick={() => setPassengers(c => Math.min(9, c + 1))}><Plus size={14} /></Button></div>
               </div>
-              <Button variant="journey" type="submit" className="pop" style={{ ["--d" as string]: "960ms" }}><span className="journey-copy"><span className="journey-title">Find my train</span><span className="search-subtitle">Routes + seats + fares</span></span><span className="journey-arrow"><ArrowUpRight size={20} /></span></Button>
+               <Button variant="journey" type="submit" className="pop" style={{ ["--d" as string]: "960ms" }}><span className="journey-title">Find my train</span></Button>
             </div>
             </form>
           </div>
@@ -87,6 +173,13 @@ function Index() {
         <DialogContent className="date-dialog" aria-label="Choose travel date">
           <div className="date-dialog-head"><span className="date-dialog-title">Travel Date</span><span className="date-dialog-nav" aria-hidden="true"><ArrowRight size={15} /></span></div>
           <div className="date-dialog-body">
+            <div className="quick-dates" aria-label="Quick date choices">
+              {[
+                { label: "Today", value: startOfDay(new Date()) },
+                { label: "Tomorrow", value: tomorrow },
+                { label: "Weekend", value: nextSaturday(new Date()) },
+              ].map((option) => <Button key={option.label} variant="ghost" type="button" className={draftDate && format(draftDate, "yyyy-MM-dd") === format(option.value, "yyyy-MM-dd") ? "active" : ""} onClick={() => setDraftDate(option.value)}>{option.label}</Button>)}
+            </div>
             <Calendar
               mode="single"
               selected={draftDate}
@@ -99,7 +192,7 @@ function Index() {
             />
           </div>
           <div className="date-dialog-actions">
-            <Button variant="journey" type="button" className="date-confirm" disabled={!draftDate} onClick={() => { if (draftDate) { setDate(draftDate); setError(""); } setCalendarOpen(false); }}>Confirm</Button>
+            <Button variant="journey" type="button" className="date-confirm" disabled={!draftDate} onClick={() => { if (draftDate) { setDate(draftDate); setInvalidFields((fields) => ({ ...fields, date: false })); setError(""); } setCalendarOpen(false); }}>Confirm</Button>
             <Button variant="nav" type="button" className="date-cancel" onClick={() => setCalendarOpen(false)}>Cancel</Button>
           </div>
         </DialogContent>
