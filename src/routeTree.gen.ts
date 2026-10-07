@@ -10,11 +10,35 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PassengersRouteImport } from './routes/passengers'
+import { Route as PaymentRouteImport } from './routes/payment'
+import { Route as SeatsRouteImport } from './routes/seats'
+import { Route as TrainsRouteImport } from './routes/trains'
 import { Route as InfoTopicRouteImport } from './routes/info.$topic'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PassengersRoute = PassengersRouteImport.update({
+  id: '/passengers',
+  path: '/passengers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentRoute = PaymentRouteImport.update({
+  id: '/payment',
+  path: '/payment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeatsRoute = SeatsRouteImport.update({
+  id: '/seats',
+  path: '/seats',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrainsRoute = TrainsRouteImport.update({
+  id: '/trains',
+  path: '/trains',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InfoTopicRoute = InfoTopicRouteImport.update({
@@ -25,27 +49,51 @@ const InfoTopicRoute = InfoTopicRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/passengers': typeof PassengersRoute
+  '/payment': typeof PaymentRoute
+  '/seats': typeof SeatsRoute
+  '/trains': typeof TrainsRoute
   '/info/$topic': typeof InfoTopicRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/passengers': typeof PassengersRoute
+  '/payment': typeof PaymentRoute
+  '/seats': typeof SeatsRoute
+  '/trains': typeof TrainsRoute
   '/info/$topic': typeof InfoTopicRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/passengers': typeof PassengersRoute
+  '/payment': typeof PaymentRoute
+  '/seats': typeof SeatsRoute
+  '/trains': typeof TrainsRoute
   '/info/$topic': typeof InfoTopicRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/info/$topic'
+  fullPaths:
+    '/' | '/passengers' | '/payment' | '/seats' | '/trains' | '/info/$topic'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/info/$topic'
-  id: '__root__' | '/' | '/info/$topic'
+  to: '/' | '/passengers' | '/payment' | '/seats' | '/trains' | '/info/$topic'
+  id:
+    | '__root__'
+    | '/'
+    | '/passengers'
+    | '/payment'
+    | '/seats'
+    | '/trains'
+    | '/info/$topic'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PassengersRoute: typeof PassengersRoute
+  PaymentRoute: typeof PaymentRoute
+  SeatsRoute: typeof SeatsRoute
+  TrainsRoute: typeof TrainsRoute
   InfoTopicRoute: typeof InfoTopicRoute
 }
 
@@ -56,6 +104,34 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/passengers': {
+      id: '/passengers'
+      path: '/passengers'
+      fullPath: '/passengers'
+      preLoaderRoute: typeof PassengersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment': {
+      id: '/payment'
+      path: '/payment'
+      fullPath: '/payment'
+      preLoaderRoute: typeof PaymentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seats': {
+      id: '/seats'
+      path: '/seats'
+      fullPath: '/seats'
+      preLoaderRoute: typeof SeatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trains': {
+      id: '/trains'
+      path: '/trains'
+      fullPath: '/trains'
+      preLoaderRoute: typeof TrainsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/info/$topic': {
@@ -70,6 +146,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PassengersRoute: PassengersRoute,
+  PaymentRoute: PaymentRoute,
+  SeatsRoute: SeatsRoute,
+  TrainsRoute: TrainsRoute,
   InfoTopicRoute: InfoTopicRoute,
 }
 export const routeTree = rootRouteImport

@@ -22,3 +22,4 @@
 - [x] Transparency line: Rail Daddy is a booking assistant; tickets issued through authorized Indian Railways channels
 - [x] Trust icon row: secure payment + refund policy
 - [ ] Contact page needs real email / phone from the owner (placeholder copy only)
+- [x] Post-search screens: results, seats, passengers, payment (light theme, 4-step progress, sticky mobile fare bar)
