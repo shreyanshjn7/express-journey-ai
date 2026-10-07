@@ -1048,8 +1048,6 @@ body { font-size: var(--text-body); line-height: 1.5; }
 .bay { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 8px; border-radius: var(--radius-sm-ui); background: var(--background); }
 .seat { min-height: 48px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--card); color: var(--foreground); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-size: 11px; line-height: 1.1; }
 .seat b { font-size: 15px; }
-.seat.side { grid-column: span 1; }
-.seat:nth-child(7) { grid-column: 1 / 2; }
 .seat:disabled { background: var(--secondary); color: color-mix(in oklch, var(--foreground) 40%, transparent); cursor: not-allowed; text-decoration: line-through; }
 .seat.on { background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); }
 

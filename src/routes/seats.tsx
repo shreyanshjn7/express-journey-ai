@@ -65,7 +65,7 @@ function Seats() {
                 const isTaken = taken(n), on = selected.includes(id);
                 return (
                   <button key={id} type="button" disabled={isTaken} aria-pressed={on} aria-label={`Seat ${n}, ${type}${isTaken ? ", booked" : ""}`} className={`seat ${k >= 6 ? "side" : ""} ${on ? "on" : ""}`} onClick={() => toggle(id)}>
-                    <b>{n}</b><span>{type.replace("Side ", "S")}</span>
+                    <b>{n}</b><span>{type === "Side lower" ? "Side low" : type === "Side upper" ? "Side up" : type}</span>
                   </button>
                 );
               })}
