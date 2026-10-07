@@ -184,7 +184,9 @@
 body { font-family: var(--font-body); margin: 0; letter-spacing: 0; }
 button, input { font: inherit; }
 button, a, input { -webkit-tap-highlight-color: transparent; }
-.railway-app { max-width: 1040px; margin: auto; padding: 0 40px; overflow: hidden; }
+.railway-app { width: 100%; min-height: 100svh; margin: auto; padding: 0 40px; overflow: clip; display: flex; flex-direction: column; }
+.railway-app > main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.site-header, .site-footer, .route-marquee { width: 100%; max-width: 960px; margin-inline: auto; flex-shrink: 0; }
 .site-header { height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 24px; position: relative; z-index: 5; }
 .wordmark { display: inline-flex; align-items: center; text-decoration: none; }
 .wordmark-type { display: block; font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1; white-space: nowrap; color: var(--foreground); letter-spacing: 0; }
@@ -207,13 +209,13 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .little-face { position: relative; display: flex; gap: 4px; width: 20px; height: 19px; border-radius: 7px; background: var(--primary); align-items: center; justify-content: center; transform: rotate(-8deg); }
 .little-face span { width: 3px; height: 4px; background: var(--block-ink); border-radius: 2px; }
 .little-face:after { content: ''; position: absolute; bottom: -3px; left: 4px; border-top: 5px solid var(--primary); border-right: 5px solid transparent; }
-.journey-stage { position: relative; min-height: calc(100svh - 210px); padding-top: 14px; padding-bottom: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 30px; }
+.journey-stage { position: relative; flex: 1; min-height: 360px; padding: 32px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 30px; }
 .lights-backdrop { position: absolute; width: 1100px; max-width: none; height: 120%; object-fit: cover; object-position: right center; right: -140px; top: -12%; user-select: none; pointer-events: none; opacity: .95; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(180deg, #000 74%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(180deg, #000 74%, transparent 100%); -webkit-mask-composite: source-in; mask-composite: intersect; }
 .stage-shade { position: absolute; inset: -5px -64px 0; background: linear-gradient(90deg, var(--background) 14%, color-mix(in oklch, var(--background) 60%, transparent) 46%, transparent 74%), linear-gradient(0deg, var(--background) 4%, transparent 40%), linear-gradient(180deg, var(--background) 0%, transparent 26%); pointer-events: none; }
 .hero-content { position: relative; z-index: 1; max-width: 620px; text-align: center; display: flex; flex-direction: column; align-items: center; }
 .hero-eyebrow { font-size: 10px; font-weight: 500; display: flex; gap: 9px; align-items: center; }
 .status-dot { height: 6px; width: 6px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 0 4px color-mix(in oklch,var(--primary) 10%,transparent); }
-h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 6vw, 78px); line-height: .95; color: var(--headline); margin: 12px 0 8px; position: relative; width: fit-content; white-space: nowrap; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: 78px; line-height: .95; color: var(--headline); margin: 12px 0 8px; position: relative; width: fit-content; white-space: nowrap; }
 h1 > span:first-child { color: var(--foreground); }
 .h1-accent { color: var(--headline); }
 .headline-star { font-family: var(--font-body); position: absolute; color: var(--primary); font-size: 54px; top: 2px; right: -66px; font-weight: 400; animation: star-turn 24s linear infinite; }
@@ -268,7 +270,7 @@ h1 > span:first-child { color: var(--foreground); }
 .journey-summary p { font-size: 12px; color: var(--muted-foreground); margin-top: 14px; }
 @keyframes lights-arrive { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
 @keyframes star-turn { to { transform: rotate(360deg); } }
-@media (min-width: 1400px) { .lights-backdrop { width: 1300px; right: -110px; } h1 { font-size: 100px; } }
+@media (min-width: 1400px) { .lights-backdrop { width: 1300px; right: -110px; } }
 @media (max-width: 1050px) {
   .railway-app { padding: 0 32px; }
   .station-field, .date-button { padding: 16px 20px; height: 116px; }
@@ -276,7 +278,7 @@ h1 > span:first-child { color: var(--foreground); }
   .booking-controls { grid-template-columns: minmax(0, 1fr); }
   .journey-button { height: 60px; }
   .journey-title { font-size: 16px; }
-  h1 { font-size: 78px; }
+  h1 { font-size: 56px; }
   .lights-backdrop { right: -320px; width: 900px; }
 }
 @media (max-width: 760px) {
@@ -287,8 +289,8 @@ h1 > span:first-child { color: var(--foreground); }
   .wordmark-type { font-size: 32px; }
   .little-face, .site-header svg { flex-shrink: 0; }
   .site-header .travel-button { padding: 0 14px; height: 50px; flex-shrink: 0; }
-  .journey-stage { padding-top: 16px; min-height: auto; padding-bottom: 32px; gap: 30px; }
-  h1 { font-size: clamp(23px, 8.6vw, 52px); margin: 8px 0 0; width: max-content; max-width: 100%; line-height: 1; }
+  .journey-stage { padding-top: 16px; min-height: auto; padding-bottom: 24px; gap: 30px; }
+  h1 { font-size: 32px; margin: 8px 0 0; width: max-content; max-width: 100%; line-height: 1; }
   .headline-star, .hero-eyebrow, .hero-copy, .booking-intro { display: none; }
   .lights-backdrop { width: 640px; height: 380px; right: -140px; top: 40px; opacity: .6; -webkit-mask-image: none; mask-image: none; }
   .stage-shade { inset: 0 -20px; background: linear-gradient(180deg, transparent 22%, var(--background) 66%); }
@@ -319,7 +321,7 @@ h1 > span:first-child { color: var(--foreground); }
   .railway-app { padding: 0 16px; }
   .wordmark-type { font-size: 28px; }
   .site-header .travel-button { padding: 0 10px; gap: 6px; height: 46px; } .travel-kicker { display: none; } .travel-title { font-size: 12px; }
-  h1 { font-size: clamp(19px, 7.6vw, 38px); }
+  h1 { font-size: 26px; }
   .site-footer { grid-template-columns: minmax(0, 1fr); gap: 10px; }
 }
 /* Rail Daddy motion system */
@@ -459,7 +461,7 @@ h1 .line:first-child > span { color: var(--foreground); }
 
 /* Unified midnight-gold booking console; image remains completely still. */
 .lights-backdrop {
-  inset: 0 -64px auto; width: calc(100% + 128px); height: 100%;
+  inset: 0 -40px auto; width: calc(100% + 80px); height: 100%;
   object-position: center 60%; opacity: .58;
   mask-image: none; -webkit-mask-image: none; animation: none;
 }
@@ -512,7 +514,7 @@ h1 .line:first-child > span { color: var(--foreground); }
 .journey-button .search-subtitle { color: color-mix(in oklch, var(--background) 65%, transparent); }
 .date-confirm { height: 42px; }
 .form-error { padding: 0 24px 12px; color: var(--destructive); }
-@media (max-width: 1150px) and (min-width: 761px) {
+@media (max-width: 940px) and (min-width: 761px) {
   .booking-controls { grid-template-columns: 1fr; }
   .controls-panel { justify-content: flex-start; }
 }
@@ -532,4 +534,12 @@ h1 .line:first-child > span { color: var(--foreground); }
   .journey-button { margin: 0; height: 52px; background: var(--foreground); color: var(--background); }
   .journey-button > * { color: var(--background); }
   .journey-button .journey-arrow { color: var(--foreground); }
+}
+@media (min-width: 761px) and (max-height: 650px) {
+  .site-header { height: 72px; }
+  .journey-stage { min-height: 300px; padding-block: 16px; gap: 24px; }
+  .site-footer { padding-block: 16px; }
+}
+@media (min-width: 371px) and (max-width: 389px) {
+  h1 { font-size: 30px; }
 }
