@@ -106,9 +106,9 @@ function Index() {
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const tomorrow = startOfDay(addDays(new Date(), 1));
-  const [date, setDate] = useState<Date>(tomorrow);
+  const [date, setDate] = useState<Date | undefined>(tomorrow);
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [draftDate, setDraftDate] = useState<Date>(tomorrow);
+  const [draftDate, setDraftDate] = useState<Date | undefined>(tomorrow);
   const [error, setError] = useState("");
   const [invalidFields, setInvalidFields] = useState({ source: false, destination: false, date: false });
   const [travelClass, setTravelClass] = useState("3A");
