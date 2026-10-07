@@ -652,22 +652,24 @@ h1 .line:first-child > span { color: var(--foreground); }
 @media (max-width: 370px) { .mobile-menu { min-width: 190px; } }
 
 /* ---- Popular routes strip: fills the gap between the form and the marquee ---- */
-.popular-routes { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin-inline: auto; }
-.routes-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+.popular-routes { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin-inline: auto; margin-top: 12px; }
+.routes-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
 .routes-label { font-family: var(--font-display); font-size: 20px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--foreground); }
-.routes-sub { font-size: 13px; color: var(--text-helper); }
+.routes-sub { font-size: 14px; color: var(--text-helper); }
 .routes-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
 .route-card {
   display: flex; flex-direction: column; gap: 8px; align-items: flex-start; text-align: left;
   padding: 14px 16px; border-radius: var(--radius-lg-ui); border: 1px solid var(--border);
-  background: color-mix(in oklch, var(--card) 62%, transparent); backdrop-filter: blur(10px);
-  cursor: pointer; transition: transform .45s cubic-bezier(.34,1.56,.64,1), border-color .3s, background .3s;
+  background: var(--card);
+  cursor: pointer; transition: transform .25s ease, border-color .25s, background .25s, box-shadow .25s;
 }
-.route-card:hover { transform: translateY(-6px); border-color: var(--primary); background: var(--console-control); }
+.route-card:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow-soft); }
 .route-card:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
 .route-names { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 700; color: var(--foreground); white-space: nowrap; max-width: 100%; overflow: hidden; }
 .route-names svg { color: var(--muted-foreground); flex-shrink: 0; }
 .route-to { color: var(--foreground); }
+.route-go { margin-left: auto; color: var(--primary) !important; opacity: 0; transform: translate(-4px, 4px); transition: opacity .2s, transform .2s; }
+.route-card:hover .route-go, .route-card:focus-visible .route-go { opacity: 1; transform: translate(0, 0); }
 .route-note { font-size: 13px; color: var(--text-helper); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 @media (max-width: 940px) and (min-width: 761px) {
   .booking-controls { grid-template-columns: 1fr; }
@@ -680,8 +682,8 @@ h1 .line:first-child > span { color: var(--foreground); }
   .routes-head { margin-bottom: 8px; }
   .routes-label { font-size: 17px; }
   .routes-sub { display: none; }
-  .routes-row { display: flex; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-  .route-card { flex: 0 0 auto; min-width: 205px; padding: 12px 14px; border-radius: var(--radius-lg-ui); }
+  .routes-row { display: flex; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .route-card { flex: 0 0 auto; min-width: 205px; padding: 12px 14px; border-radius: var(--radius-lg-ui); scroll-snap-align: start; }
   .booking-console { border-radius: var(--radius-lg-ui); }
   .station-field, .date-button { height: 86px; padding: 16px 20px; border-left: 0; border-radius: 0; }
   .source-field { border-radius: 24px 24px 0 0; }
