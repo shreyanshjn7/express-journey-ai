@@ -5,7 +5,7 @@ import { format, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import lightsImage from "@/assets/night-vista.jpg";
+import lightsImage from "@/assets/midnight-lake.jpg";
 import logoImage from "@/assets/rail-daddy-logo-wink-2.png";
 
 export const Route = createFileRoute("/")({
@@ -46,7 +46,7 @@ function Index() {
 
       <main>
         <section className="journey-stage" aria-label="Find your train">
-          <div className="stage-parallax"><img src={lightsImage} width={1600} height={1200} alt="" aria-hidden="true" className="lights-backdrop" /></div>
+          <div className="stage-parallax"><img src={lightsImage} width={1920} height={1088} alt="" aria-hidden="true" className="lights-backdrop" /></div>
           <div className="stage-shade" />
 
           <div className="hero-content">
@@ -57,25 +57,27 @@ function Index() {
 
           <div className="booking-area" id="booking">
             <div className="booking-intro reveal" style={{ ["--d" as string]: "550ms" }}><span><span className="mini-track" /> Start with the route. We'll find the trains.</span><span className="booking-step">01 <span>/ ROUTE BASICS</span></span></div>
-            <form onSubmit={submit} className="booking-form">
+            <form onSubmit={submit} className="booking-console">
+              <div className="booking-form">
               <div className="station-field source-field pop" style={{ ["--d" as string]: "620ms" }}><label htmlFor="source"><MapPin size={16} /> DEPARTING FROM</label><input id="source" list="stations" value={source} onChange={(event) => { setSource(event.target.value); setError(""); }} placeholder="Boarding station" autoComplete="off" /><span className="field-hint">Where the journey begins</span></div>
               <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" onClick={() => { setSource(destination); setDestination(source); }}><ArrowDownUp size={18} /></Button>
               <div className="station-field destination-field pop" style={{ ["--d" as string]: "700ms" }}><label htmlFor="destination"><MapPin size={16} /> ARRIVING AT</label><input id="destination" list="stations" value={destination} onChange={(event) => { setDestination(event.target.value); setError(""); }} placeholder="Destination city" autoComplete="off" /><span className="field-hint">Where you're headed</span></div>
               <Button variant="date" type="button" aria-label="Choose travel date" className="pop" style={{ ["--d" as string]: "780ms" }} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-label"><CalendarDays size={16} /> TRAVEL DATE</span><span className="date-value">{date ? format(date, "dd MMM, yyyy") : "Pick a date"}<ChevronDown size={18} /></span><span className="field-hint">Countdown begins now</span></Button>
               <datalist id="stations">{["New Delhi", "Mumbai Central", "Bengaluru", "Chennai Central", "Kolkata", "Jaipur", "Hyderabad", "Pune", "Ahmedabad", "Goa", "Varanasi", "Shimla"].map(station => <option key={station} value={station} />)}</datalist>
-            </form>
+              </div>
             {error && <p className="form-error" role="alert">{error}</p>}
             <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
               <div className="controls-panel">
                 <span className="controls-label">Class:</span>
                 <div className="vibe-chips" role="radiogroup" aria-label="Travel class">
-                  {["SL", "3A", "2A", "1A"].map((name) => <button key={name} type="button" role="radio" aria-checked={travelClass === name} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{name}</button>)}
+                  {["SL", "3A", "2A", "1A"].map((name) => <Button variant="ghost" key={name} type="button" role="radio" aria-checked={travelClass === name} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{name}</Button>)}
                 </div>
                 <span className="controls-divider" aria-hidden="true" />
-                <div className="crew-stepper"><Users size={15} /><span>Passengers</span><button type="button" aria-label="Fewer passengers" onClick={() => setPassengers(c => Math.max(1, c - 1))}><Minus size={14} /></button><strong key={passengers}>{passengers}</strong><button type="button" aria-label="More passengers" onClick={() => setPassengers(c => Math.min(9, c + 1))}><Plus size={14} /></button></div>
+                <div className="crew-stepper"><Users size={15} /><span>Passengers</span><Button variant="ghost" size="icon" type="button" aria-label="Fewer passengers" onClick={() => setPassengers(c => Math.max(1, c - 1))}><Minus size={14} /></Button><strong key={passengers}>{passengers}</strong><Button variant="ghost" size="icon" type="button" aria-label="More passengers" onClick={() => setPassengers(c => Math.min(9, c + 1))}><Plus size={14} /></Button></div>
               </div>
               <Button variant="journey" type="submit" className="pop" style={{ ["--d" as string]: "960ms" }}><span className="journey-copy"><span className="journey-title">Find my train</span><span className="search-subtitle">Routes + seats + fares</span></span><span className="journey-arrow"><ArrowUpRight size={20} /></span></Button>
             </div>
+            </form>
           </div>
         </section>
         <div className="route-marquee" aria-hidden="true"><div>{Array.from({ length: 2 }).map((_, k) => <span key={k}>DELHI ✳ JAIPUR ✳ GOA ✳ VARANASI ✳ SHIMLA ✳ MUMBAI ✳ KOCHI ✳ DARJEELING ✳ UDAIPUR ✳ </span>)}</div></div>
