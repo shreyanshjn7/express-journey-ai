@@ -69,8 +69,9 @@ function StationField({ id, label, hint, placeholder, value, invalid, onChange }
   }
 
   return (
-    <div className={`station-field ${id}-field pop${invalid ? " field-invalid" : ""}`}>
+    <div className={`station-field ${id}-field pop${invalid ? " field-invalid" : ""}${open ? " sheet-open" : ""}`}>
       <label htmlFor={id}><MapPin size={16} /> {label}</label>
+      <button type="button" className="sheet-close" aria-label="Close station search" onMouseDown={(event) => event.preventDefault()} onClick={() => { setOpen(false); (document.activeElement as HTMLElement | null)?.blur(); }}><X size={20} /></button>
       <input
         id={id}
         value={value}
