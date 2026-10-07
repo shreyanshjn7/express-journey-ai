@@ -1,5 +1,8 @@
 # Roadmap
 
+- [ ] Compress the background photo and show a blurred loading placeholder.
+- [ ] Match fallback font metrics and verify stable loading.
+
 - [x] Add tomorrow as the default date and quick date choices in the calendar.
 - [x] Add accessible station autocomplete with keyboard navigation.
 - [x] Strengthen the swap control and simplify the search action.
