@@ -1,14 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, type FormEvent, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, MessageCircle, TrainFront, X, Users, Minus, Plus } from "lucide-react";
 import { addDays, format, nextSaturday, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import lightsImage from "@/assets/midnight-lake.jpg";
+import heroAvif from "@/assets/midnight-lake.avif.asset.json";
+import heroWebp from "@/assets/midnight-lake.webp.asset.json";
+import heroPlaceholder from "@/assets/midnight-lake-placeholder.webp.asset.json";
 
 export const Route = createFileRoute("/")({
-  head: () => ({ meta: [
+  head: () => ({ links: [
+    { rel: "preload", as: "image", href: heroAvif.url, type: "image/avif", fetchPriority: "high" },
+  ], meta: [
     { title: "Rail Daddy — Find train routes & book tickets across India" },
     { name: "description", content: "Rail Daddy shows you available train routes and tickets: pick where from, where to, when, and your class." },
     { property: "og:title", content: "Rail Daddy — Find train routes & book tickets across India" },
@@ -112,6 +116,12 @@ function StationField({ id, label, hint, placeholder, value, invalid, onChange }
 }
 
 function Index() {
+  const heroRef = useRef<HTMLImageElement>(null);
+  const [heroLoaded, setHeroLoaded] = useState(false);
+  useEffect(() => {
+    const image = heroRef.current;
+    if (image?.complete && image.naturalWidth > 0) setHeroLoaded(true);
+  }, []);
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const tomorrow = startOfDay(addDays(new Date(), 1));
@@ -141,7 +151,13 @@ function Index() {
 
       <main>
         <section className="journey-stage" aria-label="Find your train">
-          <div className="stage-parallax"><img src={lightsImage} width={1920} height={1088} alt="" aria-hidden="true" className="lights-backdrop" /></div>
+          <div className={`stage-parallax${heroLoaded ? " hero-loaded" : ""}`} aria-hidden="true">
+            <img src={heroPlaceholder.url} width={1920} height={1088} alt="" className="lights-backdrop hero-placeholder" />
+            <picture>
+              <source srcSet={heroAvif.url} type="image/avif" />
+              <img ref={heroRef} src={heroWebp.url} width={1920} height={1088} alt="" className="lights-backdrop hero-photo" fetchPriority="high" decoding="async" onLoad={() => setHeroLoaded(true)} />
+            </picture>
+          </div>
           <div className="stage-shade" />
 
           <div className="hero-content">
