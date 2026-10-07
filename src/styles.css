@@ -610,3 +610,41 @@ h1 .line:first-child > span { color: var(--foreground); }
   .route-marquee > div { animation: none !important; transform: none !important; }
   .route-marquee > div > span[aria-hidden] { display: none; }
 }
+
+/* Mobile: stacked fields, 44px targets, pinned CTA, full-screen sheets */
+.sheet-close { display: none; }
+@media (max-width: 760px) {
+  .booking-form { display: flex; flex-direction: column; position: relative; }
+  .booking-form .swap-button { position: relative; left: auto; right: auto; top: auto; align-self: center; margin: -24px 0; width: 52px; height: 52px; z-index: 4; transform: rotate(0deg); }
+  .booking-form .swap-button:hover { transform: rotate(180deg) scale(1.06); }
+  .vibe-chip { height: 44px; min-width: 44px; font-size: 14px; }
+  .crew-stepper { min-height: 44px; }
+  .crew-stepper button { width: 44px; height: 44px; }
+  .booking-controls .journey-button { position: fixed; left: 16px; right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 40; height: 56px; width: auto; margin: 0; background: var(--primary); color: var(--primary-foreground); box-shadow: 0 14px 40px oklch(0 0 0 / 55%), 0 0 0 6px var(--background); }
+  .booking-controls .journey-button > * { color: var(--primary-foreground); }
+  .railway-app { padding-bottom: 96px; }
+
+  .station-field.sheet-open { position: fixed; inset: 0; z-index: 60; height: 100svh; border-radius: 0 !important; border: 0; padding: 20px 18px; background: var(--background); display: flex; flex-direction: column; gap: 10px; animation: sheet-up .32s cubic-bezier(.22,1,.36,1); }
+  .station-field.sheet-open input { height: 56px; border-radius: 16px; padding: 0 16px; background: var(--card); border: 1px solid var(--primary); font-size: 20px; }
+  .station-field.sheet-open .field-hint { display: none; }
+  .station-field.sheet-open .sheet-close { display: grid; place-items: center; position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; background: var(--secondary); color: var(--foreground); }
+  .station-field.sheet-open .station-suggestions { position: static; flex: 1; overflow-y: auto; border: 0; background: transparent; box-shadow: none; padding: 4px 0; }
+  .station-field.sheet-open .station-suggestions button { height: 52px; font-size: 16px; border-bottom: 1px solid var(--border); border-radius: 12px; }
+
+  .date-dialog.date-dialog { left: 0; right: 0; top: auto; bottom: 0; translate: none; transform: none; width: 100%; max-width: 100%; height: 100svh; max-height: 100svh; border-radius: 0; overflow-y: auto; display: flex; flex-direction: column; animation: sheet-up .32s cubic-bezier(.22,1,.36,1); }
+  .date-dialog .date-dialog-body { flex: 1; }
+  .date-dialog .quick-dates button, .date-dialog .rdp-day button, .date-dialog-actions button { min-height: 44px; }
+}
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .station-field.sheet-open, .date-dialog.date-dialog { animation: none; } }
+@media (max-width: 760px) {
+  .booking-area, .booking-console, .booking-form, .booking-controls, .booking-controls .pop, .booking-form .pop, .booking-form .reveal { transform: none !important; animation: none !important; backdrop-filter: none !important; filter: none !important; }
+  .booking-console { background: var(--console-surface); }
+  .station-field.sheet-open { animation: sheet-up .32s cubic-bezier(.22,1,.36,1) !important; }
+  .date-dialog.date-dialog { left: 0 !important; top: 0 !important; translate: none !important; --tw-translate-x: 0 !important; --tw-translate-y: 0 !important; transform: none !important; width: 100vw !important; max-width: 100vw !important; height: 100svh !important; max-height: 100svh !important; border-radius: 0 !important; }
+  .booking-controls { padding-bottom: 14px; }
+}
+@media (max-width: 760px) {
+  main:has(.sheet-open), .journey-stage:has(.sheet-open), .booking-area:has(.sheet-open), .booking-console:has(.sheet-open), .booking-form:has(.sheet-open) { position: relative; z-index: 100 !important; }
+  .booking-form .station-field.sheet-open { background: var(--background) !important; box-shadow: none !important; }
+}
