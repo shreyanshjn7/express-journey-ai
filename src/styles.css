@@ -835,3 +835,93 @@ body { font-size: var(--text-body); line-height: 1.5; }
   .theme-toggle, .menu-toggle { width: 42px; height: 42px; }
   .menu-toggle { display: inline-grid; }
 }
+
+/* ===== Light search card floating over the dark hero ===== */
+.booking-console {
+  --background: var(--rd-cream); --foreground: var(--rd-indigo); --card: var(--rd-white); --card-foreground: var(--rd-indigo);
+  --popover: var(--rd-white); --popover-foreground: var(--rd-indigo); --secondary: oklch(0.945 0.014 84); --accent: oklch(0.92 0.016 84);
+  --border: oklch(0.265 0.055 270.6 / 14%); --border-strong: oklch(0.265 0.055 270.6 / 32%); --ring: var(--rd-indigo);
+  --text-helper: var(--rd-muted); --console-control: oklch(0.265 0.055 270.6 / 4%); --console-surface: var(--rd-cream); --destructive: var(--error);
+  background: var(--rd-cream); color: var(--rd-indigo); border: 0; border-radius: 20px; backdrop-filter: none;
+  box-shadow: 0 2px 6px oklch(0 0 0 / 18%), 0 28px 70px -20px oklch(0 0 0 / 60%);
+}
+.booking-console .station-field label, .booking-console .field-label { color: var(--rd-indigo); font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.booking-console .station-field input, .booking-console .date-value { color: var(--rd-indigo); font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+.booking-console .station-field input::placeholder { color: var(--rd-muted); opacity: .6; font-weight: 500; }
+.booking-console .date-value { display: block; margin-top: auto; text-align: left; }
+.booking-console .field-hint { display: flex; align-items: center; gap: 6px; color: var(--rd-muted); font-size: 14px; font-weight: 500; }
+.booking-console .source-field { border-radius: 20px 0 0 0; padding-right: 40px; }
+.booking-console .destination-field { padding-left: 44px; }
+.booking-console .station-field.pop:hover, .booking-console .date-button.pop:hover { background: var(--console-control); transform: none; }
+.booking-console .station-field:focus-within, .booking-console .date-button:focus-visible { transform: none; background: var(--rd-white); box-shadow: inset 0 0 0 2px var(--rd-indigo); }
+.booking-console .station-field.field-invalid, .booking-console .date-button.field-invalid { background: color-mix(in oklch, var(--error) 6%, var(--rd-cream)); box-shadow: inset 0 0 0 2px var(--error); }
+.booking-console .field-invalid label, .booking-console .field-invalid .field-label, .booking-console .field-invalid .field-hint { color: var(--error); font-weight: 600; }
+.booking-console .swap-button {
+  left: calc(100% / 3 - 22px); top: 50%; width: 44px; height: 44px; margin-top: -22px; padding: 0;
+  background: var(--rd-white); color: var(--rd-indigo); border: 1px solid var(--border-strong); box-shadow: 0 6px 18px -6px oklch(0.265 0.055 270.6 / 35%);
+  --base: 90deg; transform: rotate(calc(var(--base) + var(--spin, 0deg))); transition: transform .45s cubic-bezier(.34,1.56,.64,1), border-color .2s;
+}
+.booking-console .swap-button:hover { transform: rotate(calc(var(--base) + var(--spin, 0deg))) scale(1.06); border-color: var(--rd-indigo); background: var(--rd-white); }
+.booking-console .booking-controls { border-top: 1px solid var(--border); background: var(--console-control); border-radius: 0 0 20px 20px; padding: 16px; grid-template-columns: minmax(0, 1fr) 240px; align-items: center; }
+.booking-console .controls-panel { height: auto; min-height: 56px; flex-wrap: wrap; row-gap: 10px; }
+.booking-console .controls-label { color: var(--rd-indigo); font-weight: 600; font-size: 13px; }
+.booking-console .controls-divider { width: 1px; height: 28px; background: var(--border); }
+.booking-console .vibe-chips { overflow: visible; }
+.booking-console .vibe-chip { position: relative; height: 38px; padding: 0 14px; border-radius: 12px; background: var(--rd-white); border: 1px solid var(--border-strong); color: var(--rd-indigo); font-weight: 600; box-shadow: none; transform: none; }
+.booking-console .vibe-chip:hover { transform: none; border-color: var(--rd-indigo); background: var(--rd-white); }
+.booking-console .vibe-chip.on { background: var(--rd-marigold); color: var(--rd-indigo); border-color: var(--rd-indigo); box-shadow: none; font-weight: 700; }
+.class-tip { position: absolute; bottom: calc(100% + 10px); left: 50%; translate: -50% 4px; width: max-content; max-width: 220px; white-space: normal; text-align: left; padding: 8px 10px; border-radius: 12px; background: var(--rd-indigo); color: var(--rd-cream); font-size: 13px; font-weight: 500; line-height: 1.35; opacity: 0; pointer-events: none; transition: opacity .2s ease, translate .2s ease; z-index: 30; box-shadow: var(--shadow-soft); }
+.vibe-chip:hover .class-tip, .vibe-chip:focus-visible .class-tip { opacity: 1; translate: -50% 0; transition-delay: .25s; }
+.booking-console .crew-stepper { color: var(--rd-indigo); font-weight: 600; gap: 10px; }
+.booking-console .crew-stepper button { width: 40px; height: 40px; border-radius: 12px; border: 1.5px solid var(--border-strong); background: var(--rd-white); color: var(--rd-indigo); }
+.booking-console .crew-stepper button:hover:not(:disabled) { border-color: var(--rd-indigo); background: var(--rd-white); color: var(--rd-indigo); transform: none; }
+.booking-console .crew-stepper button:disabled { opacity: .4; }
+.booking-console .crew-stepper strong { font-size: 18px; font-weight: 700; min-width: 22px; }
+.quota-field { display: inline-flex; align-items: center; gap: 10px; }
+.quota-select { position: relative; display: inline-flex; align-items: center; }
+.quota-select select { appearance: none; height: 40px; padding: 0 36px 0 14px; border-radius: 12px; border: 1.5px solid var(--border-strong); background: var(--rd-white); color: var(--rd-indigo); font: 600 14px var(--font-body); cursor: pointer; }
+.quota-select select:hover { border-color: var(--rd-indigo); }
+.quota-select svg { position: absolute; right: 12px; pointer-events: none; color: var(--rd-indigo); }
+.booking-console .journey-button { height: 56px; border-radius: 12px; background: var(--rd-marigold); color: var(--rd-indigo); border: 0; justify-content: center; gap: 10px; font-weight: 700; box-shadow: 0 8px 22px -10px oklch(0.6 0.15 80 / 70%); }
+.booking-console .journey-button > *, .booking-console .journey-button svg { color: var(--rd-indigo); }
+.booking-console .journey-title { font-size: 17px; font-weight: 700; }
+.booking-console .journey-button svg { transition: transform .25s; }
+.booking-console .journey-button:hover svg { transform: translateX(3px); }
+.booking-console .form-error { color: var(--error); padding: 12px 24px 4px; margin: 0; }
+.station-suggestions { padding: 8px; }
+.suggestion-group { display: flex; align-items: center; gap: 6px; padding: 8px 12px 4px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--rd-muted); }
+.booking-console .station-suggestions button { height: 46px; gap: 10px; color: var(--rd-indigo); }
+.suggestion-name { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; font-weight: 600; min-width: 0; }
+.suggestion-name small { font-size: 12px; font-weight: 500; color: var(--rd-muted); }
+.suggestion-code { margin-left: auto; font-size: 12px; font-weight: 700; letter-spacing: .06em; padding: 3px 8px; border-radius: 8px; background: var(--secondary); color: var(--rd-indigo); }
+.last-search { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid oklch(1 0 0 / 22%); background: oklch(1 0 0 / 10%); color: var(--foreground); font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px); transition: background .2s, border-color .2s; }
+.last-search:hover { background: oklch(1 0 0 / 16%); border-color: oklch(1 0 0 / 40%); }
+.last-search-label { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-helper); }
+@media (max-width: 940px) and (min-width: 761px) { .booking-console .booking-controls { grid-template-columns: 1fr; } }
+@media (max-width: 760px) {
+  .booking-console .source-field { border-radius: 20px 20px 0 0; padding-right: 22px; }
+  .booking-console .destination-field { padding-left: 20px; }
+  .booking-console .station-field input, .booking-console .date-value { font-size: 20px; }
+  .booking-form .swap-button.swap-button { --base: 0deg; left: auto; top: auto; width: 44px; height: 44px; margin: -22px 0; }
+  .booking-console .booking-controls { grid-template-columns: 1fr; }
+  .booking-console .controls-panel { display: flex; flex-direction: column; align-items: stretch; }
+  .booking-console .vibe-chip { height: 44px; }
+  .booking-console .crew-stepper button { width: 44px; height: 44px; }
+  .quota-field { justify-content: space-between; }
+  .quota-field .controls-label { display: inline; }
+  .quota-select select { height: 44px; }
+  .class-tip { display: none; }
+  .booking-controls .journey-button.journey-button { background: var(--rd-marigold); color: var(--rd-indigo); border-radius: 12px; }
+  .last-search { font-size: 13px; }
+  .booking-console .station-field.sheet-open { background: var(--rd-cream) !important; }
+}
+@media (max-width: 760px) { .hero-dark { z-index: 3; } }
+/* Full-bleed hero without clip-path, so the pinned phone button isn't clipped */
+.booking-console .station-field input:focus-visible { outline: none !important; box-shadow: none; }
+.booking-console .swap-button { z-index: 12; }
+@media (max-width: 760px) {
+  .hero-dark { clip-path: none; box-shadow: none; }
+  .booking-console .station-field, .booking-console .date-button { height: auto; min-height: 104px; gap: 6px; }
+  .booking-console .station-field input { margin-top: 4px; }
+  .booking-form .swap-button.swap-button { align-self: flex-end; margin: -22px 20px -22px 0; }
+}
