@@ -464,7 +464,6 @@ h1 .line:first-child > span { color: var(--foreground); }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in oklch,var(--primary) 60%,transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
 @keyframes wiggle { 0%,100% { transform: rotate(0); } 30% { transform: rotate(-14deg); } 60% { transform: rotate(10deg); } }
 @keyframes tick { from { transform: translateY(-8px) scale(1.4); opacity: 0; } to { transform: none; opacity: 1; } }
-@keyframes bob { 0%,100% { transform: rotate(-8deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-2px); } }
 @media (max-width: 760px) {
 
   .vibe-chips { flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; }
