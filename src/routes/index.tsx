@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, MessageCircle, TrainFront, Sun, Moon, AlertCircle, X, Users, Minus, Plus } from "lucide-react";
+import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, TrainFront, Sun, Moon, AlertCircle, X, Users, Minus, Plus } from "lucide-react";
 import { addDays, format, nextSaturday, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -142,6 +142,7 @@ function Index() {
   const [travelClass, setTravelClass] = useState("3A");
   const [passengers, setPassengers] = useState(2);
   const [dialog, setDialog] = useState<"journey" | "ai" | "about" | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   function submit(event: FormEvent) {
     event.preventDefault();
     const invalid = { source: !source.trim(), destination: !destination.trim(), date: !date };
@@ -156,7 +157,18 @@ function Index() {
       <header className="site-header reveal" style={{ ["--d" as string]: "0ms" }}>
         <a href="/" className="wordmark" aria-label="Rail Daddy home"><span className="wordmark-type" aria-hidden="true">RAIL <span className="wordmark-daddy">D<span className="wordmark-wink">A</span>DDY</span><span className="wordmark-stop">.</span></span></a>
         <nav aria-label="Main navigation"><Button variant="nav" className="active" onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth", block: "center" })}>Find a train</Button><Button variant="nav" onClick={() => setDialog("about")}>Why rail? <ArrowUpRight size={13} /></Button></nav>
-        <div className="header-actions"><button type="button" className="theme-toggle" aria-label={theme === "light" ? "Switch to dark theme" : "Switch to light theme"} title={theme === "light" ? "Dark theme" : "Light theme"} onClick={() => setTheme(t => t === "light" ? "dark" : "light")}>{theme === "light" ? <Moon size={18} /> : <Sun size={18} />}</button><Button variant="travel" onClick={() => setDialog("ai")}><span className="little-face"><span /><span /></span><span className="travel-copy"><span className="travel-kicker">No plan? No problem.</span><span className="travel-title">Ask Daddy AI <ArrowUpRight size={14} /></span></span></Button></div>
+        <div className="header-actions">
+          <button type="button" className="theme-toggle" aria-label={theme === "light" ? "Switch to dark theme" : "Switch to light theme"} title={theme === "light" ? "Dark theme" : "Light theme"} onClick={() => setTheme(t => t === "light" ? "dark" : "light")}>{theme === "light" ? <Moon size={18} /> : <Sun size={18} />}</button>
+          <Button variant="travel" className="ai-cta" onClick={() => setDialog("ai")}>Ask Daddy AI <ArrowUpRight size={14} /><span className="ai-tip" role="tooltip">Ask: best train to Goa this weekend</span></Button>
+          <button type="button" className="menu-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(o => !o)}><Menu size={20} /></button>
+          {menuOpen && (
+            <div className="mobile-menu" role="menu" aria-label="Site menu">
+              <Button variant="nav" role="menuitem" onClick={() => { setMenuOpen(false); document.getElementById("booking")?.scrollIntoView({ behavior: "smooth", block: "center" }); }}>Find a train</Button>
+              <Button variant="nav" role="menuitem" onClick={() => { setMenuOpen(false); setDialog("about"); }}>Why rail? <ArrowUpRight size={13} /></Button>
+              <Button variant="nav" role="menuitem" onClick={() => { setMenuOpen(false); setDialog("ai"); }}>Ask Daddy AI <ArrowUpRight size={13} /></Button>
+            </div>
+          )}
+        </div>
       </header>
 
       <main>
@@ -218,7 +230,7 @@ function Index() {
         <div className="route-marquee" role="group" aria-label="Pick a destination city"><div>{Array.from({ length: 2 }).map((_, k) => <span key={k} aria-hidden={k === 1 ? true : undefined}>{[["DELHI","New Delhi"],["JAIPUR","Jaipur"],["GOA","Goa"],["VARANASI","Varanasi"],["SHIMLA","Shimla"],["MUMBAI","Mumbai Central"],["KOCHI","Kochi"],["DARJEELING","Darjeeling"],["UDAIPUR","Udaipur"]].map(([label, city]: string[]) => <span key={label}><button type="button" className="marquee-city" tabIndex={k === 1 ? -1 : 0} aria-label={`Set destination to ${city}`} onClick={() => { setDestination(city ?? ""); setInvalidFields((f) => ({ ...f, destination: false })); setError(""); }}>{label}</button> ✳ </span>)}</span>)}</div></div>
       <footer className="site-footer"><span>© {new Date().getFullYear()} Rail Daddy. Trips worth the ride.</span><span>TAKE THE SCENIC ROUTE <ArrowUpRight size={13} /></span></footer>
       </section>
-      <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
+      <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "No plan? No problem. Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
       <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
         <DialogContent className="date-dialog" aria-label="Choose travel date">
           <div className="date-dialog-head"><span className="date-dialog-title">Travel Date</span><span className="date-dialog-nav" aria-hidden="true"><ArrowRight size={15} /></span></div>
