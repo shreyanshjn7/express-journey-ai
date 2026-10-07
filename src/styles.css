@@ -2,6 +2,58 @@
 @source "../src";
 @import "tw-animate-css";
 
+/* Metric-adjusted local faces keep swap-font line boxes and widths stable. */
+@font-face {
+  font-family: 'Rail Display Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold');
+  font-weight: 600 800;
+  font-display: swap;
+  size-adjust: 68.241%;
+  ascent-override: 146.54%;
+  descent-override: 29.308%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Rail Body Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans');
+  font-weight: 400 450;
+  font-display: swap;
+  size-adjust: 98.995%;
+  ascent-override: 100.207%;
+  descent-override: 31.315%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Rail Body Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans');
+  font-weight: 500;
+  font-display: swap;
+  size-adjust: 101.006%;
+  ascent-override: 98.212%;
+  descent-override: 30.691%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Rail Body Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold');
+  font-weight: 600;
+  font-display: swap;
+  size-adjust: 98.48%;
+  ascent-override: 100.731%;
+  descent-override: 31.478%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Rail Body Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold');
+  font-weight: 700;
+  font-display: swap;
+  size-adjust: 100.236%;
+  ascent-override: 98.966%;
+  descent-override: 30.927%;
+  line-gap-override: 0%;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 /*
@@ -171,8 +223,8 @@
   --text-helper: oklch(0.8 0.01 95);
   --shadow-console: 0 24px 64px oklch(0 0 0 / 30%);
   --radius: 1rem;
-  --font-body: 'DM Sans', sans-serif;
-  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'DM Sans', 'Rail Body Fallback', sans-serif;
+  --font-display: 'Barlow Condensed', 'Rail Display Fallback', sans-serif;
   --shadow-dialog: 0 24px 100px oklch(0 0 0 / 60%);
 }
 @theme inline {
@@ -647,4 +699,16 @@ h1 .line:first-child > span { color: var(--foreground); }
 @media (max-width: 760px) {
   main:has(.sheet-open), .journey-stage:has(.sheet-open), .booking-area:has(.sheet-open), .booking-console:has(.sheet-open), .booking-form:has(.sheet-open) { position: relative; z-index: 100 !important; }
   .booking-form .station-field.sheet-open { background: var(--background) !important; box-shadow: none !important; }
+}
+
+/* Both layers share the existing responsive backdrop geometry. */
+.stage-parallax .hero-photo { opacity: 0; transition: opacity .35s ease; }
+.stage-parallax .hero-placeholder { filter: blur(14px); transition: opacity .35s ease; }
+.stage-parallax.hero-loaded .hero-photo { opacity: .58; }
+.stage-parallax.hero-loaded .hero-placeholder { opacity: 0; }
+@media (max-width: 760px) {
+  .stage-parallax.hero-loaded .hero-photo { opacity: .35; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage-parallax .hero-photo, .stage-parallax .hero-placeholder { transition: none; }
 }
