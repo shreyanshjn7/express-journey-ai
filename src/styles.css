@@ -764,3 +764,63 @@ h1 .line:first-child > span { color: var(--foreground); }
 @media (prefers-reduced-motion: reduce) {
   .stage-parallax .hero-photo, .stage-parallax .hero-placeholder { transition: none; }
 }
+
+/* ===== Design system v2: hybrid theme + marigold discipline ===== */
+@theme inline {
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+}
+body { font-size: var(--text-body); line-height: 1.5; }
+.railway-app { background: var(--background); color: var(--foreground); }
+.hero-dark { position: relative; flex: 1; display: flex; flex-direction: column; min-height: min(100svh, 860px); background: var(--background); color: var(--foreground); box-shadow: 0 0 0 100vmax var(--background); clip-path: inset(0 -100vmax); }
+.hero-dark > main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.content-light { position: relative; padding: var(--space-5) 0 0; display: flex; flex-direction: column; gap: var(--space-4); }
+.content-light .popular-routes { padding: 0; }
+
+/* Typography scale */
+.station-field label, .field-label, .controls-label, .travel-kicker { font-size: var(--text-label); text-transform: uppercase; letter-spacing: .08em; }
+.field-hint, .routes-sub, .route-note, .site-footer, .form-error, .hero-copy { font-size: var(--text-helper-size); }
+.nav-button, .travel-title, .vibe-chip { font-size: 14px; }
+.journey-title { font-size: 16px; }
+
+/* Marigold only on primary buttons and selected states */
+.status-dot, .little-face, .nav-button.active:after { background: var(--foreground); }
+.little-face:after { border-top-color: var(--foreground); }
+.little-face span { background: var(--background); }
+.headline-star, .booking-step, .marquee-city:hover, .marquee-city:focus-visible { color: var(--foreground); }
+.mini-track { border-color: var(--foreground); }
+.dialog-icon { background: var(--secondary); color: var(--foreground); }
+.site-header .travel-button { background: transparent; color: var(--foreground); border: 1px solid var(--border); box-shadow: none; }
+.site-header .travel-button:hover { background: var(--accent); border-color: var(--foreground); box-shadow: none; }
+.journey-button, .content-light .journey-button { background: var(--primary); color: var(--primary-foreground); box-shadow: 0 8px 24px -8px color-mix(in oklch, var(--primary) 60%, transparent); }
+.journey-button:hover { background: var(--primary); color: var(--primary-foreground); filter: brightness(1.05); }
+.swap-button:hover { border-color: var(--foreground); }
+.route-card:hover { border-color: var(--foreground); }
+.quick-dates button:hover { background: var(--accent); color: var(--foreground); }
+.quick-dates button.active { background: var(--primary); color: var(--primary-foreground); }
+.station-field input:focus-visible { box-shadow: 0 2px 0 var(--foreground); }
+:where(button, a, input, select, [role="radio"], [tabindex]):focus-visible { outline-color: var(--ring) !important; }
+.vibe-chip.on { box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--primary); }
+
+/* Light content surfaces */
+.route-card { background: var(--card); border: 1px solid var(--border); box-shadow: var(--shadow-soft); border-radius: var(--radius-lg-ui); color: var(--foreground); }
+.route-card:hover { background: var(--card); }
+.route-marquee { border-top-color: var(--border); }
+.route-marquee span { color: color-mix(in oklch, var(--foreground) 72%, transparent); }
+.site-footer { color: var(--text-helper); }
+.railway-dialog, .date-dialog { background: var(--card); color: var(--card-foreground); border-radius: var(--radius-lg-ui); }
+
+/* Status: always icon + label */
+.form-error { display: flex; align-items: center; gap: var(--space-1); color: var(--destructive); font-weight: 500; }
+.form-error strong { font-weight: 700; }
+
+/* Theme toggle */
+.theme-toggle { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--foreground); cursor: pointer; transition: background .2s, transform .3s; }
+.theme-toggle:hover { background: var(--accent); transform: rotate(-12deg); }
+.header-actions { display: flex; align-items: center; gap: var(--space-1); }
+@media (max-width: 760px) {
+  .hero-dark { min-height: 0; }
+  .content-light { padding-top: var(--space-3); gap: var(--space-3); }
+  .theme-toggle { width: 44px; height: 44px; flex-shrink: 0; }
+}
