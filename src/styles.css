@@ -307,21 +307,22 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 @keyframes underline-in { from { transform: scaleX(0); } to { transform: none; } }
 .travel-button { border: 1px solid var(--border); background: var(--secondary); color: var(--foreground); border-radius: var(--radius-lg-ui); height: 46px; padding: 0 16px; font-size: 13px; }
 .travel-button:hover { border-color: var(--primary); background: var(--accent); }
-.journey-stage { position: relative; flex: 1; min-height: 360px; padding: 32px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 30px; }
+.journey-stage { position: relative; flex: 1; min-height: 360px; padding: 32px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 18px; }
 .lights-backdrop { position: absolute; width: 1100px; max-width: none; height: 120%; object-fit: cover; object-position: right center; right: -140px; top: -12%; user-select: none; pointer-events: none; opacity: .95; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(180deg, #000 74%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(180deg, #000 74%, transparent 100%); -webkit-mask-composite: source-in; mask-composite: intersect; }
 .stage-shade { position: absolute; inset: -5px -64px 0; background: linear-gradient(90deg, var(--background) 14%, color-mix(in oklch, var(--background) 60%, transparent) 46%, transparent 74%), linear-gradient(0deg, var(--background) 4%, transparent 40%), linear-gradient(180deg, var(--background) 0%, transparent 26%); pointer-events: none; }
-.hero-content { position: relative; z-index: 1; max-width: 620px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.stage-parallax::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 105% 85% at 50% 40%, transparent 44%, color-mix(in oklch, var(--background) 62%, transparent) 100%); pointer-events: none; }
+.hero-content { position: relative; z-index: 3; max-width: 620px; text-align: center; display: flex; flex-direction: column; align-items: center; }
 .hero-eyebrow { font-size: 10px; font-weight: 500; display: flex; gap: 9px; align-items: center; }
 .status-dot { height: 6px; width: 6px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 0 4px color-mix(in oklch,var(--primary) 10%,transparent); }
-h1 { font-family: var(--font-display); font-weight: 700; font-size: 96px; line-height: .95; color: var(--headline); margin: 12px 0 8px; position: relative; width: fit-content; white-space: nowrap; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: 82px; line-height: .95; color: var(--headline); margin: 12px 0 2px; position: relative; width: fit-content; white-space: nowrap; }
 h1 > span:first-child { color: var(--foreground); }
 .h1-accent { color: var(--foreground); }
-.headline-star { font-family: var(--font-body); position: absolute; color: var(--primary); font-size: 54px; top: 2px; right: -66px; font-weight: 400; animation: star-turn 24s linear infinite; }
-.hero-copy { font-size: 13px; color: var(--text-helper); line-height: 1.8; }
+.headline-star { font-family: var(--font-body); position: absolute; color: var(--primary); font-size: 46px; top: 2px; right: -56px; font-weight: 400; animation: star-turn 24s linear infinite; }
+.hero-subhead { font-size: 18px; color: color-mix(in oklch, var(--foreground) 85%, transparent); line-height: 1.55; margin: 10px 0 0; }
 
 /* Booking spotlight: the inputs are the hero of the page. */
 .booking-area { position: relative; z-index: 2; max-width: 1200px; margin-inline: auto; width: 100%; }
-.booking-area::before { content: ''; position: absolute; inset: 0 -48px -28px; z-index: -1; pointer-events: none; border-radius: var(--radius-lg-ui); background: radial-gradient(ellipse 62% 95% at 50% 42%, color-mix(in oklch, var(--background) 84%, transparent) 0%, color-mix(in oklch, var(--background) 46%, transparent) 58%, transparent 100%); }
+.booking-area::before { content: ''; position: absolute; inset: -150px -48px -28px; z-index: -1; pointer-events: none; border-radius: var(--radius-lg-ui); background: radial-gradient(ellipse 62% 88% at 50% 58%, color-mix(in oklch, var(--background) 84%, transparent) 0%, color-mix(in oklch, var(--background) 46%, transparent) 58%, transparent 100%); }
 .booking-intro { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 12px; }
 .booking-intro > span:first-child { display: flex; align-items: center; gap: 9px; }
 .mini-track { width: 16px; height: 12px; border-top: 2px solid var(--primary); border-bottom: 2px solid var(--primary); transform: rotate(-20deg); }
@@ -376,7 +377,7 @@ h1 > span:first-child { color: var(--foreground); }
   .booking-controls { grid-template-columns: minmax(0, 1fr); }
   .journey-button { height: 60px; }
   .journey-title { font-size: 16px; }
-  h1 { font-size: 56px; }
+  h1 { font-size: 48px; }
   .routes-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .lights-backdrop { right: -320px; width: 900px; }
 }
@@ -388,13 +389,14 @@ h1 > span:first-child { color: var(--foreground); }
   .wordmark-type { font-size: 28px; }
   .site-header svg { flex-shrink: 0; }
   .site-header .travel-button { padding: 0 12px; height: 44px; flex-shrink: 0; }
-  .journey-stage { padding-top: 16px; min-height: auto; padding-bottom: 24px; gap: 30px; }
-  h1 { font-size: 32px; margin: 8px 0 0; width: max-content; max-width: 100%; line-height: 1; }
-  .headline-star, .hero-eyebrow, .hero-copy, .booking-intro { display: none; }
+  .journey-stage { padding-top: 16px; min-height: auto; padding-bottom: 24px; gap: 16px; }
+  h1 { font-size: 27px; margin: 8px 0 0; width: max-content; max-width: 100%; line-height: 1; }
+  .headline-star, .hero-eyebrow, .booking-intro { display: none; }
+  .hero-subhead { font-size: 14px; }
   .lights-backdrop { width: 640px; height: 380px; right: -140px; top: 40px; opacity: .6; -webkit-mask-image: none; mask-image: none; }
   .stage-shade { inset: 0 -20px; background: linear-gradient(180deg, transparent 22%, var(--background) 66%); }
   .hero-content { width: 100%; }
-  .booking-area::before { inset: 0 -16px -16px; border-radius: var(--radius-lg-ui); }
+  .booking-area::before { inset: -70px -16px -16px; border-radius: var(--radius-lg-ui); }
   .booking-form { grid-template-columns: minmax(0, 1fr); gap: 14px; }
   .station-field { height: 92px; border-radius: var(--radius-lg-ui); padding: 14px 22px; min-width: 0; }
   .station-field label, .field-label { font-size: 12px; }
@@ -420,7 +422,7 @@ h1 > span:first-child { color: var(--foreground); }
   .railway-app { padding: 0 16px; }
   .wordmark-type { font-size: 28px; }
   .site-header .ai-cta { display: none; }
-  h1 { font-size: 26px; }
+  h1 { font-size: 22px; }
   .site-footer { grid-template-columns: minmax(0, 1fr); gap: 10px; }
 }
 /* Rail Daddy motion system */
@@ -572,8 +574,8 @@ h1 .line:first-child > span { color: var(--foreground); }
 }
 .hero-content { max-width: 100%; }
 .headline-star { display: none; }
-.hero-eyebrow, .hero-copy, .booking-intro { display: none; }
-.journey-stage { gap: 24px; padding: 26px 0 20px; }
+.hero-eyebrow, .booking-intro { display: none; }
+.journey-stage { gap: 16px; padding: 26px 0 20px; }
 .lights-backdrop { object-position: center center; }
 .stage-shade {
   background: linear-gradient(180deg, var(--background), transparent 30%, transparent 70%, var(--background)),
@@ -700,7 +702,7 @@ h1 .line:first-child > span { color: var(--foreground); }
   .site-footer { padding-block: 16px; }
 }
 @media (min-width: 371px) and (max-width: 389px) {
-  h1 { font-size: 30px; }
+  h1 { font-size: 26px; }
 }
 
 /* ---- Interaction states ---- */
@@ -782,7 +784,7 @@ body { font-size: var(--text-body); line-height: 1.5; }
 
 /* Typography scale */
 .station-field label, .field-label, .controls-label { font-size: var(--text-label); text-transform: uppercase; letter-spacing: .08em; }
-.field-hint, .routes-sub, .route-note, .site-footer, .form-error, .hero-copy { font-size: var(--text-helper-size); }
+.field-hint, .routes-sub, .route-note, .site-footer, .form-error { font-size: var(--text-helper-size); }
 .nav-button, .vibe-chip { font-size: 14px; }
 .journey-title { font-size: 16px; }
 
