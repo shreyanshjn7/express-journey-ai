@@ -304,7 +304,7 @@ function Index() {
 
           <div className="hero-content">
             <div className="hero-eyebrow reveal" style={{ ["--d" as string]: "100ms" }}><span className="status-dot" /> YOUR ROUTE. YOUR SEAT.</div>
-            <h1><span className="line"><span>REACH YOUR <span className="h1-accent">DESTINATION.</span></span></span><span className="headline-star" aria-hidden="true">✳</span></h1>
+            <h1><span className="line"><span>REACH YOUR <br className="h1-break" /><span className="h1-accent">DESTINATION.</span></span></span><span className="headline-star" aria-hidden="true">✳</span></h1>
             <p className="hero-subhead reveal" style={{ ["--d" as string]: "400ms" }}>Compare trains, check seat availability, and book in under a minute.</p>
           </div>
 
