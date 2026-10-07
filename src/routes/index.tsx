@@ -93,6 +93,13 @@ function searchStations(query: string): Station[] {
   return scored.filter((x) => x.score < 99).sort((a, b) => a.score - b.score).slice(0, 6).map((x) => x.s);
 }
 
+const classes = [
+  { name: "SL", tip: "Sleeper: budget beds, open windows, no AC" },
+  { name: "3A", tip: "AC 3-tier: air-conditioned, 6 berths per bay" },
+  { name: "2A", tip: "AC 2-tier: more space, curtains, 4 berths per bay" },
+  { name: "1A", tip: "First AC: private lockable cabins, most comfort" },
+];
+
 type StationFieldProps = {
   id: "source" | "destination";
   label: string;
@@ -227,13 +234,29 @@ function Index() {
   const [passengers, setPassengers] = useState(2);
   const [dialog, setDialog] = useState<"journey" | "ai" | "about" | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [quota, setQuota] = useState("General");
+  const [swapTurns, setSwapTurns] = useState(0);
+  const [recent, setRecent] = useState<string[]>([]);
+  const [lastSearch, setLastSearch] = useState<{ from: string; to: string; date: string } | null>(null);
+  useEffect(() => {
+    try {
+      const r = JSON.parse(window.localStorage.getItem("rd-recent-stations") ?? "[]");
+      if (Array.isArray(r)) setRecent(r.filter((x) => typeof x === "string").slice(0, 5));
+      const l = JSON.parse(window.localStorage.getItem("rd-last-search") ?? "null");
+      if (l && typeof l.from === "string" && typeof l.to === "string" && typeof l.date === "string") setLastSearch(l);
+    } catch { /* ignore corrupt storage */ }
+  }, []);
   function submit(event: FormEvent) {
     event.preventDefault();
     const invalid = { source: !source.trim(), destination: !destination.trim(), date: !date };
     setInvalidFields(invalid);
-    if (invalid.source || invalid.destination || invalid.date) { setError("Complete the highlighted fields to search."); return; }
+    if (invalid.source || invalid.destination || invalid.date) { setError("Fill in the highlighted fields to search."); return; }
     if (source.trim().toLowerCase() === destination.trim().toLowerCase()) { setError("Choose a destination different from your departure."); return; }
     setError(""); setDialog("journey");
+    const nextRecent = [destination.trim(), source.trim(), ...recent.filter((r) => r !== source.trim() && r !== destination.trim())].slice(0, 5);
+    setRecent(nextRecent);
+    const search = { from: source.trim(), to: destination.trim(), date: date ? date.toISOString() : "" };
+    try { window.localStorage.setItem("rd-recent-stations", JSON.stringify(nextRecent)); window.localStorage.setItem("rd-last-search", JSON.stringify(search)); } catch { /* storage unavailable */ }
   }
   return (
     <div className="railway-app">
@@ -273,25 +296,27 @@ function Index() {
           </div>
 
           <div className="booking-area" id="booking">
-            <div className="booking-intro reveal" style={{ ["--d" as string]: "550ms" }}><span><span className="mini-track" /> Start with the route. We'll find the trains.</span><span className="booking-step">01 <span>/ ROUTE BASICS</span></span></div>
+            <div className="booking-intro reveal" style={{ ["--d" as string]: "550ms" }}><span><span className="mini-track" /> Start with the route. We'll find the trains.</span>{lastSearch ? <button type="button" className="last-search" aria-label={`Repeat last search: ${shortName(lastSearch.from)} to ${shortName(lastSearch.to)}`} onClick={() => { setSource(lastSearch.from); setDestination(lastSearch.to); const d = new Date(lastSearch.date); if (!Number.isNaN(d.getTime()) && d >= startOfDay(new Date())) setDate(startOfDay(d)); setInvalidFields({ source: false, destination: false, date: false }); setError(""); }}><History size={14} aria-hidden="true" /><span className="last-search-label">Last search</span> {shortName(lastSearch.from)} to {shortName(lastSearch.to)}{lastSearch.date && !Number.isNaN(new Date(lastSearch.date).getTime()) ? `, ${format(new Date(lastSearch.date), "EEE")}` : ""}</button> : <span className="booking-step">01 <span>/ ROUTE BASICS</span></span>}</div>
             <form onSubmit={submit} className="booking-console">
               <div className="booking-form">
-              <StationField id="source" label="DEPARTING FROM" hint="Where the journey begins" placeholder="Boarding station" value={source} invalid={invalidFields.source} onChange={(value) => { setSource(value); setInvalidFields((fields) => ({ ...fields, source: false })); setError(""); }} />
-              <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" onClick={() => { setSource(destination); setDestination(source); }}><ArrowDownUp size={18} /></Button>
-              <StationField id="destination" label="ARRIVING AT" hint="Where you're headed" placeholder="Destination city" value={destination} invalid={invalidFields.destination} onChange={(value) => { setDestination(value); setInvalidFields((fields) => ({ ...fields, destination: false })); setError(""); }} />
-              <Button variant="date" type="button" aria-label="Open travel calendar" aria-haspopup="dialog" className={`pop${invalidFields.date ? " field-invalid" : ""}`} style={{ ["--d" as string]: "780ms" }} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-label"><CalendarDays size={16} /> TRAVEL DATE</span><span className="date-value">{date ? format(date, "dd MMM, yyyy") : "Pick a date"}<CalendarDays size={18} /></span><span className="field-hint">{invalidFields.date ? "This field is required" : "Tap to open calendar"}</span></Button>
+              <StationField id="source" label="From" hint="City, station or code" errorText="Choose where you're starting from" recent={recent} placeholder="Boarding station" value={source} invalid={invalidFields.source} onChange={(value) => { setSource(value); setInvalidFields((fields) => ({ ...fields, source: false })); setError(""); }} />
+              <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" style={{ ["--spin" as string]: `${swapTurns * 180}deg` }} onClick={() => { setSource(destination); setDestination(source); setSwapTurns((t) => t + 1); }}><ArrowDownUp size={18} /></Button>
+              <StationField id="destination" label="To" hint="City, station or code" errorText="Choose where you're going" recent={recent} placeholder="Destination city" value={destination} invalid={invalidFields.destination} onChange={(value) => { setDestination(value); setInvalidFields((fields) => ({ ...fields, destination: false })); setError(""); }} />
+              <Button variant="date" type="button" aria-label="Open travel calendar" aria-haspopup="dialog" className={`pop${invalidFields.date ? " field-invalid" : ""}`} style={{ ["--d" as string]: "780ms" }} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-label"><CalendarDays size={15} /> Date</span><span className="date-value">{date ? format(date, "dd MMM yyyy") : "Pick a date"}</span><span className="field-hint">{invalidFields.date ? <><AlertCircle size={15} aria-hidden="true" /> Pick a travel date</> : date ? format(date, "EEEE") : "Open the calendar"}</span></Button>
               </div>
             {error && <p className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</p>}
             <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
               <div className="controls-panel">
                 <span className="controls-label">Class:</span>
                 <div className="vibe-chips" role="radiogroup" aria-label="Travel class">
-                  {["SL", "3A", "2A", "1A"].map((name) => <Button variant="ghost" key={name} type="button" role="radio" aria-checked={travelClass === name} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{travelClass === name && <Check size={14} aria-hidden="true" />}{name}</Button>)}
+                  {classes.map(({ name, tip }) => <Button variant="ghost" key={name} type="button" role="radio" aria-checked={travelClass === name} aria-describedby={`tip-${name}`} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{travelClass === name && <Check size={14} aria-hidden="true" />}{name}<span id={`tip-${name}`} role="tooltip" className="class-tip">{tip}</span></Button>)}
                 </div>
                 <span className="controls-divider" aria-hidden="true" />
-                <div className="crew-stepper"><Users size={15} /><span>Passengers</span><Button variant="ghost" size="icon" type="button" aria-label="Fewer passengers" onClick={() => setPassengers(c => Math.max(1, c - 1))}><Minus size={14} /></Button><strong key={passengers}>{passengers}</strong><Button variant="ghost" size="icon" type="button" aria-label="More passengers" onClick={() => setPassengers(c => Math.min(9, c + 1))}><Plus size={14} /></Button></div>
+                <div className="crew-stepper"><Users size={15} /><span>Passengers</span><Button variant="ghost" size="icon" type="button" aria-label="Fewer passengers" disabled={passengers <= 1} onClick={() => setPassengers(c => Math.max(1, c - 1))}><Minus size={16} /></Button><strong key={passengers} aria-live="polite">{passengers}</strong><Button variant="ghost" size="icon" type="button" aria-label="More passengers" disabled={passengers >= 9} onClick={() => setPassengers(c => Math.min(9, c + 1))}><Plus size={16} /></Button></div>
+                <span className="controls-divider" aria-hidden="true" />
+                <label className="quota-field"><span className="controls-label">Quota</span><span className="quota-select"><select value={quota} onChange={(e) => setQuota(e.target.value)} aria-label="Quota">{["General", "Tatkal", "Ladies", "Senior Citizen"].map((q) => <option key={q} value={q}>{q}</option>)}</select><ChevronDown size={16} aria-hidden="true" /></span></label>
               </div>
-               <Button variant="journey" type="submit" className="pop" style={{ ["--d" as string]: "960ms" }}><span className="journey-title">Find my train</span></Button>
+               <Button variant="journey" type="submit" className="pop" style={{ ["--d" as string]: "960ms" }}><span className="journey-title">Find my train</span><ArrowRight size={18} aria-hidden="true" /></Button>
             </div>
             </form>
           </div>
@@ -314,7 +339,7 @@ function Index() {
         <div className="route-marquee" role="group" aria-label="Pick a destination city"><div>{Array.from({ length: 2 }).map((_, k) => <span key={k} aria-hidden={k === 1 ? true : undefined}>{[["DELHI","New Delhi"],["JAIPUR","Jaipur"],["GOA","Goa"],["VARANASI","Varanasi"],["SHIMLA","Shimla"],["MUMBAI","Mumbai Central"],["KOCHI","Kochi"],["DARJEELING","Darjeeling"],["UDAIPUR","Udaipur"]].map(([label, city]: string[]) => <span key={label}><button type="button" className="marquee-city" tabIndex={k === 1 ? -1 : 0} aria-label={`Set destination to ${city}`} onClick={() => { setDestination(city ?? ""); setInvalidFields((f) => ({ ...f, destination: false })); setError(""); }}>{label}</button> ✳ </span>)}</span>)}</div></div>
       <footer className="site-footer"><span>© {new Date().getFullYear()} Rail Daddy. Trips worth the ride.</span><span>TAKE THE SCENIC ROUTE <ArrowUpRight size={13} /></span></footer>
       </section>
-      <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "No plan? No problem. Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
+      <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "No plan? No problem. Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class, ${quota} quota, for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
       <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
         <DialogContent className="date-dialog" aria-label="Choose travel date">
           <div className="date-dialog-head"><span className="date-dialog-title">Travel Date</span><span className="date-dialog-nav" aria-hidden="true"><ArrowRight size={15} /></span></div>
@@ -323,7 +348,7 @@ function Index() {
               {[
                 { label: "Today", value: startOfDay(new Date()) },
                 { label: "Tomorrow", value: tomorrow },
-                { label: "Weekend", value: nextSaturday(new Date()) },
+                { label: "This weekend", value: new Date().getDay() === 6 || new Date().getDay() === 0 ? startOfDay(new Date()) : nextSaturday(startOfDay(new Date())) },
               ].map((option) => <Button key={option.label} variant="ghost" type="button" className={draftDate && format(draftDate, "yyyy-MM-dd") === format(option.value, "yyyy-MM-dd") ? "active" : ""} onClick={() => setDraftDate(option.value)}>{option.label}</Button>)}
             </div>
             <Calendar
