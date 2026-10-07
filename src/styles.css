@@ -832,4 +832,4 @@ body { font-size: var(--text-body); line-height: 1.5; }
   .site-header .travel-button { padding: 0 12px; height: 44px; }
   .travel-kicker { display: none; }
 }
-@media (max-width: 370px) { .site-header .little-face { display: none; } }
+@media (max-width: 760px) { .site-header .little-face { display: none; } }
