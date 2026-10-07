@@ -23,3 +23,4 @@
 - [x] Trust icon row: secure payment + refund policy
 - [ ] Contact page needs real email / phone from the owner (placeholder copy only)
 - [x] Post-search screens: results, seats, passengers, payment (light theme, 4-step progress, sticky mobile fare bar)
+- [x] Mobile-first pass: 2-line headline, swipeable class pills, verified at 360px
