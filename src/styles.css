@@ -917,4 +917,11 @@ body { font-size: var(--text-body); line-height: 1.5; }
 }
 @media (max-width: 760px) { .hero-dark { z-index: 3; } }
 /* Full-bleed hero without clip-path, so the pinned phone button isn't clipped */
-.hero-dark { clip-path: none; box-shadow: 100vmax 0 0 var(--background), -100vmax 0 0 var(--background); }
+.booking-console .station-field input:focus-visible { outline: none !important; box-shadow: none; }
+.booking-console .swap-button { z-index: 12; }
+@media (max-width: 760px) {
+  .hero-dark { clip-path: none; box-shadow: none; }
+  .booking-console .station-field, .booking-console .date-button { height: auto; min-height: 104px; gap: 6px; }
+  .booking-console .station-field input { margin-top: 4px; }
+  .booking-form .swap-button.swap-button { align-self: flex-end; margin: -22px 20px -22px 0; }
+}
