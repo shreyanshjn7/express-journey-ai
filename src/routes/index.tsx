@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, TrainFront, Sun, Moon, AlertCircle, X, Users, Minus, Plus, History, ChevronDown, ShieldCheck, RotateCcw } from "lucide-react";
 import { addDays, format, nextSaturday, startOfDay } from "date-fns";
@@ -257,17 +257,19 @@ function Index() {
       if (l && typeof l.from === "string" && typeof l.to === "string" && typeof l.date === "string") setLastSearch(l);
     } catch { /* ignore corrupt storage */ }
   }, []);
+  const navigate = useNavigate();
   function submit(event: FormEvent) {
     event.preventDefault();
     const invalid = { source: !source.trim(), destination: !destination.trim(), date: !date };
     setInvalidFields(invalid);
     if (invalid.source || invalid.destination || invalid.date) { setError("Fill in the highlighted fields to search."); return; }
     if (source.trim().toLowerCase() === destination.trim().toLowerCase()) { setError("Choose a destination different from your departure."); return; }
-    setError(""); setDialog("journey");
+    setError("");
     const nextRecent = [destination.trim(), source.trim(), ...recent.filter((r) => r !== source.trim() && r !== destination.trim())].slice(0, 5);
     setRecent(nextRecent);
     const search = { from: source.trim(), to: destination.trim(), date: date ? date.toISOString() : "" };
     try { window.localStorage.setItem("rd-recent-stations", JSON.stringify(nextRecent)); window.localStorage.setItem("rd-last-search", JSON.stringify(search)); } catch { /* storage unavailable */ }
+    navigate({ to: "/trains", search: { from: source.trim(), to: destination.trim(), date: format(date!, "yyyy-MM-dd"), cls: travelClass, pax: passengers, quota } });
   }
   return (
     <div className="railway-app">
