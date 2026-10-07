@@ -235,11 +235,11 @@ h1 > span:first-child { color: var(--foreground); }
 .station-field { color: var(--block-ink); display: flex; flex-direction: column; position: relative; }
 .source-field { background: var(--primary); padding-right: 30px; --halo: var(--primary); }
 .destination-field { background: var(--peach); --halo: var(--peach); }
-.station-field label, .field-label { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; letter-spacing: .1em; }
+.station-field label, .field-label { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; letter-spacing: .08em; }
 .station-field input { border: 0; background: transparent; width: 100%; min-width: 0; font-size: 24px; font-weight: 600; margin-top: auto; outline: none; padding: 0; border-radius: 2px; }
 .station-field input:focus-visible { box-shadow: 0 3px 0 var(--block-ink); }
 .station-field input::placeholder { color: var(--block-ink); opacity: 1; }
-.field-hint { font-size: 11px; opacity: .62; font-weight: 500; margin-top: 6px; }
+.field-hint { font-size: 13px; opacity: 1; font-weight: 500; margin-top: 6px; color: var(--text-helper); }
 .swap-button { position: absolute; left: calc((100% - 28px) / 3 - 20px); top: 50%; margin-top: -20px; z-index: 3; border-radius: 50%; background: var(--background); color: var(--foreground); height: 40px; width: 40px; border: 4px solid var(--background); transform: rotate(90deg); padding: 0; box-shadow: 0 10px 30px oklch(0 0 0 / 45%); }
 .swap-button:hover { background: var(--accent); transform: rotate(270deg); transition: transform .4s; }
 .date-button { background: var(--butter); color: var(--block-ink); --halo: var(--butter); display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 0; text-align: left; white-space: normal; position: relative; }
@@ -251,24 +251,24 @@ h1 > span:first-child { color: var(--foreground); }
 .journey-arrow { width: 34px; height: 34px; border-radius: 50%; background: color-mix(in oklch, var(--foreground) 8%, transparent); display: grid; place-items: center; flex-shrink: 0; transition: transform .4s cubic-bezier(.34,1.56,.64,1), background .3s; }
 .journey-button:hover { border-color: var(--primary); }
 .journey-button:hover .journey-arrow { transform: translate(4px, -4px); background: color-mix(in oklch, var(--foreground) 16%, transparent); }
-.search-subtitle { font-size: 10px; color: var(--muted-foreground); font-weight: 400; }
+.search-subtitle { font-size: 13px; color: var(--text-helper); font-weight: 400; }
 .booking-controls { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 14px; }
 .controls-panel { display: flex; align-items: center; gap: 14px; height: 68px; padding: 0 22px; border-radius: 24px; border: 1px solid var(--border); background: color-mix(in oklch, var(--secondary) 72%, transparent); backdrop-filter: blur(10px); min-width: 0; }
-.controls-label { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-foreground); white-space: nowrap; flex-shrink: 0; }
+.controls-label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-helper); white-space: nowrap; flex-shrink: 0; }
 .controls-divider { width: 1px; height: 34px; background: var(--border); flex-shrink: 0; }
-.form-error { color: var(--peach); font-size: 12px; margin: 12px 0 0; }
+.form-error { color: var(--peach); font-size: 13px; margin: 12px 0 0; }
 .route-marquee { overflow: hidden; border-top: 1px solid var(--border); padding: 12px 0; mask-image: linear-gradient(90deg, transparent, var(--background) 10%, var(--background) 90%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, var(--background) 10%, var(--background) 90%, transparent); }
 .route-marquee > div { display: flex; width: max-content; animation: marquee 32s linear infinite; }
-.route-marquee span { font-family: var(--font-display); font-size: 30px; font-weight: 700; color: transparent; -webkit-text-stroke: 1px var(--muted-foreground); white-space: nowrap; padding-right: 0; }
+.route-marquee span { font-family: var(--font-display); font-size: 30px; font-weight: 700; color: color-mix(in oklch, var(--foreground) 50%, transparent); -webkit-text-stroke: 0; white-space: nowrap; padding-right: 0; }
 .route-marquee:hover > div { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(-50%); } }
-.site-footer { display: flex; align-items: center; justify-content: space-between; padding: 25px 0; font-size: 9px; color: var(--muted-foreground); }
-.site-footer > span:last-child { display: flex; align-items: center; gap: 7px; font-size: 8px; }
+.site-footer { display: flex; align-items: center; justify-content: space-between; padding: 25px 0; font-size: 13px; color: var(--text-helper); }
+.site-footer > span:last-child { display: flex; align-items: center; gap: 7px; font-size: 12px; }
 .railway-dialog { border-radius: 24px; box-shadow: var(--shadow-dialog); }
 .dialog-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 16px; background: var(--primary); color: var(--block-ink); margin-bottom: 14px; }
 .journey-summary { background: var(--secondary); padding: 20px; border-radius: 15px; }
 .journey-summary > div, .journey-summary p { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-.journey-summary p { font-size: 12px; color: var(--muted-foreground); margin-top: 14px; }
+.journey-summary p { font-size: 13px; color: var(--text-helper); margin-top: 14px; }
 @keyframes lights-arrive { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
 @keyframes star-turn { to { transform: rotate(360deg); } }
 @media (min-width: 1400px) { .lights-backdrop { width: 1300px; right: -110px; } }
@@ -299,7 +299,7 @@ h1 > span:first-child { color: var(--foreground); }
   .booking-area::before { inset: -30px -10px -20px; }
   .booking-form { grid-template-columns: minmax(0, 1fr); gap: 14px; }
   .station-field { height: 92px; border-radius: 20px; padding: 14px 22px; min-width: 0; }
-  .station-field label, .field-label { font-size: 11px; }
+  .station-field label, .field-label { font-size: 12px; }
   .station-field input { font-size: 21px; min-height: 30px; padding-right: 28px; }
   .swap-button { left: auto; right: 16px; top: 46px; margin-top: 0; width: 44px; height: 44px; transform: none; border-width: 3px; }
   .swap-button:hover { transform: rotate(180deg); }
@@ -313,7 +313,7 @@ h1 > span:first-child { color: var(--foreground); }
   .journey-arrow { width: 38px; height: 38px; }
   .route-marquee { padding: 12px 0; }
   .route-marquee span { font-size: 26px; }
-  .site-footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; font-size: 9px; gap: 18px; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+  .site-footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; font-size: 12px; gap: 18px; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
   .site-footer > span:last-child { display: none; }
   .railway-dialog { width: calc(100% - 32px); max-height: calc(100dvh - 40px); overflow-y: auto; }
   .journey-summary > div { overflow-wrap: anywhere; }
@@ -349,7 +349,7 @@ h1 .line:first-child > span { color: var(--foreground); }
 .journey-button:hover > * { color: var(--primary-foreground); }
 .journey-button:hover .search-subtitle { color: color-mix(in oklch, var(--block-ink) 70%, transparent); }
 .vibe-chips { display: flex; gap: 8px; flex-wrap: nowrap; overflow-x: auto; min-width: 0; scrollbar-width: none; }
-.vibe-chip, .crew-stepper { display: inline-flex; align-items: center; gap: 7px; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--secondary); color: var(--muted-foreground); font-size: 12px; font-weight: 500; transition: all .4s cubic-bezier(.34,1.56,.64,1); cursor: pointer; flex-shrink: 0; }
+.vibe-chip, .crew-stepper { display: inline-flex; align-items: center; gap: 7px; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--secondary); color: var(--text-helper); font-size: 13px; font-weight: 500; transition: all .4s cubic-bezier(.34,1.56,.64,1); cursor: pointer; flex-shrink: 0; }
 .vibe-chip:hover { color: var(--foreground); transform: translateY(-3px); }
 .vibe-chip.on { background: var(--butter); color: var(--block-ink); border-color: transparent; transform: scale(1.06); }
 .vibe-chip.on svg { animation: wiggle .6s ease; }
@@ -380,7 +380,7 @@ h1 .line:first-child > span { color: var(--foreground); }
   .controls-panel { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 14px; }
   .controls-label, .controls-divider { display: none; }
   .vibe-chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; overflow: visible; }
-  .vibe-chip { justify-content: center; padding: 0 6px; gap: 4px; font-size: 11px; height: 38px; }
+  .vibe-chip { justify-content: center; padding: 0 6px; gap: 4px; font-size: 12px; height: 38px; }
   .vibe-chip.on { transform: none; }
   .crew-stepper { justify-content: space-between; width: 100%; }
   .crew-stepper > span { margin-right: auto; }
@@ -409,7 +409,7 @@ h1 .line:first-child > span { color: var(--foreground); }
 .date-dialog-body { padding: 14px 14px 4px; display: flex; justify-content: center; }
 .date-dialog-body { flex-direction: column; align-items: stretch; }
 .quick-dates { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 0 4px 12px; }
-.quick-dates button { height: 34px; border: 1px solid var(--border); border-radius: 999px; color: var(--muted-foreground); }
+.quick-dates button { height: 34px; border: 1px solid var(--border); border-radius: 999px; color: var(--text-helper); font-size: 13px; }
 .quick-dates button:hover, .quick-dates button.active { background: var(--primary); color: var(--primary-foreground); border-color: transparent; }
 
 .rail-calendar { background: transparent !important; --cell-size: 2.5rem; }
@@ -431,8 +431,8 @@ h1 .line:first-child > span { color: var(--foreground); }
   color: var(--foreground);
 }
 .rail-calendar .rdp-weekday {
-  font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-  color: color-mix(in oklch, var(--foreground) 45%, transparent);
+  font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: color-mix(in oklch, var(--foreground) 65%, transparent);
   padding-bottom: 6px;
 }
 .rail-calendar .rdp-day_button {
@@ -448,7 +448,7 @@ h1 .line:first-child > span { color: var(--foreground); }
   box-shadow: 0 6px 18px -6px color-mix(in oklch, var(--primary) 70%, transparent);
 }
 .rail-calendar .rdp-today:not(.rdp-selected) .rdp-day_button { border: 1px dashed color-mix(in oklch, var(--primary) 60%, transparent); background: transparent; }
-.rail-calendar .rdp-outside { opacity: .35; }
+.rail-calendar .rdp-outside { opacity: .55; }
 
 .date-dialog-actions {
   display: flex; align-items: center; gap: 14px;
@@ -498,7 +498,7 @@ h1 .line:first-child > span { color: var(--foreground); }
 .station-field label, .field-label { color: var(--primary); }
 .station-field input::placeholder { color: var(--foreground); }
 .station-field input:focus-visible { box-shadow: 0 2px 0 var(--primary); }
-.field-hint { color: var(--muted-foreground); opacity: 1; }
+.field-hint { color: var(--text-helper); opacity: 1; }
 .station-field.pop:hover, .date-button.pop:hover, .station-field:focus-within {
   transform: none; background: var(--console-control);
 }
@@ -517,14 +517,14 @@ h1 .line:first-child > span { color: var(--foreground); }
 .crew-stepper button { padding: 0; }
 .journey-button { height: 54px; border-radius: 999px; background: var(--foreground); color: var(--background); border: 0; padding: 0 22px; justify-content: center; text-align: center; }
 .journey-arrow { background: var(--background); color: var(--foreground); }
-.journey-button .search-subtitle { color: color-mix(in oklch, var(--background) 65%, transparent); }
+.journey-button .search-subtitle { color: color-mix(in oklch, var(--background) 72%, transparent); }
 .date-confirm { height: 42px; }
 .form-error { padding: 0 24px 12px; color: var(--destructive); }
 .station-field.field-invalid, .date-button.field-invalid { background: color-mix(in oklch, var(--destructive) 12%, var(--console-control)); box-shadow: inset 0 0 0 2px var(--destructive); }
 .station-field.field-invalid label, .date-button.field-invalid .field-label, .station-field.field-invalid .field-hint, .date-button.field-invalid .field-hint { color: var(--destructive); }
 .station-field:focus-within { z-index: 10; }
 .station-suggestions { position: absolute; z-index: 20; top: calc(100% - 8px); left: 14px; right: 14px; padding: 7px; border: 1px solid var(--border); border-radius: 14px; background: var(--popover); color: var(--popover-foreground); box-shadow: var(--shadow-console); }
-.station-suggestions button { width: 100%; height: 38px; justify-content: flex-start; border-radius: 9px; padding: 0 12px; color: var(--muted-foreground); }
+.station-suggestions button { width: 100%; height: 38px; justify-content: flex-start; border-radius: 9px; padding: 0 12px; color: var(--text-helper); font-size: 14px; }
 .station-suggestions button:hover, .station-suggestions button.active, .station-suggestions button[aria-selected="true"] { background: var(--accent); color: var(--foreground); }
 @media (max-width: 940px) and (min-width: 761px) {
   .booking-controls { grid-template-columns: 1fr; }
