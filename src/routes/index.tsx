@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, MessageCircle, TrainFront, X, Users, Minus, Plus } from "lucide-react";
+import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, MessageCircle, TrainFront, Sun, Moon, AlertCircle, X, Users, Minus, Plus } from "lucide-react";
 import { addDays, format, nextSaturday, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -118,6 +118,15 @@ function StationField({ id, label, hint, placeholder, value, invalid, onChange }
 function Index() {
   const heroRef = useRef<HTMLImageElement>(null);
   const [heroLoaded, setHeroLoaded] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+  useEffect(() => {
+    const saved = window.localStorage.getItem("rd-theme");
+    if (saved === "dark" || saved === "light") setTheme(saved);
+  }, []);
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    window.localStorage.setItem("rd-theme", theme);
+  }, [theme]);
   useEffect(() => {
     const image = heroRef.current;
     if (image?.complete && image.naturalWidth > 0) setHeroLoaded(true);
@@ -143,10 +152,11 @@ function Index() {
   }
   return (
     <div className="railway-app">
+      <div className="hero-dark">
       <header className="site-header reveal" style={{ ["--d" as string]: "0ms" }}>
         <a href="/" className="wordmark" aria-label="Rail Daddy home"><span className="wordmark-type" aria-hidden="true">RAIL <span className="wordmark-daddy">D<span className="wordmark-wink">A</span>DDY</span><span className="wordmark-stop">.</span></span></a>
         <nav aria-label="Main navigation"><Button variant="nav" className="active" onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth", block: "center" })}>Find a train</Button><Button variant="nav" onClick={() => setDialog("about")}>Why rail? <ArrowUpRight size={13} /></Button></nav>
-        <Button variant="travel" onClick={() => setDialog("ai")}><span className="little-face"><span /><span /></span><span className="travel-copy"><span className="travel-kicker">No plan? No problem.</span><span className="travel-title">Ask Daddy AI <ArrowUpRight size={14} /></span></span></Button>
+        <div className="header-actions"><button type="button" className="theme-toggle" aria-label={theme === "light" ? "Switch to dark theme" : "Switch to light theme"} title={theme === "light" ? "Dark theme" : "Light theme"} onClick={() => setTheme(t => t === "light" ? "dark" : "light")}>{theme === "light" ? <Moon size={18} /> : <Sun size={18} />}</button><Button variant="travel" onClick={() => setDialog("ai")}><span className="little-face"><span /><span /></span><span className="travel-copy"><span className="travel-kicker">No plan? No problem.</span><span className="travel-title">Ask Daddy AI <ArrowUpRight size={14} /></span></span></Button></div>
       </header>
 
       <main>
@@ -175,7 +185,7 @@ function Index() {
               <StationField id="destination" label="ARRIVING AT" hint="Where you're headed" placeholder="Destination city" value={destination} invalid={invalidFields.destination} onChange={(value) => { setDestination(value); setInvalidFields((fields) => ({ ...fields, destination: false })); setError(""); }} />
               <Button variant="date" type="button" aria-label="Open travel calendar" aria-haspopup="dialog" className={`pop${invalidFields.date ? " field-invalid" : ""}`} style={{ ["--d" as string]: "780ms" }} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-label"><CalendarDays size={16} /> TRAVEL DATE</span><span className="date-value">{date ? format(date, "dd MMM, yyyy") : "Pick a date"}<CalendarDays size={18} /></span><span className="field-hint">{invalidFields.date ? "This field is required" : "Tap to open calendar"}</span></Button>
               </div>
-            {error && <p className="form-error" role="alert">{error}</p>}
+            {error && <p className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</p>}
             <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
               <div className="controls-panel">
                 <span className="controls-label">Class:</span>
@@ -190,6 +200,10 @@ function Index() {
             </form>
           </div>
 
+        </section>
+      </main>
+      </div>
+      <section className="content-light" aria-label="Popular routes and destinations">
           <div className="popular-routes reveal" style={{ ["--d" as string]: "1080ms" }}>
             <div className="routes-head"><span className="routes-label">Popular routes</span><span className="routes-sub">Tap one — it fills the form</span></div>
             <div className="routes-row">
@@ -201,10 +215,10 @@ function Index() {
               ))}
             </div>
           </div>
-        </section>
         <div className="route-marquee" role="group" aria-label="Pick a destination city"><div>{Array.from({ length: 2 }).map((_, k) => <span key={k} aria-hidden={k === 1 ? true : undefined}>{[["DELHI","New Delhi"],["JAIPUR","Jaipur"],["GOA","Goa"],["VARANASI","Varanasi"],["SHIMLA","Shimla"],["MUMBAI","Mumbai Central"],["KOCHI","Kochi"],["DARJEELING","Darjeeling"],["UDAIPUR","Udaipur"]].map(([label, city]: string[]) => <span key={label}><button type="button" className="marquee-city" tabIndex={k === 1 ? -1 : 0} aria-label={`Set destination to ${city}`} onClick={() => { setDestination(city ?? ""); setInvalidFields((f) => ({ ...f, destination: false })); setError(""); }}>{label}</button> ✳ </span>)}</span>)}</div></div>
       </main>
       <footer className="site-footer"><span>© {new Date().getFullYear()} Rail Daddy. Trips worth the ride.</span><span>TAKE THE SCENIC ROUTE <ArrowUpRight size={13} /></span></footer>
+      </section>
       <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
       <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
         <DialogContent className="date-dialog" aria-label="Choose travel date">
