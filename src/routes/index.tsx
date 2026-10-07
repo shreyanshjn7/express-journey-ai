@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, TrainFront, Sun, Moon, AlertCircle, X, Users, Minus, Plus } from "lucide-react";
+import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, TrainFront, Sun, Moon, AlertCircle, X, Users, Minus, Plus, History, ChevronDown } from "lucide-react";
 import { addDays, format, nextSaturday, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -23,8 +23,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const stations = ["New Delhi", "Mumbai Central", "Bengaluru", "Chennai Central", "Kolkata", "Jaipur", "Hyderabad", "Pune", "Ahmedabad", "Goa", "Varanasi", "Shimla"];
-
 const popularRoutes = [
   { from: "New Delhi", to: "Jaipur", fromLabel: "Delhi", toLabel: "Jaipur", note: "Daddy's pick" },
   { from: "Mumbai Central", to: "Goa", fromLabel: "Mumbai", toLabel: "Goa", note: "Weekend favourite" },
@@ -33,23 +31,97 @@ const popularRoutes = [
   { from: "New Delhi", to: "Shimla", fromLabel: "Delhi", toLabel: "Shimla", note: "Hill escape" },
 ];
 
+type Station = { name: string; code: string; city: string };
+
+const stations: Station[] = [
+  { name: "New Delhi", code: "NDLS", city: "Delhi" },
+  { name: "Mumbai Central", code: "BCT", city: "Mumbai" },
+  { name: "Indore Junction", code: "INDB", city: "Indore" },
+  { name: "Bengaluru", code: "SBC", city: "Bengaluru" },
+  { name: "Chennai Central", code: "MAS", city: "Chennai" },
+  { name: "Kolkata", code: "HWH", city: "Howrah" },
+  { name: "Jaipur", code: "JP", city: "Jaipur" },
+  { name: "Hyderabad", code: "HYB", city: "Hyderabad" },
+  { name: "Pune", code: "PUNE", city: "Pune" },
+  { name: "Ahmedabad", code: "ADI", city: "Ahmedabad" },
+  { name: "Goa", code: "MAO", city: "Madgaon" },
+  { name: "Varanasi", code: "BSB", city: "Varanasi" },
+  { name: "Shimla", code: "SML", city: "Shimla" },
+  { name: "Lucknow", code: "LKO", city: "Lucknow" },
+  { name: "Bhopal", code: "BPL", city: "Bhopal" },
+  { name: "Chandigarh", code: "CDG", city: "Chandigarh" },
+  { name: "Patna", code: "PNBE", city: "Patna" },
+  { name: "Kochi", code: "ERS", city: "Ernakulam" },
+  { name: "Udaipur", code: "UDZ", city: "Udaipur" },
+  { name: "Darjeeling", code: "NJP", city: "New Jalpaiguri" },
+  { name: "Amritsar", code: "ASR", city: "Amritsar" },
+  { name: "Agra Cantt", code: "AGC", city: "Agra" },
+];
+const popularStationNames = ["New Delhi", "Mumbai Central", "Bengaluru", "Indore Junction", "Goa"];
+const findStation = (name: string) => stations.find((s) => s.name === name);
+const shortName = (name: string) => findStation(name)?.city ?? name;
+
+function editDistance(a: string, b: string) {
+  const row = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    let prev = row[0]!; row[0] = i;
+    for (let j = 1; j <= b.length; j++) {
+      const tmp = row[j]!;
+      row[j] = Math.min(row[j]! + 1, row[j - 1]! + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+      prev = tmp;
+    }
+  }
+  return row[b.length]!;
+}
+
+/** Ranks stations by code, name, city, then typo-tolerant similarity. */
+function searchStations(query: string): Station[] {
+  const q = query.trim().toLowerCase();
+  if (!q) return [];
+  const scored = stations.map((s) => {
+    const name = s.name.toLowerCase(), city = s.city.toLowerCase(), code = s.code.toLowerCase();
+    let score = 99;
+    if (code === q) score = 0;
+    else if (name.startsWith(q) || city.startsWith(q) || code.startsWith(q)) score = 1;
+    else if (name.includes(q) || city.includes(q)) score = 2;
+    else if (q.length >= 3) {
+      const d = Math.min(editDistance(q, name.slice(0, q.length)), editDistance(q, city.slice(0, q.length)), editDistance(q, name), editDistance(q, city));
+      if (d <= (q.length >= 6 ? 2 : 1)) score = 3 + d;
+    }
+    return { s, score };
+  });
+  return scored.filter((x) => x.score < 99).sort((a, b) => a.score - b.score).slice(0, 6).map((x) => x.s);
+}
+
 type StationFieldProps = {
   id: "source" | "destination";
   label: string;
   hint: string;
+  errorText: string;
   placeholder: string;
   value: string;
   invalid: boolean;
+  recent: string[];
   onChange: (value: string) => void;
 };
 
-function StationField({ id, label, hint, placeholder, value, invalid, onChange }: StationFieldProps) {
+function StationField({ id, label, hint, errorText, placeholder, value, invalid, recent, onChange }: StationFieldProps) {
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
-  const matches = stations.filter((station) => station.toLowerCase().includes(value.trim().toLowerCase())).slice(0, 6);
+  const query = value.trim();
+  const groups: { title: string; items: Station[] }[] = [];
+  if (query && !findStation(value)) {
+    const found = searchStations(query);
+    groups.push({ title: found.length ? "Matching stations" : "", items: found });
+  } else {
+    const recentItems = recent.map(findStation).filter((s): s is Station => !!s).slice(0, 3);
+    if (recentItems.length) groups.push({ title: "Recent", items: recentItems });
+    groups.push({ title: "Popular", items: popularStationNames.filter((n) => !recent.includes(n)).map(findStation).filter((s): s is Station => !!s) });
+  }
+  const flat = groups.flatMap((g) => g.items);
 
-  function choose(station: string) {
-    onChange(station);
+  function choose(station: Station) {
+    onChange(station.name);
     setOpen(false);
     setActiveIndex(-1);
   }
@@ -58,13 +130,13 @@ function StationField({ id, label, hint, placeholder, value, invalid, onChange }
     if (event.key === "ArrowDown") {
       event.preventDefault();
       setOpen(true);
-      setActiveIndex((current) => Math.min(current + 1, matches.length - 1));
+      setActiveIndex((current) => Math.min(current + 1, flat.length - 1));
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       setActiveIndex((current) => Math.max(current - 1, 0));
-    } else if (event.key === "Enter" && open && activeIndex >= 0) {
+    } else if (event.key === "Enter" && open && flat.length > 0) {
       event.preventDefault();
-      const station = matches[activeIndex];
+      const station = flat[Math.max(activeIndex, 0)];
       if (station) choose(station);
     } else if (event.key === "Escape") {
       setOpen(false);
@@ -72,9 +144,10 @@ function StationField({ id, label, hint, placeholder, value, invalid, onChange }
     }
   }
 
+  let running = -1;
   return (
     <div className={`station-field ${id}-field pop${invalid ? " field-invalid" : ""}${open ? " sheet-open" : ""}`}>
-      <label htmlFor={id}><MapPin size={16} /> {label}</label>
+      <label htmlFor={id}><MapPin size={15} /> {label}</label>
       <button type="button" className="sheet-close" aria-label="Close station search" onMouseDown={(event) => event.preventDefault()} onClick={() => { setOpen(false); (document.activeElement as HTMLElement | null)?.blur(); }}><X size={20} /></button>
       <input
         id={id}
@@ -86,28 +159,39 @@ function StationField({ id, label, hint, placeholder, value, invalid, onChange }
         placeholder={placeholder}
         autoComplete="off"
         role="combobox"
-        aria-expanded={open && matches.length > 0}
+        aria-expanded={open && flat.length > 0}
         aria-controls={`${id}-suggestions`}
         aria-activedescendant={activeIndex >= 0 ? `${id}-option-${activeIndex}` : undefined}
         aria-invalid={invalid}
+        aria-describedby={`${id}-hint`}
       />
-      <span className="field-hint">{invalid ? "This field is required" : hint}</span>
-      {open && matches.length > 0 && (
+      <span id={`${id}-hint`} className="field-hint">{invalid ? <><AlertCircle size={15} aria-hidden="true" /> {errorText}</> : (findStation(value) ? `${findStation(value)!.code} · ${findStation(value)!.city}` : hint)}</span>
+      {open && flat.length > 0 && (
         <div id={`${id}-suggestions`} className="station-suggestions" role="listbox">
-          {matches.map((station, index) => (
-            <Button
-              id={`${id}-option-${index}`}
-              key={station}
-              variant="ghost"
-              type="button"
-              role="option"
-              aria-selected={activeIndex === index}
-              className={activeIndex === index ? "active" : ""}
-              onMouseDown={(event) => event.preventDefault()}
-              onClick={() => choose(station)}
-            >
-              <MapPin size={14} /> {station}
-            </Button>
+          {groups.map((group) => (
+            <div key={group.title} role="group" aria-label={group.title || "Stations"}>
+              {group.title && <div className="suggestion-group">{group.title === "Recent" ? <History size={12} /> : null}{group.title}</div>}
+              {group.items.map((station) => {
+                running += 1;
+                const index = running;
+                return (
+                  <Button
+                    id={`${id}-option-${index}`}
+                    key={station.code}
+                    variant="ghost"
+                    type="button"
+                    role="option"
+                    aria-selected={activeIndex === index}
+                    className={activeIndex === index ? "active" : ""}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    onClick={() => choose(station)}
+                  >
+                    <MapPin size={14} /><span className="suggestion-name">{station.name}<small>{station.city}</small></span><span className="suggestion-code">{station.code}</span>
+                  </Button>
+                );
+              })}
+            </div>
           ))}
         </div>
       )}
