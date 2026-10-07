@@ -184,7 +184,7 @@
 body { font-family: var(--font-body); margin: 0; letter-spacing: 0; }
 button, input { font: inherit; }
 button, a, input { -webkit-tap-highlight-color: transparent; }
-.railway-app { max-width: 1180px; margin: auto; padding: 0 40px; overflow: hidden; }
+.railway-app { max-width: 1040px; margin: auto; padding: 0 40px; overflow: hidden; }
 .site-header { height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 24px; position: relative; z-index: 5; }
 .wordmark { display: inline-flex; align-items: center; text-decoration: none; }
 .wordmark-type { display: block; font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1; white-space: nowrap; color: var(--foreground); letter-spacing: 0; }
@@ -207,10 +207,10 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .little-face { position: relative; display: flex; gap: 4px; width: 20px; height: 19px; border-radius: 7px; background: var(--primary); align-items: center; justify-content: center; transform: rotate(-8deg); }
 .little-face span { width: 3px; height: 4px; background: var(--block-ink); border-radius: 2px; }
 .little-face:after { content: ''; position: absolute; bottom: -3px; left: 4px; border-top: 5px solid var(--primary); border-right: 5px solid transparent; }
-.journey-stage { position: relative; min-height: calc(100svh - 210px); padding-top: 14px; padding-bottom: 20px; display: flex; flex-direction: column; justify-content: flex-start; gap: 22px; }
+.journey-stage { position: relative; min-height: calc(100svh - 210px); padding-top: 14px; padding-bottom: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 30px; }
 .lights-backdrop { position: absolute; width: 1100px; max-width: none; height: 120%; object-fit: cover; object-position: right center; right: -140px; top: -12%; user-select: none; pointer-events: none; opacity: .95; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(180deg, #000 74%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(180deg, #000 74%, transparent 100%); -webkit-mask-composite: source-in; mask-composite: intersect; }
 .stage-shade { position: absolute; inset: -5px -64px 0; background: linear-gradient(90deg, var(--background) 14%, color-mix(in oklch, var(--background) 60%, transparent) 46%, transparent 74%), linear-gradient(0deg, var(--background) 4%, transparent 40%), linear-gradient(180deg, var(--background) 0%, transparent 26%); pointer-events: none; }
-.hero-content { position: relative; z-index: 1; max-width: 620px; }
+.hero-content { position: relative; z-index: 1; max-width: 620px; text-align: center; display: flex; flex-direction: column; align-items: center; }
 .hero-eyebrow { font-size: 10px; font-weight: 500; display: flex; gap: 9px; align-items: center; }
 .status-dot { height: 6px; width: 6px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 0 4px color-mix(in oklch,var(--primary) 10%,transparent); }
 h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 6vw, 78px); line-height: .95; color: var(--headline); margin: 12px 0 8px; position: relative; width: fit-content; white-space: nowrap; }
@@ -471,6 +471,11 @@ h1 .line:first-child > span { color: var(--foreground); }
 .headline-star { display: none; }
 .hero-eyebrow, .hero-copy, .booking-intro { display: none; }
 .journey-stage { gap: 34px; }
+.lights-backdrop { object-position: center center; }
+.stage-shade {
+  background: linear-gradient(180deg, var(--background), transparent 30%, transparent 70%, var(--background)),
+    radial-gradient(ellipse 90% 70% at 50% 45%, transparent 40%, color-mix(in oklch, var(--background) 70%, transparent) 100%);
+}
 .booking-console {
   border: 1px solid var(--border); border-radius: 26px;
   background: var(--console-surface); backdrop-filter: blur(24px);
