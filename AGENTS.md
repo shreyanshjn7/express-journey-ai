@@ -14,3 +14,5 @@
 - Keep route inputs and the search action inside one booking form styled as a unified console, so submission and visual grouping stay aligned.
 - Render the header wordmark as live typography using the shared display-font token, so it stays matched to the page headings at every screen size.
 - Use a viewport-height flex layout with a growing main stage and bounded centered content; this keeps the footer on screen without clipping the booking controls on smaller displays.
+- Serve the background through an AVIF/WebP picture with intrinsic dimensions and a same-size blurred loading layer; this reduces transfer size without shifting the booking layout.
+- Keep swap-font definitions and metric-adjusted local fallback faces in the global typography system; this preserves shared heading and control geometry during font loading.
