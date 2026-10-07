@@ -511,19 +511,19 @@ h1 .line:first-child > span { color: var(--foreground); }
   .controls-panel { justify-content: flex-start; }
 }
 @media (max-width: 760px) {
-  .journey-stage { gap: 26px; }
+  .journey-stage { gap: 20px; }
   .lights-backdrop { inset: 0 -20px auto; width: calc(100% + 40px); height: 100%; opacity: .35; object-position: 65% center; }
   .stage-shade { background: linear-gradient(180deg, var(--background), transparent 40%, var(--background)); }
   .booking-console { border-radius: 24px; }
-  .station-field, .date-button { height: 100px; padding: 18px 22px; border-left: 0; border-radius: 0; }
+  .station-field, .date-button { height: 86px; padding: 16px 20px; border-left: 0; border-radius: 0; }
   .source-field { border-radius: 24px 24px 0 0; }
   .destination-field, .date-button { border-top: 1px solid var(--border); }
-  .swap-button { left: auto; right: 18px; top: 78px; margin-top: 0; }
-  .booking-controls { grid-template-columns: 1fr; padding: 16px; gap: 12px; border-radius: 0 0 24px 24px; }
+  .swap-button { left: auto; right: 16px; top: 66px; margin-top: 0; }
+  .booking-controls { grid-template-columns: 1fr; padding: 14px; gap: 12px; border-radius: 0 0 24px 24px; }
   .controls-panel { height: auto; display: grid; padding: 0; gap: 12px; }
-  .vibe-chip { height: 38px; }
+  .vibe-chip { height: 34px; }
   .crew-stepper { padding: 0; }
-  .journey-button { margin: 0; height: 58px; background: var(--foreground); color: var(--background); }
+  .journey-button { margin: 0; height: 52px; background: var(--foreground); color: var(--background); }
   .journey-button > * { color: var(--background); }
   .journey-button .journey-arrow { color: var(--foreground); }
 }
