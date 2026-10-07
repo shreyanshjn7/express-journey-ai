@@ -546,8 +546,10 @@ h1 .line:first-child > span { color: var(--foreground); }
   height: 128px; border-radius: 0; background: transparent; color: var(--foreground);
   padding: 20px 24px; --halo: transparent;
 }
-.source-field { border-radius: 26px 0 0; }
+.source-field { border-radius: 26px 0 0; padding-right: 46px; }
 .destination-field, .date-button { border-left: 1px solid var(--border); }
+.destination-field { padding-left: 46px; }
+
 .station-field label, .field-label { color: var(--text-helper); }
 .station-field input::placeholder { color: var(--foreground); }
 .station-field input:focus-visible { box-shadow: 0 2px 0 var(--primary); }
