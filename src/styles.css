@@ -355,10 +355,15 @@ h1 > span:first-child { color: var(--foreground); }
 .controls-label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-helper); white-space: nowrap; flex-shrink: 0; }
 .controls-divider { width: 1px; height: 34px; background: var(--border); flex-shrink: 0; }
 .form-error { color: var(--destructive); font-size: 13px; margin: 12px 0 0; }
-.route-marquee { overflow: hidden; border-top: 1px solid var(--border); padding: 12px 0; mask-image: linear-gradient(90deg, transparent, var(--background) 10%, var(--background) 90%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, var(--background) 10%, var(--background) 90%, transparent); }
-.route-marquee > div { display: flex; width: max-content; animation: marquee 32s linear infinite; }
-.route-marquee span { font-family: var(--font-display); font-size: 30px; font-weight: 700; color: color-mix(in oklch, var(--foreground) 78%, transparent); -webkit-text-stroke: 0; white-space: nowrap; padding-right: 0; }
-.route-marquee:hover > div { animation-play-state: paused; }
+.route-marquee { overflow: hidden; border-top: 1px solid var(--border); padding: 12px 0 0; mask-image: linear-gradient(90deg, transparent, var(--background) 8%, var(--background) 92%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, var(--background) 8%, var(--background) 92%, transparent); }
+.marquee-track { display: flex; width: max-content; animation: marquee 32s linear infinite; }
+.route-marquee:hover > div, .route-marquee:focus-within > div { animation-play-state: paused; }
+.marquee-run { display: flex; align-items: center; }
+.marquee-item { display: flex; align-items: center; gap: 10px; padding-right: 10px; }
+.marquee-city { display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--card); font-family: var(--font-body); font-size: 14px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: color-mix(in oklch, var(--foreground) 70%, transparent); white-space: nowrap; cursor: pointer; transition: color .2s, border-color .2s, background .2s, transform .25s ease; }
+.marquee-city:hover { color: var(--foreground); border-color: var(--primary); transform: translateY(-2px); }
+.marquee-city.on { background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); font-weight: 700; }
+.marquee-dot { width: 5px; height: 5px; border-radius: 50%; background: color-mix(in oklch, var(--foreground) 28%, transparent); flex-shrink: 0; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 .site-footer { display: flex; align-items: center; justify-content: space-between; padding: 25px 0; font-size: 13px; color: var(--text-helper); }
 .site-footer > span:last-child { display: flex; align-items: center; gap: 7px; font-size: 12px; }
@@ -411,8 +416,8 @@ h1 > span:first-child { color: var(--foreground); }
   .controls-label, .controls-divider { display: none; }
   .journey-button { grid-column: 1; height: 60px; border-radius: var(--radius-lg-ui); padding: 12px 20px; font-size: 17px; margin-top: 4px; }
   .journey-arrow { width: 38px; height: 38px; }
-  .route-marquee { padding: 12px 0; }
-  .route-marquee span { font-size: 26px; }
+  .route-marquee { padding: 10px 0 0; }
+  .marquee-city { min-height: 44px; font-size: 13px; padding: 0 14px; }
   .site-footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; font-size: 12px; gap: 18px; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
   .site-footer > span:last-child { display: none; }
   .railway-dialog { width: calc(100% - 32px); max-height: calc(100dvh - 40px); overflow-y: auto; }
@@ -712,13 +717,11 @@ h1 .line:first-child > span { color: var(--foreground); }
 .station-field input:focus-visible { outline-offset: 6px; }
 .vibe-chip.on { box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--primary); font-weight: 700; }
 .vibe-chip svg { flex-shrink: 0; }
-.marquee-city { font: inherit; color: inherit; background: none; border: 0; padding: 0 4px; border-radius: var(--radius-sm-ui); cursor: pointer; transition: color .2s; }
-.marquee-city:hover, .marquee-city:focus-visible { color: var(--primary); }
 .route-marquee:hover > div, .route-marquee:focus-within > div { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {
   .route-marquee { overflow-x: auto; scrollbar-width: none; }
-  .route-marquee > div { animation: none !important; transform: none !important; }
-  .route-marquee > div > span[aria-hidden] { display: none; }
+  .marquee-track { animation: none !important; transform: none !important; }
+  .marquee-run[aria-hidden="true"] { display: none; }
 }
 
 /* Mobile: stacked fields, 44px targets, pinned CTA, full-screen sheets */
@@ -781,7 +784,7 @@ body { font-size: var(--text-body); line-height: 1.5; }
 .railway-app { background: var(--background); color: var(--foreground); }
 .hero-dark { position: relative; flex: 1; display: flex; flex-direction: column; min-height: min(100svh, 860px); background: var(--background); color: var(--foreground); box-shadow: 0 0 0 100vmax var(--background); clip-path: inset(0 -100vmax); }
 .hero-dark > main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-.content-light { position: relative; padding: var(--space-5) 0 0; display: flex; flex-direction: column; gap: var(--space-4); }
+.content-light { position: relative; padding: var(--space-5) 0 0; display: flex; flex-direction: column; gap: var(--space-1); }
 .content-light .popular-routes { padding: 0; }
 
 /* Typography scale */
@@ -808,7 +811,6 @@ body { font-size: var(--text-body); line-height: 1.5; }
 /* Light content surfaces */
 .route-card { box-shadow: var(--shadow-soft); color: var(--foreground); }
 .route-marquee { border-top-color: var(--border); }
-.route-marquee span { color: color-mix(in oklch, var(--foreground) 72%, transparent); }
 .site-footer { color: var(--text-helper); }
 .railway-dialog, .date-dialog { background: var(--card); color: var(--card-foreground); border-radius: var(--radius-lg-ui); }
 
