@@ -831,4 +831,5 @@ body { font-size: var(--text-body); line-height: 1.5; }
   .header-actions { margin-left: auto; min-width: 0; gap: 6px; }
   .site-header .travel-button { padding: 0 12px; height: 42px; font-size: 12px; }
   .theme-toggle, .menu-toggle { width: 42px; height: 42px; }
+  .menu-toggle { display: inline-grid; }
 }
