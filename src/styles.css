@@ -637,3 +637,10 @@ h1 .line:first-child > span { color: var(--foreground); }
 }
 @keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .station-field.sheet-open, .date-dialog.date-dialog { animation: none; } }
+@media (max-width: 760px) {
+  .booking-area, .booking-console, .booking-form, .booking-controls, .booking-controls .pop, .booking-form .pop, .booking-form .reveal { transform: none !important; animation: none !important; backdrop-filter: none !important; filter: none !important; }
+  .booking-console { background: var(--console-surface); }
+  .station-field.sheet-open { animation: sheet-up .32s cubic-bezier(.22,1,.36,1) !important; }
+  .date-dialog.date-dialog { left: 0 !important; top: 0 !important; translate: none !important; --tw-translate-x: 0 !important; --tw-translate-y: 0 !important; transform: none !important; width: 100vw !important; max-width: 100vw !important; height: 100svh !important; max-height: 100svh !important; border-radius: 0 !important; }
+  .booking-controls { padding-bottom: 14px; }
+}
