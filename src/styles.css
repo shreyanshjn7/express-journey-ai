@@ -1112,3 +1112,13 @@ body { font-size: var(--text-body); line-height: 1.5; }
   .fare-bar-total { font-size: 22px; font-weight: 700; }
   .fare-bar-inner .flow-cta { flex: none; height: 52px; }
 }
+
+/* Mobile-first refinements */
+.h1-break { display: none; }
+@media (max-width: 760px) {
+  .h1-break { display: inline; }
+  h1, .hero-content h1 { font-size: clamp(40px, 13vw, 64px); line-height: .95; white-space: normal; width: auto; max-width: 100%; }
+  .headline-star { display: none; }
+  .booking-console .vibe-chips { display: flex; flex-wrap: nowrap; overflow-x: auto; overflow-y: visible; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; padding: 4px; margin: -4px; width: calc(100% + 8px); }
+  .booking-console .vibe-chip { flex: 0 0 auto; min-width: 64px; height: 44px; scroll-snap-align: start; }
+}
