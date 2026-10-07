@@ -916,3 +916,5 @@ body { font-size: var(--text-body); line-height: 1.5; }
   .booking-console .station-field.sheet-open { background: var(--rd-cream) !important; }
 }
 @media (max-width: 760px) { .hero-dark { z-index: 3; } }
+/* Full-bleed hero without clip-path, so the pinned phone button isn't clipped */
+.hero-dark { clip-path: none; box-shadow: 100vmax 0 0 var(--background), -100vmax 0 0 var(--background); }
