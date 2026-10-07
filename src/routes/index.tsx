@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, TrainFront, Sun, Moon, AlertCircle, X, Users, Minus, Plus, History, ChevronDown } from "lucide-react";
+import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, TrainFront, Sun, Moon, AlertCircle, X, Users, Minus, Plus, History, ChevronDown, ShieldCheck, RotateCcw } from "lucide-react";
 import { addDays, format, nextSaturday, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -30,6 +30,17 @@ const popularRoutes = [
   { from: "Bengaluru", to: "Chennai Central", fromLabel: "Bengaluru", toLabel: "Chennai", note: "~4h 25m · from ₹190" },
   { from: "New Delhi", to: "Shimla", fromLabel: "Delhi", toLabel: "Shimla", note: "~5h 30m · from ₹290" },
 ];
+const marqueeCities = [
+  ["DELHI", "New Delhi"],
+  ["JAIPUR", "Jaipur"],
+  ["GOA", "Goa"],
+  ["VARANASI", "Varanasi"],
+  ["SHIMLA", "Shimla"],
+  ["MUMBAI", "Mumbai Central"],
+  ["KOCHI", "Kochi"],
+  ["DARJEELING", "Darjeeling"],
+  ["UDAIPUR", "Udaipur"],
+] as const;
 
 type Station = { name: string; code: string; city: string };
 
@@ -336,8 +347,38 @@ function Index() {
               ))}
             </div>
           </div>
-        <div className="route-marquee" role="group" aria-label="Pick a destination city"><div>{Array.from({ length: 2 }).map((_, k) => <span key={k} aria-hidden={k === 1 ? true : undefined}>{[["DELHI","New Delhi"],["JAIPUR","Jaipur"],["GOA","Goa"],["VARANASI","Varanasi"],["SHIMLA","Shimla"],["MUMBAI","Mumbai Central"],["KOCHI","Kochi"],["DARJEELING","Darjeeling"],["UDAIPUR","Udaipur"]].map(([label, city]: string[]) => <span key={label}><button type="button" className="marquee-city" tabIndex={k === 1 ? -1 : 0} aria-label={`Set destination to ${city}`} onClick={() => { setDestination(city ?? ""); setInvalidFields((f) => ({ ...f, destination: false })); setError(""); }}>{label}</button> ✳ </span>)}</span>)}</div></div>
-      <footer className="site-footer"><span>© {new Date().getFullYear()} Rail Daddy. Trips worth the ride.</span><span>TAKE THE SCENIC ROUTE <ArrowUpRight size={13} /></span></footer>
+        <div className="route-marquee" role="group" aria-label="Pick a destination city">
+          <div className="marquee-track">
+            {Array.from({ length: 2 }).map((_, k) => (
+              <span key={k} className="marquee-run" aria-hidden={k === 1 ? true : undefined}>
+                {marqueeCities.map(([label, city]) => (
+                  <span key={label} className="marquee-item">
+                    <button type="button" className={"marquee-city" + (destination === city ? " on" : "")} tabIndex={k === 1 ? -1 : 0} aria-pressed={destination === city} aria-label={`Set destination to ${city}`} onClick={() => { setDestination(city); setInvalidFields((f) => ({ ...f, destination: false })); setError(""); }}>{label}</button>
+                    <span className="marquee-dot" aria-hidden="true" />
+                  </span>
+                ))}
+              </span>
+            ))}
+          </div>
+        </div>
+      <footer className="site-footer">
+        <div className="footer-top">
+          <div className="footer-brand"><span className="footer-wordmark">RAIL DADDY<span className="footer-stop">.</span></span><p className="footer-tagline">Trips worth the ride.</p></div>
+          <nav className="footer-links" aria-label="About Rail Daddy">
+            <Link to="/info/$topic" params={{ topic: "about" }}>About</Link>
+            <Link to="/info/$topic" params={{ topic: "help" }}>Help</Link>
+            <Link to="/info/$topic" params={{ topic: "cancellation" }}>Cancellation and refund policy</Link>
+            <Link to="/info/$topic" params={{ topic: "privacy" }}>Privacy</Link>
+            <Link to="/info/$topic" params={{ topic: "contact" }}>Contact</Link>
+          </nav>
+        </div>
+        <p className="footer-note">Rail Daddy is a booking assistant. Tickets are issued through authorized Indian Railways channels.</p>
+        <div className="footer-bottom">
+          <span className="footer-copy">© {new Date().getFullYear()} Rail Daddy</span>
+          <div className="trust-row"><span className="trust-badge"><ShieldCheck size={15} aria-hidden="true" /> Secure payment</span><span className="trust-badge"><RotateCcw size={15} aria-hidden="true" /> Refund policy</span></div>
+          <a className="scenic-link" href="#booking">Take the scenic route <ArrowUpRight size={14} aria-hidden="true" /></a>
+        </div>
+      </footer>
       </section>
       <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "No plan? No problem. Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class, ${quota} quota, for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
       <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
