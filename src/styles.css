@@ -594,3 +594,17 @@ h1 .line:first-child > span { color: var(--foreground); }
 @media (min-width: 371px) and (max-width: 389px) {
   h1 { font-size: 30px; }
 }
+
+/* ---- Interaction states ---- */
+:where(button, a, input, select, [role="radio"], [tabindex]):focus-visible { outline: 2px solid var(--primary) !important; outline-offset: 3px; }
+.station-field input:focus-visible { outline-offset: 6px; }
+.vibe-chip.on { box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--primary); font-weight: 700; }
+.vibe-chip svg { flex-shrink: 0; }
+.marquee-city { font: inherit; color: inherit; background: none; border: 0; padding: 0 4px; border-radius: 8px; cursor: pointer; transition: color .2s; }
+.marquee-city:hover, .marquee-city:focus-visible { color: var(--primary); }
+.route-marquee:hover > div, .route-marquee:focus-within > div { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .route-marquee { overflow-x: auto; scrollbar-width: none; }
+  .route-marquee > div { animation: none !important; transform: none !important; }
+  .route-marquee > div > span[aria-hidden] { display: none; }
+}

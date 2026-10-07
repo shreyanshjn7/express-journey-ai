@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent, type KeyboardEvent } from "react";
-import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, MapPin, MessageCircle, TrainFront, X, Users, Minus, Plus } from "lucide-react";
+import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, MessageCircle, TrainFront, X, Users, Minus, Plus } from "lucide-react";
 import { addDays, format, nextSaturday, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -163,7 +163,7 @@ function Index() {
               <div className="controls-panel">
                 <span className="controls-label">Class:</span>
                 <div className="vibe-chips" role="radiogroup" aria-label="Travel class">
-                  {["SL", "3A", "2A", "1A"].map((name) => <Button variant="ghost" key={name} type="button" role="radio" aria-checked={travelClass === name} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{name}</Button>)}
+                  {["SL", "3A", "2A", "1A"].map((name) => <Button variant="ghost" key={name} type="button" role="radio" aria-checked={travelClass === name} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{travelClass === name && <Check size={14} aria-hidden="true" />}{name}</Button>)}
                 </div>
                 <span className="controls-divider" aria-hidden="true" />
                 <div className="crew-stepper"><Users size={15} /><span>Passengers</span><Button variant="ghost" size="icon" type="button" aria-label="Fewer passengers" onClick={() => setPassengers(c => Math.max(1, c - 1))}><Minus size={14} /></Button><strong key={passengers}>{passengers}</strong><Button variant="ghost" size="icon" type="button" aria-label="More passengers" onClick={() => setPassengers(c => Math.min(9, c + 1))}><Plus size={14} /></Button></div>
@@ -185,7 +185,7 @@ function Index() {
             </div>
           </div>
         </section>
-        <div className="route-marquee" aria-hidden="true"><div>{Array.from({ length: 2 }).map((_, k) => <span key={k}>DELHI ✳ JAIPUR ✳ GOA ✳ VARANASI ✳ SHIMLA ✳ MUMBAI ✳ KOCHI ✳ DARJEELING ✳ UDAIPUR ✳ </span>)}</div></div>
+        <div className="route-marquee" role="group" aria-label="Pick a destination city"><div>{Array.from({ length: 2 }).map((_, k) => <span key={k} aria-hidden={k === 1 ? true : undefined}>{[["DELHI","New Delhi"],["JAIPUR","Jaipur"],["GOA","Goa"],["VARANASI","Varanasi"],["SHIMLA","Shimla"],["MUMBAI","Mumbai Central"],["KOCHI","Kochi"],["DARJEELING","Darjeeling"],["UDAIPUR","Udaipur"]].map(([label, city]: string[]) => <span key={label}><button type="button" className="marquee-city" tabIndex={k === 1 ? -1 : 0} aria-label={`Set destination to ${city}`} onClick={() => { setDestination(city ?? ""); setInvalidFields((f) => ({ ...f, destination: false })); setError(""); }}>{label}</button> ✳ </span>)}</span>)}</div></div>
       </main>
       <footer className="site-footer"><span>© {new Date().getFullYear()} Rail Daddy. Trips worth the ride.</span><span>TAKE THE SCENIC ROUTE <ArrowUpRight size={13} /></span></footer>
       <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
