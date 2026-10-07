@@ -184,7 +184,7 @@
 body { font-family: var(--font-body); margin: 0; letter-spacing: 0; }
 button, input { font: inherit; }
 button, a, input { -webkit-tap-highlight-color: transparent; }
-.railway-app { max-width: 1600px; margin: auto; padding: 0 56px; overflow: hidden; }
+.railway-app { max-width: 1180px; margin: auto; padding: 0 40px; overflow: hidden; }
 .site-header { height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 24px; position: relative; z-index: 5; }
 .wordmark { display: inline-flex; align-items: center; text-decoration: none; }
 .wordmark-type { display: block; font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1; white-space: nowrap; color: var(--foreground); letter-spacing: 0; }
@@ -219,7 +219,7 @@ h1 > span:first-child { color: var(--foreground); }
 .hero-copy { font-size: 12px; color: var(--muted-foreground); line-height: 1.8; }
 
 /* Booking spotlight: the inputs are the hero of the page. */
-.booking-area { position: relative; z-index: 2; }
+.booking-area { position: relative; z-index: 2; max-width: 940px; margin-inline: auto; width: 100%; }
 .booking-area::before { content: none; }
 .booking-intro { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 12px; }
 .booking-intro > span:first-child { display: flex; align-items: center; gap: 9px; }
