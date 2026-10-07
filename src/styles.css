@@ -799,7 +799,6 @@ body { font-size: var(--text-body); line-height: 1.5; }
 .journey-button, .content-light .journey-button { background: var(--primary); color: var(--primary-foreground); box-shadow: 0 8px 24px -8px color-mix(in oklch, var(--primary) 60%, transparent); }
 .journey-button:hover { background: var(--primary); color: var(--primary-foreground); filter: brightness(1.05); }
 .swap-button:hover { border-color: var(--foreground); }
-.route-card:hover { border-color: var(--foreground); }
 .quick-dates button:hover { background: var(--accent); color: var(--foreground); }
 .quick-dates button.active { background: var(--primary); color: var(--primary-foreground); }
 .station-field input:focus-visible { box-shadow: 0 2px 0 var(--foreground); }
@@ -807,8 +806,7 @@ body { font-size: var(--text-body); line-height: 1.5; }
 .vibe-chip.on { box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--primary); }
 
 /* Light content surfaces */
-.route-card { background: var(--card); border: 1px solid var(--border); box-shadow: var(--shadow-soft); border-radius: var(--radius-lg-ui); color: var(--foreground); }
-.route-card:hover { background: var(--card); }
+.route-card { box-shadow: var(--shadow-soft); color: var(--foreground); }
 .route-marquee { border-top-color: var(--border); }
 .route-marquee span { color: color-mix(in oklch, var(--foreground) 72%, transparent); }
 .site-footer { color: var(--text-helper); }
