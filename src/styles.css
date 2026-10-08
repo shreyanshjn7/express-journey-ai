@@ -1122,3 +1122,58 @@ body { font-size: var(--text-body); line-height: 1.5; }
   .booking-console .vibe-chips { display: flex; flex-wrap: nowrap; overflow-x: auto; overflow-y: visible; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; padding: 4px; margin: -4px; width: calc(100% + 8px); }
   .booking-console .vibe-chip { flex: 0 0 auto; min-width: 64px; height: 44px; scroll-snap-align: start; }
 }
+
+/* Shared motion timing comes from src/lib/motion.ts via MotionSystem.
+   Disable legacy entrances even before hydration; Framer owns those transforms.
+   Never transform containers holding fixed phone controls or station sheets. */
+.reveal, .pop, h1 .line > span, .lights-backdrop, .status-dot,
+.crew-stepper strong, .vibe-chip.on svg, .mobile-menu,
+.station-field::after, .date-button::after {
+  animation: none;
+}
+.station-field.sheet-open { animation: none !important; }
+.date-dialog.date-dialog { animation: none !important; }
+.motion-ready *, .motion-ready *::before, .motion-ready *::after {
+  transition-property: transform, opacity, translate;
+  transition-duration: var(--motion-standard);
+  transition-timing-function: var(--motion-ease-transition);
+}
+.motion-ready :is(button, a[href], input, select, label[for], summary, [role="button"]) {
+  /* Framer's springs own interaction transforms; avoid a second CSS easing pass. */
+  transition-property: opacity;
+  transition-duration: var(--motion-micro);
+}
+.motion-ready .booking-console .swap-button,
+.motion-ready .booking-console .swap-button:hover {
+  rotate: calc(var(--base) + var(--spin, 0deg));
+  transform: none;
+  transition: rotate var(--motion-standard) var(--motion-ease-transition);
+}
+.motion-ready .booking-console .crew-stepper button:active { transform: none; }
+.motion-ready .theme-toggle:hover { transform: none; }
+.motion-ready .info-cta:hover { filter: none; }
+.motion-ready .date-button:hover { filter: none; }
+.motion-ready .ai-tip, .motion-ready .class-tip, .motion-ready .route-go {
+  transition-duration: var(--motion-micro);
+  transition-timing-function: var(--motion-ease-transition);
+}
+.motion-ready .stage-parallax .hero-photo,
+.motion-ready .stage-parallax .hero-placeholder {
+  transition: opacity var(--motion-standard) var(--motion-ease-transition);
+}
+.motion-ready [role="dialog"][data-state] { animation: none !important; }
+.motion-ready .nav-button.active::after {
+  animation-duration: var(--motion-entrance);
+  animation-timing-function: var(--motion-ease-entrance);
+}
+/* Lenis never replaces native touch scrolling or scrolling inside a picker. */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  .motion-ready *, .motion-ready *::before, .motion-ready *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -19,6 +19,8 @@ export const Route = createFileRoute("/")({
     { property: "og:description", content: "Available train routes and tickets in one place: route, date, class and passengers." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
+    { property: "og:image", content: heroWebp.url },
+    { name: "twitter:image", content: heroWebp.url },
   ] }),
   component: Index,
 });
@@ -315,7 +317,7 @@ function Index() {
               <StationField id="source" label="From" hint="City, station or code" errorText="Choose where you're starting from" recent={recent} placeholder="Boarding station" value={source} invalid={invalidFields.source} onChange={(value) => { setSource(value); setInvalidFields((fields) => ({ ...fields, source: false })); setError(""); }} />
               <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" style={{ ["--spin" as string]: `${swapTurns * 180}deg` }} onClick={() => { setSource(destination); setDestination(source); setSwapTurns((t) => t + 1); }}><ArrowDownUp size={18} /></Button>
               <StationField id="destination" label="To" hint="City, station or code" errorText="Choose where you're going" recent={recent} placeholder="Destination city" value={destination} invalid={invalidFields.destination} onChange={(value) => { setDestination(value); setInvalidFields((fields) => ({ ...fields, destination: false })); setError(""); }} />
-              <Button variant="date" type="button" aria-label="Open travel calendar" aria-haspopup="dialog" className={`pop${invalidFields.date ? " field-invalid" : ""}`} style={{ ["--d" as string]: "780ms" }} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-label"><CalendarDays size={15} /> Date</span><span className="date-value">{date ? format(date, "dd MMM yyyy") : "Pick a date"}</span><span className="field-hint">{invalidFields.date ? <><AlertCircle size={15} aria-hidden="true" /> Pick a travel date</> : date ? format(date, "EEEE") : "Open the calendar"}</span></Button>
+              <Button variant="date" type="button" aria-label="Open travel calendar" aria-haspopup="dialog" className={invalidFields.date ? "field-invalid" : ""} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-label"><CalendarDays size={15} /> Date</span><span className="date-value">{date ? format(date, "dd MMM yyyy") : "Pick a date"}</span><span className="field-hint">{invalidFields.date ? <><AlertCircle size={15} aria-hidden="true" /> Pick a travel date</> : date ? format(date, "EEEE") : "Open the calendar"}</span></Button>
               </div>
             {error && <p className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</p>}
             <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
@@ -329,7 +331,7 @@ function Index() {
                 <span className="controls-divider" aria-hidden="true" />
                 <label className="quota-field"><span className="controls-label">Quota</span><span className="quota-select"><select value={quota} onChange={(e) => setQuota(e.target.value)} aria-label="Quota">{["General", "Tatkal", "Ladies", "Senior Citizen"].map((q) => <option key={q} value={q}>{q}</option>)}</select><ChevronDown size={16} aria-hidden="true" /></span></label>
               </div>
-               <Button variant="journey" type="submit" className="pop" style={{ ["--d" as string]: "960ms" }}><span className="journey-title">Find my train</span><ArrowRight size={18} aria-hidden="true" /></Button>
+               <Button variant="journey" type="submit"><span className="journey-title">Find my train</span><ArrowRight size={18} aria-hidden="true" /></Button>
             </div>
             </form>
           </div>
