@@ -675,6 +675,17 @@ h1 .line:first-child > span { color: var(--foreground); }
 .mobile-menu .nav-button.active:after { display: none; }
 @media (max-width: 760px) { .ai-tip { display: none; } .menu-toggle { display: inline-grid; } }
 @media (max-width: 370px) { .mobile-menu { min-width: 190px; } }
+.ai-icon-btn { display: none; place-items: center; width: 40px; height: 40px; padding: 0; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--foreground); cursor: pointer; flex-shrink: 0; transition: background .2s, transform .3s, border-color .25s; }
+.ai-icon-btn svg { color: var(--text-helper); }
+.ai-icon-btn:hover { background: var(--accent); border-color: var(--primary); }
+.mobile-menu-theme { display: none; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 8px 6px; border-top: 1px solid var(--border); font-size: 13px; font-weight: 500; color: var(--text-helper); }
+.mobile-menu-theme .theme-toggle { flex-shrink: 0; }
+@media (max-width: 640px) {
+  .hero-dark .site-header { gap: 16px; }
+  .site-header .theme-toggle, .site-header .ai-cta { display: none; }
+  .site-header .ai-icon-btn { display: inline-grid; }
+  .mobile-menu-theme { display: flex; }
+}
 
 /* ---- Popular routes strip: fills the gap between the form and the marquee ---- */
 .popular-routes { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin-inline: auto; margin-top: 12px; }
