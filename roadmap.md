@@ -39,6 +39,6 @@
 - [x] Verify scroll movement, mobile controls and reduced-motion behavior.
 
 ## Search micro-interactions
-- [ ] Add field, autocomplete, swap, calendar, class and passenger feedback.
-- [ ] Add magnetic search action, submit transition and validation shake.
-- [ ] Verify desktop, phone and reduced-motion interactions.
+- [x] Add field, autocomplete, swap, calendar, class and passenger feedback.
+- [x] Add magnetic search action, submit transition and validation shake.
+- [x] Verify desktop, phone and reduced-motion interactions.

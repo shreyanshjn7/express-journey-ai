@@ -32,7 +32,7 @@ export function MotionSystem() {
     function controlFor(target: EventTarget | null) {
       if (!(target instanceof Element)) return null;
       const element = target.closest<HTMLElement>(clickable);
-      if (!element || element.closest('[data-motion-owned="true"]') || element.matches(':disabled, [aria-disabled="true"]')) return null;
+      if (!element || element.matches('[data-motion-owned="true"], :disabled, [aria-disabled="true"]')) return null;
       return element;
     }
     function interact(element: HTMLElement | null, scale: number) {

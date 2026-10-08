@@ -70,7 +70,16 @@ export function useSearchMicroMotion(ref: RefObject<HTMLDivElement | null>, swap
       play(element, { x: [...searchMotion.shake.x] }, { duration: searchMotion.shake.duration, ease: 'linear' });
     });
   }, [validationAttempt, ref]);
-  useEffect(() => () => { active.current.forEach(control => control.stop()); active.current.clear(); }, []);
+  useEffect(() => {
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const stop = () => {
+      if (!preference.matches) return;
+      active.current.forEach(control => control.complete());
+      ref.current?.querySelectorAll<HTMLElement>('.swap-city-ghost').forEach(element => element.remove());
+    };
+    preference.addEventListener('change', stop);
+    return () => { preference.removeEventListener('change', stop); active.current.forEach(control => control.stop()); active.current.clear(); };
+  }, [ref]);
 
   function swapNames() {
     const root = ref.current;

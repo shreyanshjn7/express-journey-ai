@@ -1273,16 +1273,18 @@ html.lenis, html.lenis body { height: auto; }
 .destination-field .swap-city-ghost { left: 44px; }
 .booking-console .rolling-number { position: relative; display: inline-block; width: 24px; height: 28px; min-width: 24px; overflow: hidden; font-size: 18px; font-variant-numeric: tabular-nums; }
 .rolling-number > span:not(.sr-only) { position: absolute; inset: 0; display: grid; place-items: center; transition: none !important; }
-.search-action { overflow: hidden; isolation: isolate; transition: none !important; }
+.search-action { position: relative; overflow: hidden; isolation: isolate; transition: none !important; }
 .search-action-label { position: relative; z-index: 1; display: grid; place-items: center; width: 160px; height: 24px; }
 .search-action-state { display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: none !important; }
 .search-action .search-arrow { transition: transform var(--motion-micro) var(--motion-ease-entrance); }
 .search-action:hover .search-arrow { transform: translateX(4px); }
 .button-shine { position: absolute; inset: -20px auto -20px 0; width: 35%; background: linear-gradient(100deg, transparent, var(--search-shine), transparent); pointer-events: none; transition: none !important; }
 .search-spinner { animation: search-spin .8s linear infinite; }
+.booking-console .search-action .search-spinner, .booking-console .search-action:hover .search-spinner { transition: none; }
 @keyframes search-spin { to { transform: rotate(360deg); } }
 .search-submitting .booking-form, .search-submitting .controls-panel { pointer-events: none; }
 .calendar-motion-surface { display: flex; flex-direction: column; min-height: 0; transition: none !important; }
+.date-dialog .quick-dates button > span { display: inline-block; transition: none !important; }
 .micro-calendar button[data-day] { position: relative; isolation: isolate; }
 .date-selection-highlight { position: absolute; inset: 2px; border-radius: 50%; background: var(--primary); pointer-events: none; z-index: 0; transition: none !important; }
 .selection-content { position: relative; z-index: 1; }
