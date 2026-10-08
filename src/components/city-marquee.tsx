@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useAnimationFrame, useMotionValue, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { easeMarqueeSpeed, marqueeMotion, marqueeScrollImpulse, motionTokens } from "@/lib/motion";
+import { easeMarqueeSpeed, marqueeMotion, marqueeScrollImpulse, motionTokens, polishMotion } from "@/lib/motion";
 
 type Flight = { city: string; start: DOMRect; end: DOMRect; fontSize: number };
 type Ripple = { id: number; key: string; x: number; y: number };
@@ -84,7 +84,7 @@ export function CityMarquee({ cities, destination, onChoose }: {
             const active = hovered === key;
             return <span key={city} className="marquee-item">
               <Button asChild variant="ghost" className={`marquee-city${destination === city ? " on" : ""}`} data-motion-owned="true" type="button" tabIndex={copy === 1 ? -1 : 0} aria-pressed={destination === city} aria-label={`Set destination to ${city}`} onClick={event => choose(city, key, event)}>
-                <motion.button animate={{ scale: reduced ? 1 : active ? marqueeMotion.hoverScale : 1, opacity: hovered && !active ? 0.5 : 1 }} transition={motionTokens.spring.soft} whileTap={reduced ? {} : { scale: motionTokens.scale.press }}
+                <motion.button animate={{ scale: reduced ? 1 : active ? marqueeMotion.hoverScale : 1, opacity: hovered && !active ? 0.5 : 1 }} transition={reduced ? { duration: 0 } : polishMotion.releaseSpring} whileTap={reduced ? {} : { scale: motionTokens.scale.press }}
                   onHoverStart={() => setHovered(key)} onHoverEnd={() => setHovered(null)}
                   onFocus={event => { setHovered(key); if (!reduced && event.currentTarget.matches(':focus-visible')) { const item = run.current?.children[index]; if (item instanceof HTMLElement) x.set(-item.offsetLeft); } }}>
                   <span className="marquee-city-text">{label}</span>
