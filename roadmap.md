@@ -26,6 +26,6 @@
 - [x] Mobile-first pass: 2-line headline, swipeable class pills, verified at 360px
 
 ## Shared motion system
-- [ ] Define and test shared easing, duration, spring, stagger and distance tokens.
-- [ ] Apply transform/opacity entrances and hover/press feedback across pages without layout or color changes.
-- [ ] Add Lenis scrolling with reduced-motion and picker support; verify desktop and 360px behavior.
+- [x] Define and test shared easing, duration, spring, stagger and distance tokens.
+- [x] Apply transform/opacity entrances and hover/press feedback across pages without layout or color changes.
+- [x] Add Lenis scrolling with reduced-motion and picker support; verify desktop and 360px behavior.
