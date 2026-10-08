@@ -31,5 +31,5 @@
 - [x] Add Lenis scrolling with reduced-motion and picker support; verify desktop and 360px behavior.
 
 ## Home first-load choreography
-- [ ] Add once-per-session photo, header, masked words, underline, card, routes and marquee sequence.
-- [ ] Verify timing, repeat visits, reduced motion and pinned mobile controls.
+- [x] Add once-per-session photo, header, masked words, underline, card, routes and marquee sequence.
+- [x] Verify timing, repeat visits, reduced motion and pinned mobile controls.
