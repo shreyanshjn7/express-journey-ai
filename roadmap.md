@@ -37,3 +37,8 @@
 ## Hero depth
 - [x] Add scroll parallax, quiet fireflies, passing train and scroll-away headline.
 - [x] Verify scroll movement, mobile controls and reduced-motion behavior.
+
+## Search micro-interactions
+- [ ] Add field, autocomplete, swap, calendar, class and passenger feedback.
+- [ ] Add magnetic search action, submit transition and validation shake.
+- [ ] Verify desktop, phone and reduced-motion interactions.
