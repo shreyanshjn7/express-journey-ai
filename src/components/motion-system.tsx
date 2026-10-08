@@ -32,7 +32,7 @@ export function MotionSystem() {
     function controlFor(target: EventTarget | null) {
       if (!(target instanceof Element)) return null;
       const element = target.closest<HTMLElement>(clickable);
-      if (!element || element.matches(':disabled, [aria-disabled="true"]')) return null;
+      if (!element || element.closest('[data-motion-owned="true"]') || element.matches(':disabled, [aria-disabled="true"]')) return null;
       return element;
     }
     function interact(element: HTMLElement | null, scale: number) {
@@ -46,7 +46,7 @@ export function MotionSystem() {
       const candidates = [...document.querySelectorAll<HTMLElement>(`${entrances}, ${sheets}`)];
       let index = 0;
       for (const element of candidates) {
-        if (seen.has(element) || !element.getClientRects().length) continue;
+        if (seen.has(element) || element.dataset["motionOwned"] === "true" || !element.getClientRects().length) continue;
         // The home sequence owns its entrances; delegation still owns interaction feedback.
         if (element.closest('[data-home-entrance]') && !element.matches('.site-footer') && !element.matches(sheets)) continue;
         seen.add(element);
