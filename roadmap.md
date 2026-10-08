@@ -84,3 +84,8 @@
 - [x] Add scroll entrances, lift, drawn border, traveling train dot and spotlight.
 - [x] Fly city values into the fields, scroll to search and glow the fields.
 - [x] Verify desktop, phone and reduced motion.
+
+## Compact phone search card
+- [x] Combine From and To into one block with two single-line rows, thin divider and swap on the right edge.
+- [x] Put the date on one row with Today and Tomorrow chips; card padding 16px, row gap 8px, radius 20px.
+- [x] Verify 393px, desktop 1280px, reduced motion and the pinned button layering.
