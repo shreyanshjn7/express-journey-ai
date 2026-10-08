@@ -10,6 +10,9 @@ import heroWebp from "@/assets/midnight-lake.webp.asset.json";
 import heroPlaceholder from "@/assets/midnight-lake-placeholder.webp.asset.json";
 import { useHomeEntrance } from "@/hooks/use-home-entrance";
 import { HeroAtmosphere, useHeroDepth } from "@/components/hero-depth";
+import { AnimatePresence, LayoutGroup, motion, DrawnCheck, SelectionMark, RollingNumber, SearchAction, SearchCalendarDay, useSearchMicroMotion } from "@/components/search-motion";
+import { useReducedMotion } from "framer-motion";
+import { motionTokens, searchMotion } from "@/lib/motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({ links: [
@@ -79,14 +82,14 @@ const shortName = (name: string) => findStation(name)?.city ?? name;
 function editDistance(a: string, b: string) {
   const row = Array.from({ length: b.length + 1 }, (_, i) => i);
   for (let i = 1; i <= a.length; i++) {
-    let prev = row[0]!; row[0] = i;
+    let prev = (row[0] ?? 0); row[0] = i;
     for (let j = 1; j <= b.length; j++) {
-      const tmp = row[j]!;
-      row[j] = Math.min(row[j]! + 1, row[j - 1]! + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+      const tmp = (row[j] ?? 0);
+      row[j] = Math.min((row[j] ?? 0) + 1, (row[j - 1] ?? 0) + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
       prev = tmp;
     }
   }
-  return row[b.length]!;
+  return (row[b.length] ?? 0);
 }
 
 /** Ranks stations by code, name, city, then typo-tolerant similarity. */
@@ -129,6 +132,7 @@ type StationFieldProps = {
 
 function StationField({ id, label, hint, errorText, placeholder, value, invalid, recent, onChange }: StationFieldProps) {
   const [open, setOpen] = useState(false);
+  const reduced = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(-1);
   const query = value.trim();
   const groups: { title: string; items: Station[] }[] = [];
@@ -169,10 +173,11 @@ function StationField({ id, label, hint, errorText, placeholder, value, invalid,
   let running = -1;
   return (
     <div className={`station-field ${id}-field pop${invalid ? " field-invalid" : ""}${open ? " sheet-open" : ""}`}>
-      <label htmlFor={id}><MapPin size={15} /> {label}</label>
+      <span className="field-focus-glow" aria-hidden="true" /><label htmlFor={id}><MapPin size={15} /> {label}</label>
       <button type="button" className="sheet-close" aria-label="Close station search" onMouseDown={(event) => event.preventDefault()} onClick={() => { setOpen(false); (document.activeElement as HTMLElement | null)?.blur(); }}><X size={20} /></button>
       <input
         id={id}
+        maxLength={100}
         value={value}
         onChange={(event) => { onChange(event.target.value); setOpen(true); setActiveIndex(-1); }}
         onFocus={() => setOpen(true)}
@@ -187,9 +192,10 @@ function StationField({ id, label, hint, errorText, placeholder, value, invalid,
         aria-invalid={invalid}
         aria-describedby={`${id}-hint`}
       />
-      <span id={`${id}-hint`} className="field-hint">{invalid ? <><AlertCircle size={15} aria-hidden="true" /> {errorText}</> : (findStation(value) ? `${findStation(value)!.code} · ${findStation(value)!.city}` : hint)}</span>
+      <motion.span key={invalid ? "error" : "hint"} initial={invalid && !reduced ? { y: -8, opacity: 0 } : false} animate={{ y: 0, opacity: 1 }} transition={{ duration: motionTokens.duration.micro }} id={`${id}-hint`} className="field-hint">{invalid ? <><AlertCircle size={15} aria-hidden="true" /> {errorText}</> : (findStation(value) ? `${findStation(value)?.code} · ${findStation(value)?.city}` : hint)}</motion.span>
+      <AnimatePresence>
       {open && flat.length > 0 && (
-        <div id={`${id}-suggestions`} className="station-suggestions" role="listbox">
+        <motion.div key="suggestions" data-motion-owned="true" initial={{ scaleY: reduced ? 1 : 0.85, opacity: reduced ? 1 : 0 }} animate={{ scaleY: 1, opacity: 1 }} exit={{ scaleY: reduced ? 1 : 0.95, opacity: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro, ease: motionTokens.easing.entrance }} id={`${id}-suggestions`} className="station-suggestions" role="listbox"><LayoutGroup id={`${id}-suggestions`}>
           {groups.map((group) => (
             <div key={group.title} role="group" aria-label={group.title || "Stations"}>
               {group.title && <div className="suggestion-group">{group.title === "Recent" ? <History size={12} /> : null}{group.title}</div>}
@@ -197,6 +203,7 @@ function StationField({ id, label, hint, errorText, placeholder, value, invalid,
                 running += 1;
                 const index = running;
                 return (
+                  <motion.div key={station.code} className="suggestion-motion-row" initial={{ y: reduced ? 0 : -6, opacity: reduced ? 1 : 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro, delay: reduced ? 0 : index * searchMotion.suggestionStagger }}>
                   <Button
                     id={`${id}-option-${index}`}
                     key={station.code}
@@ -209,14 +216,15 @@ function StationField({ id, label, hint, errorText, placeholder, value, invalid,
                     onMouseEnter={() => setActiveIndex(index)}
                     onClick={() => choose(station)}
                   >
-                    <MapPin size={14} /><span className="suggestion-name">{station.name}<small>{station.city}</small></span><span className="suggestion-code">{station.code}</span>
-                  </Button>
+                    {activeIndex === index && <SelectionMark id="station-highlight" />}<MapPin size={14} /><span className="suggestion-name">{station.name}<small>{station.city}</small></span><span className="suggestion-code">{station.code}</span>
+                  </Button></motion.div>
                 );
               })}
             </div>
           ))}
-        </div>
+        </LayoutGroup></motion.div>
       )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -254,6 +262,12 @@ function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [quota, setQuota] = useState("General");
   const [swapTurns, setSwapTurns] = useState(0);
+  const [validationAttempt, setValidationAttempt] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const submittingRef = useRef(false);
+  const [counterDirection, setCounterDirection] = useState(1);
+  const reduced = useReducedMotion();
+  const { swapNames, leaveSearch } = useSearchMicroMotion(homeRef, swapTurns, validationAttempt);
   const [recent, setRecent] = useState<string[]>([]);
   const [lastSearch, setLastSearch] = useState<{ from: string; to: string; date: string } | null>(null);
   useEffect(() => {
@@ -265,18 +279,24 @@ function Index() {
     } catch { /* ignore corrupt storage */ }
   }, []);
   const navigate = useNavigate();
-  function submit(event: FormEvent) {
+  async function submit(event: FormEvent) {
     event.preventDefault();
+    if (submittingRef.current) return;
     const invalid = { source: !source.trim(), destination: !destination.trim(), date: !date };
     setInvalidFields(invalid);
+    setValidationAttempt(attempt => attempt + 1);
     if (invalid.source || invalid.destination || invalid.date) { setError("Fill in the highlighted fields to search."); return; }
     if (source.trim().toLowerCase() === destination.trim().toLowerCase()) { setError("Choose a destination different from your departure."); return; }
+    if (!date) return;
+    submittingRef.current = true;
+    setSubmitting(true);
     setError("");
     const nextRecent = [destination.trim(), source.trim(), ...recent.filter((r) => r !== source.trim() && r !== destination.trim())].slice(0, 5);
     setRecent(nextRecent);
     const search = { from: source.trim(), to: destination.trim(), date: date ? date.toISOString() : "" };
     try { window.localStorage.setItem("rd-recent-stations", JSON.stringify(nextRecent)); window.localStorage.setItem("rd-last-search", JSON.stringify(search)); } catch { /* storage unavailable */ }
-    navigate({ to: "/trains", search: { from: source.trim(), to: destination.trim(), date: format(date!, "yyyy-MM-dd"), cls: travelClass, pax: passengers, quota } });
+    await leaveSearch();
+    await navigate({ to: "/trains", search: { from: source.trim(), to: destination.trim(), date: format(date, "yyyy-MM-dd"), cls: travelClass, pax: passengers, quota } });
   }
   return (
     <div ref={homeRef} className="railway-app" data-home-entrance="pending">
@@ -320,28 +340,28 @@ function Index() {
 
           <div className="booking-area" id="booking">
             <div className="booking-intro reveal" style={{ ["--d" as string]: "550ms" }}><span><span className="mini-track" /> Start with the route. We'll find the trains.</span>{lastSearch ? <button type="button" className="last-search" aria-label={`Repeat last search: ${shortName(lastSearch.from)} to ${shortName(lastSearch.to)}`} onClick={() => { setSource(lastSearch.from); setDestination(lastSearch.to); const d = new Date(lastSearch.date); if (!Number.isNaN(d.getTime()) && d >= startOfDay(new Date())) setDate(startOfDay(d)); setInvalidFields({ source: false, destination: false, date: false }); setError(""); }}><History size={14} aria-hidden="true" /><span className="last-search-label">Last search</span> {shortName(lastSearch.from)} to {shortName(lastSearch.to)}{lastSearch.date && !Number.isNaN(new Date(lastSearch.date).getTime()) ? `, ${format(new Date(lastSearch.date), "EEE")}` : ""}</button> : <span className="booking-step">01 <span>/ ROUTE BASICS</span></span>}</div>
-            <form onSubmit={submit} className="booking-console">
+            <form onSubmit={submit} className={`booking-console${submitting ? " search-submitting" : ""}`} aria-busy={submitting}>
               <span className="booking-landing-surface" aria-hidden="true" />
               <span className="booking-landing-shadow" aria-hidden="true" />
               <div className="booking-form">
               <StationField id="source" label="From" hint="City, station or code" errorText="Choose where you're starting from" recent={recent} placeholder="Boarding station" value={source} invalid={invalidFields.source} onChange={(value) => { setSource(value); setInvalidFields((fields) => ({ ...fields, source: false })); setError(""); }} />
-              <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" style={{ ["--spin" as string]: `${swapTurns * 180}deg` }} onClick={() => { setSource(destination); setDestination(source); setSwapTurns((t) => t + 1); }}><ArrowDownUp size={18} /></Button>
+              <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" onClick={() => { swapNames(); setSource(destination); setDestination(source); setInvalidFields({ source: false, destination: false, date: false }); setError(""); setSwapTurns((t) => t + 1); }}><span className="swap-glyph"><ArrowDownUp size={18} /></span></Button>
               <StationField id="destination" label="To" hint="City, station or code" errorText="Choose where you're going" recent={recent} placeholder="Destination city" value={destination} invalid={invalidFields.destination} onChange={(value) => { setDestination(value); setInvalidFields((fields) => ({ ...fields, destination: false })); setError(""); }} />
-              <Button variant="date" type="button" aria-label="Open travel calendar" aria-haspopup="dialog" className={invalidFields.date ? "field-invalid" : ""} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-label"><CalendarDays size={15} /> Date</span><span className="date-value">{date ? format(date, "dd MMM yyyy") : "Pick a date"}</span><span className="field-hint">{invalidFields.date ? <><AlertCircle size={15} aria-hidden="true" /> Pick a travel date</> : date ? format(date, "EEEE") : "Open the calendar"}</span></Button>
+              <Button variant="date" type="button" aria-label="Open travel calendar" aria-haspopup="dialog" className={invalidFields.date ? "field-invalid" : ""} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-focus-glow" aria-hidden="true" /><span className="field-label"><CalendarDays size={15} /> Date</span><span className="date-value">{date ? format(date, "dd MMM yyyy") : "Pick a date"}</span><span className="field-hint">{invalidFields.date ? <><AlertCircle size={15} aria-hidden="true" /> Pick a travel date</> : date ? format(date, "EEEE") : "Open the calendar"}</span></Button>
               </div>
-            {error && <p className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</p>}
+            <AnimatePresence>{error && <motion.p key={validationAttempt} initial={{ y: reduced ? 0 : -8, opacity: reduced ? 1 : 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }} className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</motion.p>}</AnimatePresence>
             <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
               <div className="controls-panel">
                 <span className="controls-label">Class:</span>
-                <div className="vibe-chips" role="radiogroup" aria-label="Travel class">
-                  {classes.map(({ name, tip }) => <Button variant="ghost" key={name} type="button" role="radio" aria-checked={travelClass === name} aria-describedby={`tip-${name}`} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{travelClass === name && <Check size={14} aria-hidden="true" />}{name}<span id={`tip-${name}`} role="tooltip" className="class-tip">{tip}</span></Button>)}
-                </div>
+                <LayoutGroup id="search-class"><div className="vibe-chips" role="radiogroup" aria-label="Travel class">
+                  {classes.map(({ name, tip }) => <Button variant="ghost" key={name} type="button" role="radio" aria-checked={travelClass === name} aria-describedby={`tip-${name}`} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{travelClass === name && <SelectionMark id="class-highlight" />}<span className="class-choice-content"><span className="class-check-slot">{travelClass === name && <DrawnCheck />}</span>{name}</span><span id={`tip-${name}`} role="tooltip" className="class-tip">{tip}</span></Button>)}
+                </div></LayoutGroup>
                 <span className="controls-divider" aria-hidden="true" />
-                <div className="crew-stepper"><Users size={15} /><span>Passengers</span><Button variant="ghost" size="icon" type="button" aria-label="Fewer passengers" disabled={passengers <= 1} onClick={() => setPassengers(c => Math.max(1, c - 1))}><Minus size={16} /></Button><strong key={passengers} aria-live="polite">{passengers}</strong><Button variant="ghost" size="icon" type="button" aria-label="More passengers" disabled={passengers >= 9} onClick={() => setPassengers(c => Math.min(9, c + 1))}><Plus size={16} /></Button></div>
+                <div className="crew-stepper"><Users size={15} /><span>Passengers</span><Button variant="ghost" size="icon" type="button" aria-label="Fewer passengers" disabled={passengers <= 1} onClick={() => { setCounterDirection(-1); setPassengers(c => Math.max(1, c - 1)); }}><Minus size={16} /></Button><RollingNumber value={passengers} direction={counterDirection} /><Button variant="ghost" size="icon" type="button" aria-label="More passengers" disabled={passengers >= 9} onClick={() => { setCounterDirection(1); setPassengers(c => Math.min(9, c + 1)); }}><Plus size={16} /></Button></div>
                 <span className="controls-divider" aria-hidden="true" />
                 <label className="quota-field"><span className="controls-label">Quota</span><span className="quota-select"><select value={quota} onChange={(e) => setQuota(e.target.value)} aria-label="Quota">{["General", "Tatkal", "Ladies", "Senior Citizen"].map((q) => <option key={q} value={q}>{q}</option>)}</select><ChevronDown size={16} aria-hidden="true" /></span></label>
               </div>
-               <Button variant="journey" type="submit"><span className="journey-title">Find my train</span><ArrowRight size={18} aria-hidden="true" /></Button>
+               <SearchAction busy={submitting} />
             </div>
             </form>
           </div>
@@ -396,7 +416,9 @@ function Index() {
       </section>
       <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "No plan? No problem. Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class, ${quota} quota, for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
       <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
-        <DialogContent className="date-dialog" aria-label="Choose travel date">
+        <DialogContent className="date-dialog" data-motion-owned="true" aria-label="Choose travel date">
+          <motion.div className="calendar-motion-surface" initial={{ scale: reduced ? 1 : 0.96, opacity: reduced ? 1 : 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ ...motionTokens.spring.soft, duration: reduced ? 0 : motionTokens.duration.standard }}>
+          <LayoutGroup id="search-calendar">
           <div className="date-dialog-head"><span className="date-dialog-title">Travel Date</span><span className="date-dialog-nav" aria-hidden="true"><ArrowRight size={15} /></span></div>
           <div className="date-dialog-body">
             <div className="quick-dates" aria-label="Quick date choices">
@@ -404,7 +426,7 @@ function Index() {
                 { label: "Today", value: startOfDay(new Date()) },
                 { label: "Tomorrow", value: tomorrow },
                 { label: "This weekend", value: new Date().getDay() === 6 || new Date().getDay() === 0 ? startOfDay(new Date()) : nextSaturday(startOfDay(new Date())) },
-              ].map((option) => <Button key={option.label} variant="ghost" type="button" className={draftDate && format(draftDate, "yyyy-MM-dd") === format(option.value, "yyyy-MM-dd") ? "active" : ""} onClick={() => setDraftDate(option.value)}>{option.label}</Button>)}
+              ].map((option) => <Button key={option.label} variant="ghost" type="button" className={draftDate && format(draftDate, "yyyy-MM-dd") === format(option.value, "yyyy-MM-dd") ? "active" : ""} onClick={() => setDraftDate(option.value)}><motion.span key={`${option.label}-${draftDate?.getTime()}`} initial={reduced ? false : { scale: 0.95 }} animate={{ scale: 1 }} transition={motionTokens.spring.snappy}>{option.label}</motion.span></Button>)}
             </div>
             <Calendar
               mode="single"
@@ -414,13 +436,15 @@ function Index() {
               captionLayout="dropdown"
               startMonth={new Date()}
               endMonth={new Date(new Date().getFullYear() + 1, 11)}
-              className="rail-calendar"
+              className="rail-calendar micro-calendar"
+               components={{ DayButton: SearchCalendarDay }}
             />
           </div>
           <div className="date-dialog-actions">
             <Button variant="journey" type="button" className="date-confirm" disabled={!draftDate} onClick={() => { if (draftDate) { setDate(draftDate); setInvalidFields((fields) => ({ ...fields, date: false })); setError(""); } setCalendarOpen(false); }}>Confirm</Button>
             <Button variant="nav" type="button" className="date-cancel" onClick={() => setCalendarOpen(false)}>Cancel</Button>
           </div>
+          </LayoutGroup></motion.div>
         </DialogContent>
       </Dialog>
     </div>

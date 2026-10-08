@@ -17,6 +17,20 @@ export const motionTokens = {
 export const entranceFrames = { opacity: [0, 1], y: [motionTokens.distance.entrance, 0] };
 export const sheetFrames = { opacity: [0, 1], y: [motionTokens.distance.sheet, 0] };
 
+export const searchMotion = {
+  suggestionStagger: 0.03,
+  magneticLimit: 8,
+  swapRotation: 180,
+  shake: { x: [0, -6, 6, -6, 6, -6, 6, 0], duration: 0.3 },
+  shineInterval: 5,
+  submitPause: 0.5,
+} as const;
+
+export function magneticOffset(position: number, size: number) {
+  if (size <= 0) return 0;
+  return Math.max(-searchMotion.magneticLimit, Math.min(searchMotion.magneticLimit, (position / size - 0.5) * searchMotion.magneticLimit * 2));
+}
+
 /** Home-only choreography: the photo continues after the two-second UI reveal. */
 export const homeEntrance = {
   sessionKey: "rd-home-entrance-seen",

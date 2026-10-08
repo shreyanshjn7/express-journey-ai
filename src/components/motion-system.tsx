@@ -32,7 +32,7 @@ export function MotionSystem() {
     function controlFor(target: EventTarget | null) {
       if (!(target instanceof Element)) return null;
       const element = target.closest<HTMLElement>(clickable);
-      if (!element || element.matches(':disabled, [aria-disabled="true"]')) return null;
+      if (!element || element.matches('[data-motion-owned="true"], :disabled, [aria-disabled="true"]')) return null;
       return element;
     }
     function interact(element: HTMLElement | null, scale: number) {
@@ -46,7 +46,7 @@ export function MotionSystem() {
       const candidates = [...document.querySelectorAll<HTMLElement>(`${entrances}, ${sheets}`)];
       let index = 0;
       for (const element of candidates) {
-        if (seen.has(element) || !element.getClientRects().length) continue;
+        if (seen.has(element) || element.dataset["motionOwned"] === "true" || !element.getClientRects().length) continue;
         // The home sequence owns its entrances; delegation still owns interaction feedback.
         if (element.closest('[data-home-entrance]') && !element.matches('.site-footer') && !element.matches(sheets)) continue;
         seen.add(element);
@@ -100,7 +100,13 @@ export function MotionSystem() {
       }
     };
     const down = (event: PointerEvent) => { pressed = controlFor(event.target); interact(pressed, motionTokens.scale.press); };
-    const release = () => { interact(pressed, pressed === hovered ? motionTokens.scale.hover : motionTokens.scale.resting); pressed = null; };
+    const release = () => {
+      if (pressed?.matches('.crew-stepper button') && !preference.matches) {
+        interactions.get(pressed)?.stop();
+        track(animate(pressed, { scale: [motionTokens.scale.press, 1.05, motionTokens.scale.resting] }, { duration: motionTokens.duration.standard, ease: motionTokens.easing.entrance }));
+      } else interact(pressed, pressed === hovered ? motionTokens.scale.hover : motionTokens.scale.resting);
+      pressed = null;
+    };
     const keyDown = (event: KeyboardEvent) => {
       if (event.repeat || !["Enter", " "].includes(event.key)) return;
       const element = controlFor(event.target);

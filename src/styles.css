@@ -1245,6 +1245,62 @@ body { font-size: var(--text-body); line-height: 1.5; }
 }
 /* Lenis never replaces native touch scrolling or scrolling inside a picker. */
 html.lenis, html.lenis body { height: auto; }
+.booking-console { --search-focus-shadow: inset 0 0 0 2px var(--rd-marigold), 0 0 22px -8px color-mix(in oklch, var(--rd-marigold) 55%, transparent); --search-shine: color-mix(in oklch, var(--rd-white) 65%, transparent); }
+.booking-console .field-focus-glow { position: absolute; inset: 1px; border-radius: inherit; pointer-events: none; box-shadow: var(--search-focus-shadow); opacity: 0; transform: scale(.98); transition: opacity var(--motion-micro), transform var(--motion-standard); }
+.booking-console .station-field:focus-within, .booking-console .date-button:focus-visible { box-shadow: none; }
+.booking-console .station-field:focus-within > .field-focus-glow, .booking-console .date-button:focus-visible > .field-focus-glow { opacity: 1; transform: scale(1); }
+.booking-console .station-field label, .booking-console .field-label { transform-origin: left center; transition: transform var(--motion-standard) var(--motion-ease-entrance); letter-spacing: 0; }
+.booking-console .station-field:focus-within label, .booking-console .date-button:focus-visible .field-label { transform: translateY(-4px) scale(.96); }
+.booking-console .station-field input:focus-visible { box-shadow: none; }
+.booking-console .station-field.field-invalid, .booking-console .date-button.field-invalid { box-shadow: inset 0 0 0 2px var(--error); }
+.booking-console .field-invalid .field-focus-glow { opacity: 0; }
+.station-suggestions { transform-origin: top center; transition: none !important; }
+.suggestion-motion-row { position: relative; transition: none !important; }
+.station-suggestions button { position: relative; isolation: isolate; }
+.station-suggestions button > :not(.selection-highlight) { position: relative; z-index: 1; }
+.booking-console .station-suggestions button:hover, .booking-console .station-suggestions button.active, .booking-console .station-suggestions button[aria-selected="true"] { background: transparent; }
+.selection-highlight { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: var(--primary); z-index: 0; transition: none !important; }
+.station-suggestions .selection-highlight { background: var(--accent); }
+.booking-console .vibe-chip { position: relative; isolation: isolate; min-width: 60px; padding-inline: 8px; }
+.booking-console .vibe-chip.on { background: transparent; box-shadow: none; border-color: transparent; }
+.vibe-chip .selection-highlight { box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--primary); }
+.class-choice-content { display: inline-flex; align-items: center; gap: 4px; position: relative; z-index: 1; }
+.class-check-slot { width: 14px; height: 14px; display: inline-flex; flex: none; }
+.booking-console .drawn-check { display: block; }
+.motion-ready .booking-console .swap-button, .motion-ready .booking-console .swap-button:hover { rotate: var(--base); transition: none; }
+.swap-glyph { display: inline-flex; transition: none !important; }
+.swap-city-ghost { position: absolute; left: 24px; right: 40px; top: 58px; font-size: 22px; font-weight: 700; color: var(--foreground); white-space: nowrap; overflow: hidden; pointer-events: none; transition: none !important; }
+.destination-field .swap-city-ghost { left: 44px; }
+.booking-console .rolling-number { position: relative; display: inline-block; width: 24px; height: 28px; min-width: 24px; overflow: hidden; font-size: 18px; font-variant-numeric: tabular-nums; }
+.rolling-number > span:not(.sr-only) { position: absolute; inset: 0; display: grid; place-items: center; transition: none !important; }
+.search-action { position: relative; overflow: hidden; isolation: isolate; transition: none !important; }
+.search-action-label { position: relative; z-index: 1; display: grid; place-items: center; width: 160px; height: 24px; }
+.search-action-state { display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: none !important; }
+.search-action .search-arrow { transition: transform var(--motion-micro) var(--motion-ease-entrance); }
+.search-action:hover .search-arrow { transform: translateX(4px); }
+.button-shine { position: absolute; inset: -20px auto -20px 0; width: 35%; background: linear-gradient(100deg, transparent, var(--search-shine), transparent); pointer-events: none; transition: none !important; }
+.search-spinner { animation: search-spin .8s linear infinite; }
+.booking-console .search-action .search-spinner, .booking-console .search-action:hover .search-spinner { transition: none; }
+@keyframes search-spin { to { transform: rotate(360deg); } }
+.search-submitting .booking-form, .search-submitting .controls-panel { pointer-events: none; }
+.calendar-motion-surface { display: flex; flex-direction: column; min-height: 0; transition: none !important; }
+.date-dialog .quick-dates button > span { display: inline-block; transition: none !important; }
+.micro-calendar button[data-day] { position: relative; isolation: isolate; }
+.date-selection-highlight { position: absolute; inset: 2px; border-radius: 50%; background: var(--primary); pointer-events: none; z-index: 0; transition: none !important; }
+.selection-content { position: relative; z-index: 1; }
+.date-dialog .micro-calendar button[data-selected-single="true"] { background: transparent !important; }
+@media (max-width: 760px) {
+  .calendar-motion-surface { flex: 1; }
+  .calendar-motion-surface .date-dialog-body { flex: 1; }
+  .booking-console .station-field.sheet-open label { transform: none; }
+  .booking-console .station-field.sheet-open .field-focus-glow { display: none; }
+  .swap-city-ghost, .destination-field .swap-city-ghost { left: 20px; top: 43px; font-size: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .search-spinner { animation: none !important; }
+  .button-shine { display: none; }
+  .booking-console .station-field:focus-within label, .booking-console .date-button:focus-visible .field-label, .search-action:hover .search-arrow { transform: none; }
+}
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
