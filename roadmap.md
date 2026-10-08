@@ -1,5 +1,10 @@
 # Roadmap
 
+## Booking-flow motion
+- [ ] Connect search-to-summary morph and fade-in results.
+- [ ] Animate train entrances, fares, chips, expansion and loading placeholders.
+- [ ] Animate step progress and mobile fare changes; verify reduced motion.
+
 ## Marquee motion upgrade
 - [x] Add eased continuous motion, scroll-speed boost and 2–3 degree skew.
 - [x] Add city hover emphasis, ripple and destination-field flight.
