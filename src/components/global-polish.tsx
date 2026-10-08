@@ -87,11 +87,34 @@ export function ThemeToggle({ theme, onChange }: { theme: "light" | "dark"; onCh
     finally { busy.current = false; document.documentElement.classList.remove("theme-revealing"); }
   }
   const transition = { duration: reduced ? 0 : motionTokens.duration.standard, ease: motionTokens.easing.entrance };
+  // Sun and crescent morph by cross-fading with a rotate + scale transition;
+  // each glyph stays inside the 24-unit view box so nothing is clipped.
   return <Button variant="ghost" type="button" className="theme-toggle" aria-label={dark ? "Switch to light theme" : "Switch to dark theme"} title={dark ? "Light theme" : "Dark theme"} onClick={event => void toggle(event.currentTarget)}>
-    <motion.svg className="theme-glyph" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" initial={false} animate={{ rotate: dark ? 0 : -35 }} transition={transition}>
-      <defs><mask id="theme-moon-mask"><rect width="24" height="24" className="theme-mask-paper" /><motion.circle r="6" className="theme-mask-cutout" initial={false} animate={{ cx: dark ? 26 : 15, cy: dark ? -2 : 7 }} transition={transition} /></mask></defs>
-      <motion.circle cx="12" cy="12" fill="currentColor" mask="url(#theme-moon-mask)" initial={false} animate={{ r: dark ? 5 : 8 }} transition={transition} />
-      <motion.g initial={false} animate={{ opacity: dark ? 1 : 0, scale: dark ? 1 : 0.5 }} style={{ transformOrigin: "12px 12px" }} transition={transition} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" /></motion.g>
-    </motion.svg>
+    <svg className="theme-glyph" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <motion.g
+        initial={false}
+        animate={dark ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.55, rotate: -45 }}
+        style={{ transformOrigin: "12px 12px" }}
+        transition={transition}
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+      </motion.g>
+      <motion.g
+        initial={false}
+        animate={dark ? { opacity: 0, scale: 0.55, rotate: 45 } : { opacity: 1, scale: 1, rotate: 0 }}
+        style={{ transformOrigin: "12px 12px" }}
+        transition={transition}
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      >
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.4 5.4l1.7 1.7M16.9 16.9l1.7 1.7M5.4 18.6l1.7-1.7M16.9 7.1l1.7-1.7" />
+      </motion.g>
+    </svg>
   </Button>;
 }
