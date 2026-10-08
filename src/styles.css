@@ -209,6 +209,7 @@
   --error: oklch(0.543 0.174 29.7);         /* #C0392B */
 
   --background: var(--rd-cream);
+  --hero-fade-to: var(--rd-cream); /* gradient target below the hero; .dark swaps it to the hero ink */
   --foreground: var(--rd-indigo);
   --card: var(--rd-white);
   --card-foreground: var(--rd-indigo);
@@ -290,7 +291,7 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .railway-app { width: 100%; min-height: 100svh; margin: auto; padding: 0 40px; overflow: clip; display: flex; flex-direction: column; }
 .railway-app > main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .site-header, .site-footer, .route-marquee { width: 100%; max-width: 1200px; margin-inline: auto; flex-shrink: 0; }
-.site-header { height: 88px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 24px; position: relative; z-index: 5; }
+.site-header { height: 64px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 24px; position: relative; z-index: 5; }
 .wordmark { display: inline-flex; align-items: center; text-decoration: none; }
 .wordmark-type { display: block; font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1; white-space: nowrap; color: var(--foreground); letter-spacing: 0; }
 .wordmark-daddy { display: inline-block; color: var(--foreground); transform: skewX(-7deg); }
@@ -598,7 +599,7 @@ h1 .line:first-child > span { color: var(--foreground); }
 .hero-content { max-width: 100%; }
 .headline-star { display: none; }
 .hero-eyebrow, .booking-intro { display: none; }
-.journey-stage { gap: 16px; padding: 26px 0 20px; }
+.journey-stage { gap: 16px; padding: 2px 0 20px; }
 .lights-backdrop { object-position: center center; }
 .stage-shade {
   background: linear-gradient(180deg, var(--background), transparent 30%, transparent 70%, var(--background)),
@@ -737,7 +738,7 @@ h1 .line:first-child > span { color: var(--foreground); }
   .journey-button .journey-arrow { color: var(--foreground); }
 }
 @media (min-width: 761px) and (max-height: 650px) {
-  .site-header { height: 72px; }
+  .site-header { height: 56px; }
   .journey-stage { min-height: 300px; padding-block: 16px; gap: 24px; }
   .site-footer { padding-block: 16px; }
 }
@@ -815,7 +816,10 @@ h1 .line:first-child > span { color: var(--foreground); }
 }
 body { font-size: var(--text-body); line-height: 1.5; }
 .railway-app { background: var(--background); color: var(--foreground); }
-.hero-dark { position: relative; flex: 1; display: flex; flex-direction: column; min-height: min(100svh, 860px); background: var(--background); color: var(--foreground); box-shadow: 0 0 0 100vmax var(--background); clip-path: inset(0 -100vmax); }
+.dark { --hero-fade-to: var(--rd-hero); }
+.hero-dark { position: relative; flex: 1; display: flex; flex-direction: column; min-height: min(85svh, 780px); background: var(--background); color: var(--foreground); box-shadow: 0 0 0 100vmax var(--background); clip-path: inset(0 -100vmax); }
+/* Soft fade from the dark hero into the light section below (about 120px). */
+.hero-dark::after { content: ''; position: absolute; left: -100vmax; right: -100vmax; bottom: 0; height: 120px; z-index: 1; pointer-events: none; background: linear-gradient(180deg, transparent, var(--hero-fade-to)); }
 .hero-dark > main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .content-light { position: relative; padding: var(--space-5) 0 0; display: flex; flex-direction: column; gap: var(--space-1); }
 .content-light .popular-routes { padding: 0; }
