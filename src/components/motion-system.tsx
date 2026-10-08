@@ -47,6 +47,8 @@ export function MotionSystem() {
       let index = 0;
       for (const element of candidates) {
         if (seen.has(element) || !element.getClientRects().length) continue;
+        // The home sequence owns its entrances; delegation still owns interaction feedback.
+        if (element.closest('[data-home-entrance]') && !element.matches('.site-footer') && !element.matches(sheets)) continue;
         seen.add(element);
         if (preference.matches) continue;
         const isSheet = element.matches(sheets);
