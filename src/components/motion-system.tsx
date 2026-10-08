@@ -100,7 +100,13 @@ export function MotionSystem() {
       }
     };
     const down = (event: PointerEvent) => { pressed = controlFor(event.target); interact(pressed, motionTokens.scale.press); };
-    const release = () => { interact(pressed, pressed === hovered ? motionTokens.scale.hover : motionTokens.scale.resting); pressed = null; };
+    const release = () => {
+      if (pressed?.matches('.crew-stepper button') && !preference.matches) {
+        interactions.get(pressed)?.stop();
+        track(animate(pressed, { scale: [motionTokens.scale.press, 1.05, motionTokens.scale.resting] }, { duration: motionTokens.duration.standard, ease: motionTokens.easing.entrance }));
+      } else interact(pressed, pressed === hovered ? motionTokens.scale.hover : motionTokens.scale.resting);
+      pressed = null;
+    };
     const keyDown = (event: KeyboardEvent) => {
       if (event.repeat || !["Enter", " "].includes(event.key)) return;
       const element = controlFor(event.target);
