@@ -286,6 +286,7 @@ function Index() {
   const [dialog, setDialog] = useState<"journey" | "ai" | "about" | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [quota, setQuota] = useState("General");
+  const [prefsOpen, setPrefsOpen] = useState(false);
   const [swapTurns, setSwapTurns] = useState(0);
   const [validationAttempt, setValidationAttempt] = useState(0);
   const [submitting, setSubmitting] = useState(false);
