@@ -1564,6 +1564,10 @@ html.lenis, html.lenis body { height: auto; }
   }
   .hero-dark .quota-field { scroll-margin-bottom: 96px; }
 }
+@media (max-width: 640px) {
+  .hero-dark .site-header { gap: 16px; }
+  .hero-dark .header-actions { gap: 8px; }
+}
 
 /* Anchored travel date panel */
 .booking-console .date-button.date-open > .field-focus-glow { opacity: 1; transform: scale(1); }
