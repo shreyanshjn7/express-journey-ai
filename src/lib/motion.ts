@@ -1,15 +1,34 @@
 /** Single source of truth: seconds for Framer Motion/Lenis, pixels for travel. */
+export const motionPerformance = { mobileBreakpoint: 760, mobileDurationScale: 0.8, targetFps: 60 } as const;
+
+export function motionDuration(seconds: number, mobile = typeof window !== "undefined" && window.matchMedia(`(max-width: ${motionPerformance.mobileBreakpoint}px)`).matches) {
+  return seconds * (mobile ? motionPerformance.mobileDurationScale : 1);
+}
+
+/** Runtime getters preserve desktop constants while scaling every consumer, including timers. */
+function timed<T extends Record<string, number>>(values: T): T {
+  const result = { ...values };
+  for (const key of Object.keys(values)) {
+    Object.defineProperty(result, key, { enumerable: true, get: () => motionDuration(values[key] ?? 0) });
+  }
+  return result;
+}
+
+function spring(stiffness: number, damping: number) {
+  return { type: "spring" as const, get stiffness() { return stiffness / motionDuration(1) ** 2; }, get damping() { return damping / motionDuration(1); } };
+}
+
 export const motionTokens = {
   easing: {
     entrance: [0.16, 1, 0.3, 1] as const,
     transition: [0.76, 0, 0.24, 1] as const,
   },
   spring: {
-    soft: { type: "spring" as const, stiffness: 120, damping: 18 },
-    snappy: { type: "spring" as const, stiffness: 300, damping: 24 },
+    soft: spring(120, 18),
+    snappy: spring(300, 24),
   },
-  duration: { micro: 0.15, standard: 0.35, entrance: 0.7, hero: 1.1 },
-  stagger: 0.07,
+  duration: timed({ micro: 0.15, standard: 0.35, entrance: 0.7, hero: 1.1 }),
+  get stagger() { return motionDuration(0.07); },
   distance: { entrance: 20, sheet: 16 },
   scale: { hover: 1.01, press: 0.97, resting: 1 },
 } as const;
@@ -19,7 +38,7 @@ export const sheetFrames = { opacity: [0, 1], y: [motionTokens.distance.sheet, 0
 
 export const polishMotion = {
   revealRise: 20,
-  releaseSpring: { type: "spring" as const, stiffness: 300, damping: 14 },
+  releaseSpring: spring(300, 14),
   cursor: { dot: 5, ring: 28, expanded: 44, trail: 0.085 },
 } as const;
 
@@ -28,27 +47,24 @@ export function themeRevealRadius(x: number, y: number, width: number, height: n
 }
 
 export const searchMotion = {
-  suggestionStagger: 0.03,
+  get suggestionStagger() { return motionDuration(0.03); },
   magneticLimit: 8,
   swapRotation: 180,
-  shake: { x: [0, -6, 6, -6, 6, -6, 6, 0], duration: 0.3 },
-  shineInterval: 5,
-  submitPause: 0.5,
+  shake: { x: [0, -6, 6, -6, 6, -6, 6, 0], get duration() { return motionDuration(0.3); } },
+  get shineInterval() { return motionDuration(5); },
+  get submitPause() { return motionDuration(0.5); },
 } as const;
 
-export const routeMotion = { rise: 20, lift: -4, stagger: 0.07, flight: 0.7, glow: 0.7, train: 1.4 } as const;
+export const routeMotion = { rise: 20, lift: -4, ...timed({ stagger: 0.07 }) , get stagger() { return motionDuration(0.07); }, get flight() { return motionDuration(0.7); }, get glow() { return motionDuration(0.7); }, get train() { return motionDuration(1.4); } } as const;
 
-export const bookingMotion = { cardStagger: 0.06, chipStagger: 0.06, count: 0.7, expand: 0.35, loadingPreview: 0.7, rail: 1.1, morph: 0.7 } as const;
+export const bookingMotion = timed({ cardStagger: 0.06, chipStagger: 0.06, count: 0.7, expand: 0.35, loadingPreview: 0.7, rail: 1.1, morph: 0.7 });
 
 export function bookingProgress(step: number) { return Math.max(0, Math.min(3, step)) / 3; }
 
-export const ticketMotion = {
-  rise: 24, tilt: -3, entrance: 0.7, tearDelay: 0.45, tear: 0.35,
-  checkDelay: 0.65, check: 0.35, sparks: 1.5,
-  qrDelay: 0.9, qr: 0.7, detailsDelay: 0.8, detailStagger: 0.08,
-} as const;
+const ticketTiming = timed({ entrance: 0.7, tearDelay: 0.45, tear: 0.35, checkDelay: 0.65, check: 0.35, sparks: 1.5, qrDelay: 0.9, qr: 0.7, detailsDelay: 0.8, detailStagger: 0.08 });
+export const ticketMotion = Object.assign(ticketTiming, { rise: 24, tilt: -3 });
 
-export const marqueeMotion = { speed: 36, settle: 0.35, boostDecay: 0.55, maxBoost: 3, maxSkew: 2.5, hoverScale: 1.08, flight: 0.7 } as const;
+export const marqueeMotion = { speed: 36, get settle() { return motionDuration(0.35); }, get boostDecay() { return motionDuration(0.55); }, maxBoost: 3, maxSkew: 2.5, hoverScale: 1.08, get flight() { return motionDuration(0.7); } } as const;
 
 export function marqueeScrollImpulse(velocity: number) {
   const strength = Math.min(1, Math.abs(velocity) / 1600);
@@ -67,14 +83,14 @@ export function magneticOffset(position: number, size: number) {
 /** Home-only choreography: the photo continues after the two-second UI reveal. */
 export const homeEntrance = {
   sessionKey: "rd-home-entrance-seen",
-  zoom: { from: 1.08, to: 1, duration: 8 },
-  header: { delay: 0.08, distance: -16 },
-  words: { delay: 0.25, stagger: 0.08, duration: 0.7 },
-  underline: { delay: 1.11, duration: 0.35 },
-  subhead: { delay: 0.65, distance: 20 },
-  card: { delay: 0.85, distance: 40, scale: 0.97, duration: 0.7 },
-  routes: { delay: 1.2, stagger: 0.08, duration: 0.55 },
-  marquee: { delay: 1.72, duration: 0.35 },
+  zoom: { from: 1.08, to: 1, get duration() { return motionDuration(8); } },
+  header: { get delay() { return motionDuration(0.08); }, distance: -16 },
+  words: timed({ delay: 0.25, stagger: 0.08, duration: 0.7 }),
+  underline: timed({ delay: 1.11, duration: 0.35 }),
+  subhead: { get delay() { return motionDuration(0.65); }, distance: 20 },
+  card: { get delay() { return motionDuration(0.85); }, distance: 40, scale: 0.97, get duration() { return motionDuration(0.7); } },
+  routes: timed({ delay: 1.2, stagger: 0.08, duration: 0.55 }),
+  marquee: timed({ delay: 1.72, duration: 0.35 }),
 } as const;
 
 export function claimHomeEntrance(storage: Pick<Storage, "getItem" | "setItem">, reducedMotion: boolean) {
@@ -92,8 +108,8 @@ export function expoEase(t: number) {
 export const heroDepth = {
   photoSpeed: 0.3,
   particles: 16,
-  particleDuration: 18,
-  trainInterval: 25,
+  get particleDuration() { return motionDuration(18); },
+  get trainInterval() { return motionDuration(25); },
   headlineScale: 0.94,
   headlineOpacity: 0.55,
 } as const;
@@ -112,8 +128,8 @@ export function heroScrollState(distance: number, height: number) {
 export const motionCssVariables = {
   "--motion-ease-entrance": `cubic-bezier(${motionTokens.easing.entrance.join(",")})`,
   "--motion-ease-transition": `cubic-bezier(${motionTokens.easing.transition.join(",")})`,
-  "--motion-micro": `${motionTokens.duration.micro}s`,
-  "--motion-standard": `${motionTokens.duration.standard}s`,
-  "--motion-entrance": `${motionTokens.duration.entrance}s`,
-  "--motion-hero": `${motionTokens.duration.hero}s`,
+  get "--motion-micro"() { return `${motionTokens.duration.micro}s`; },
+  get "--motion-standard"() { return `${motionTokens.duration.standard}s`; },
+  get "--motion-entrance"() { return `${motionTokens.duration.entrance}s`; },
+  get "--motion-hero"() { return `${motionTokens.duration.hero}s`; },
 } as const;
