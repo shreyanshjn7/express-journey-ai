@@ -31,7 +31,7 @@ export const useBookingTransition = () => useContext(FlowContext);
 export function BookingSummary({ children }: { children: ReactNode }) {
   const { land } = useBookingTransition();
   const reduced = useBookingReducedMotion();
-  useEffect(() => { const frame = requestAnimationFrame(() => land()); return () => cancelAnimationFrame(frame); }, []);
+  useEffect(() => { const timer = window.setTimeout(() => land(), bookingMotion.morph * 1000 + 50); return () => clearTimeout(timer); }, []);
   return <motion.div data-motion-owned="true" className="booking-summary" {...(reduced ? {} : { layoutId: "booking-summary" })} transition={{ duration: reduced ? 0 : bookingMotion.morph, ease: motionTokens.easing.transition }}>{children}</motion.div>;
 }
 

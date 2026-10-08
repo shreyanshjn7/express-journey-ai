@@ -303,7 +303,7 @@ function Index() {
     const consoleElement = homeRef.current?.querySelector<HTMLElement>('.booking-console');
     if (consoleElement) {
       begin(consoleElement, { from: source.trim(), to: destination.trim(), date: format(date, "yyyy-MM-dd"), cls: travelClass, pax: passengers, quota });
-      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+      await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
     }
     await navigate({ to: "/trains", search: { from: source.trim(), to: destination.trim(), date: format(date, "yyyy-MM-dd"), cls: travelClass, pax: passengers, quota } });
   }

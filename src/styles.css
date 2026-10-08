@@ -1026,7 +1026,7 @@ body { font-size: var(--text-body); line-height: 1.5; }
 .booking-summary-flight { position: fixed; z-index: 100; pointer-events: none; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 16px; background: var(--card); color: var(--foreground); border: 1px solid var(--border); border-radius: var(--radius-lg-ui); box-shadow: var(--shadow-soft); font-family: var(--font-body); }
 .count-fare { display: inline-block; min-width: 5.5ch; font-variant-numeric: tabular-nums; }
 .rolling-fare { position: relative; display: inline-block; overflow: hidden; height: 1.4em; min-width: 7ch; vertical-align: bottom; font-variant-numeric: tabular-nums; }
-.rolling-fare > span:not(.sr-only) { display: inline-block; }
+.rolling-fare > span:not(.sr-only) { display: block; position: absolute; top: 0; left: 0; line-height: 1.4; }
 .booking-loading { display: grid; gap: 16px; }
 .booking-rail-loader { position: relative; height: 24px; width: 100%; overflow: hidden; color: var(--muted-foreground); }
 .booking-rail-loader.compact { width: 120px; color: inherit; }
