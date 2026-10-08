@@ -32,7 +32,7 @@ export function BookingShell({ step, trip, back, children, bar }: {
               <li key={label} className={`flow-step ${state}`} aria-current={state === "current" ? "step" : undefined}>
                 <span className="flow-dot">{state === "done" ? <><DrawnCheck /><span className="sr-only">Completed</span></> : i + 1}</span>
                 <span className="flow-label">{label}</span>
-                {i < 3 && <span className="flow-connector" aria-hidden="true"><motion.span initial={false} animate={{ scaleX: bookingProgress(step) * 3 > i ? 1 : 0 }} transition={{ duration: reduced ? 0 : bookingMotion.morph, ease: motionTokens.easing.transition }} /></span>}
+                {i < 3 && <span className="flow-connector" aria-hidden="true"><motion.span initial={{ scaleX: reduced && i < step ? 1 : 0 }} animate={{ scaleX: bookingProgress(step) * 3 > i ? 1 : 0 }} transition={{ duration: reduced ? 0 : bookingMotion.morph, ease: motionTokens.easing.transition }} /></span>}
               </li>
             );
           })}
