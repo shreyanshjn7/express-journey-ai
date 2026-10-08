@@ -83,7 +83,7 @@ export function CityMarquee({ cities, destination, onChoose }: {
               <Button asChild variant="ghost" className={`marquee-city${destination === city ? " on" : ""}`} data-motion-owned="true" type="button" tabIndex={copy === 1 ? -1 : 0} aria-pressed={destination === city} aria-label={`Set destination to ${city}`} onClick={event => choose(city, key, event)}>
                 <motion.button animate={{ scale: reduced ? 1 : active ? marqueeMotion.hoverScale : 1, opacity: hovered && !active ? 0.5 : 1 }} transition={motionTokens.spring.soft} whileTap={reduced ? {} : { scale: motionTokens.scale.press }}
                   onHoverStart={() => setHovered(key)} onHoverEnd={() => setHovered(null)}
-                  onFocus={() => { setHovered(key); if (!reduced) { const item = run.current?.children[index]; if (item instanceof HTMLElement) x.set(-item.offsetLeft); } }}>
+                  onFocus={event => { setHovered(key); if (!reduced && event.currentTarget.matches(':focus-visible')) { const item = run.current?.children[index]; if (item instanceof HTMLElement) x.set(-item.offsetLeft); } }}>
                   <span className="marquee-city-text">{label}</span>
                   <AnimatePresence>{ripple?.key === key && <motion.span key={ripple.id} className="marquee-ripple" aria-hidden="true" style={{ left: ripple.x, top: ripple.y }} initial={{ scale: 0, opacity: 0.35 }} animate={{ scale: 12, opacity: 0 }} transition={{ duration: motionTokens.duration.entrance, ease: motionTokens.easing.entrance }} onAnimationComplete={() => setRipple(null)} />}</AnimatePresence>
                 </motion.button>
