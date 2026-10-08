@@ -25,10 +25,13 @@ export function useHeroDepth(ref: RefObject<HTMLDivElement | null>) {
       if (!stage || !track || !card) return;
       const bounds = stage.getBoundingClientRect();
       const cardBottom = card.getBoundingClientRect().bottom - bounds.top;
-      const gap = bounds.height - cardBottom;
+      const trackHeight = mobile.matches ? 60 : 84;
+      // On phones the sticky button covers the bottom 88px of the viewport.
+      const bottomLimit = mobile.matches ? Math.min(bounds.height, window.innerHeight - bounds.top - 88) : bounds.height;
+      const gap = bottomLimit - cardBottom;
       // Use only existing empty space; never move or resize the booking experience.
-      track.dataset['space'] = String(gap >= 84 + 12);
-      track.style.setProperty('--night-track-top', `${cardBottom + Math.max(6, (gap - 84) / 2)}px`);
+      track.dataset['space'] = String(gap >= trackHeight + 32);
+      track.style.setProperty('--night-track-top', `${cardBottom + Math.max(32, (gap - trackHeight) / 2)}px`);
     }
     function clearHints() {
       photo?.style.removeProperty('will-change'); headline?.style.removeProperty('will-change');

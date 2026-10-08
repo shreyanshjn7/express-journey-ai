@@ -719,10 +719,14 @@ h1 .line:first-child > span { color: var(--foreground); }
   .journey-stage { gap: 20px; }
   .lights-backdrop { inset: -6%; width: 112%; height: 112%; opacity: .35; object-position: 65% center; }
   .stage-shade { background: linear-gradient(180deg, var(--background), transparent 40%, var(--background)); }
-  .routes-head { margin-bottom: 8px; }
+  .popular-routes { margin-top: 24px; }
+  .routes-head { margin-bottom: 12px; }
   .routes-label { font-size: 17px; }
   .routes-sub { display: none; }
-  .routes-row { display: flex; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .routes-row { display: flex; overflow-x: auto; scrollbar-width: none; margin-inline: -8px; padding: 4px 8px 2px; scroll-padding-inline: 8px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .night-train-track { height: 60px; }
+  .night-train-track::after { top: 45px; }
+  .night-train-runner { scale: 0.7; transform-origin: left bottom; }
   .route-card { flex: 0 0 auto; min-width: 205px; padding: 12px 14px; border-radius: var(--radius-lg-ui); scroll-snap-align: start; }
   .booking-console { border-radius: var(--radius-lg-ui); }
   .station-field, .date-button { height: 86px; padding: 16px 20px; border-left: 0; border-radius: 0; }
