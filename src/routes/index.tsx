@@ -270,6 +270,14 @@ function Index() {
   const [swapTurns, setSwapTurns] = useState(0);
   const [validationAttempt, setValidationAttempt] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  const [ctaFloating, setCtaFloating] = useState(false);
+  useEffect(() => {
+    const controls = homeRef.current?.querySelector(".booking-controls");
+    if (!controls) return;
+    const observer = new IntersectionObserver(([entry]) => setCtaFloating(!entry.isIntersecting), { threshold: 0 });
+    observer.observe(controls);
+    return () => observer.disconnect();
+  }, []);
   const submittingRef = useRef(false);
   const [counterDirection, setCounterDirection] = useState(1);
   const reduced = useReducedMotion();
@@ -310,7 +318,7 @@ function Index() {
     await navigate({ to: "/trains", search: { from: source.trim(), to: destination.trim(), date: format(date, "yyyy-MM-dd"), cls: travelClass, pax: passengers, quota } });
   }
   return (
-    <div ref={homeRef} className="railway-app" data-home-entrance="pending">
+    <div ref={homeRef} className={`railway-app${ctaFloating ? " cta-floating" : ""}`} data-home-entrance="pending">
       <div className="hero-dark">
       <header className="site-header reveal" style={{ ["--d" as string]: "0ms" }}>
         <a href="/" className="wordmark" aria-label="Rail Daddy home"><span className="wordmark-type" aria-hidden="true">RAIL <span className="wordmark-daddy">D<span className="wordmark-wink">A</span>DDY</span><span className="wordmark-stop">.</span></span></a>
@@ -411,6 +419,7 @@ function Index() {
       </section>
       <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "No plan? No problem. Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class, ${quota} quota, for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
       <DatePanel open={calendarOpen} anchor={dateButtonRef} value={date} onClose={closeCalendar} onSelect={(d) => { setDate(d); setInvalidFields((fields) => ({ ...fields, date: false })); setError(""); }} />
+      <div className="cta-fade" aria-hidden="true" />
     </div>
   );
 }
