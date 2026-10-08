@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motionTokens, routeMotion } from "@/lib/motion";
+import { motionTokens, polishMotion, routeMotion } from "@/lib/motion";
 
 type RouteChoice = { from: string; to: string; fromLabel: string; toLabel: string; note: string };
 type Flight = { id: string; text: string; start: DOMRect; end: DOMRect };
@@ -52,8 +52,8 @@ export function RouteCard({ route, index, onChoose }: { route: RouteChoice; inde
 
   return <>
     <Button ref={ref} variant="ghost" asChild className="route-card" data-motion-owned="true" data-flying={flights.length > 0} type="button" onClick={choose} aria-label={`${route.fromLabel} to ${route.toLabel}, ${route.note}`}>
-      <motion.button initial={reduced ? false : { opacity: 0, y: routeMotion.rise }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: reduced ? 0 : motionTokens.duration.entrance, delay: reduced ? 0 : index * routeMotion.stagger, ease: motionTokens.easing.entrance }}
-        whileHover={reduced ? {} : { y: routeMotion.lift, transition: motionTokens.spring.soft }} whileTap={reduced ? {} : { scale: motionTokens.scale.press }}
+      <motion.button initial={reduced ? false : { opacity: 0, y: routeMotion.rise }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: reduced ? 0 : motionTokens.duration.entrance, delay: reduced ? 0 : index * routeMotion.stagger, ease: motionTokens.easing.entrance, scale: reduced ? { duration: 0 } : polishMotion.releaseSpring }}
+        whileHover={reduced ? {} : { y: routeMotion.lift, transition: motionTokens.spring.soft }} whileTap={reduced ? {} : { scale: motionTokens.scale.press, transition: motionTokens.spring.soft }}
         onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)} onFocus={() => setHovered(true)} onBlur={() => setHovered(false)}
         onPointerMove={event => { if (reduced || event.pointerType !== 'mouse') return; const bounds = event.currentTarget.getBoundingClientRect(); x.set(event.clientX - bounds.left - 90); y.set(event.clientY - bounds.top - 90); }}>
         <motion.span className="route-spotlight" aria-hidden="true" style={{ x: sx, y: sy }} animate={{ opacity: hovered && !reduced ? 1 : 0 }} transition={{ duration: motionTokens.duration.standard }} />

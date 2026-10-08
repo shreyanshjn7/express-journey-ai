@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { animate, type AnimationPlaybackControls } from "framer-motion";
-import { entranceFrames, expoEase, motionCssVariables, motionTokens, sheetFrames } from "@/lib/motion";
+import { entranceFrames, expoEase, motionCssVariables, motionTokens, polishMotion, sheetFrames } from "@/lib/motion";
 
 const clickable = 'button, a[href], select, input:not([type="hidden"]), label[for], summary, [role="button"]';
 const snappy = '[role="radio"], [role="switch"], .theme-toggle, .menu-toggle, .marquee-city, .seat, .quick-dates button, .rdp-day_button';
 // Never transform an ancestor of a fixed CTA or full-screen station picker.
-const entrances = '.site-header, .hero-eyebrow, .hero-content h1 .line > span, .hero-subhead, .booking-intro, .routes-head, .route-card, .site-footer, .flow-header, .flow-steps, .flow-title-row, .train-card, .flow-main > .flow-card, .pax-form > fieldset, .pay-grid > *, .info-bar, .info-head, .info-intro, .info-point, .info-closing';
+const entrances = '.site-header, .hero-eyebrow, .hero-content h1 .line > span, .hero-subhead, .booking-intro, .routes-head, .route-card, .city-marquee, .site-footer, .flow-header, .flow-steps, .flow-title-row, .train-card, .flow-main > .flow-card, .pax-form > fieldset, .pay-grid > *, .alternates, .coach, .info-bar, .info-head, .info-intro, .info-point, .info-closing, .info-trust, .info-cta';
 const sheets = '.mobile-menu, .station-suggestions, [role="dialog"], .station-field.sheet-open';
 
 /** Delegation also covers Radix portals, calendar days and controls mounted later. */
@@ -13,6 +13,9 @@ export function MotionSystem() {
   useEffect(() => {
     const root = document.documentElement;
     Object.entries(motionCssVariables).forEach(([key, value]) => root.style.setProperty(key, value));
+    root.style.setProperty("--cursor-dot-size", `${polishMotion.cursor.dot}px`);
+    root.style.setProperty("--cursor-ring-size", `${polishMotion.cursor.ring}px`);
+    root.style.setProperty("--cursor-expanded-scale", String(polishMotion.cursor.expanded / polishMotion.cursor.ring));
     root.classList.add("motion-ready");
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const seen = new WeakSet<Element>();
@@ -23,6 +26,18 @@ export function MotionSystem() {
     let stopScrolling: (() => void) | undefined;
     let disposed = false;
     let scrollGeneration = 0;
+    const pendingReveals = new Set<HTMLElement>();
+    const revealObserver = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting || !(entry.target instanceof HTMLElement)) continue;
+        const element = entry.target;
+        revealObserver.unobserve(element); pendingReveals.delete(element);
+        element.dataset["scrollReveal"] = "complete";
+        if (preference.matches) { element.style.removeProperty("opacity"); continue; }
+        const control = track(animate(element, { opacity: [0, 1], y: [polishMotion.revealRise, 0] }, { duration: motionTokens.duration.entrance, ease: motionTokens.easing.entrance }));
+        void control.finished.then(() => element.style.removeProperty("transform"));
+      }
+    }, { threshold: 0, rootMargin: "0px 0px -24px 0px" });
 
     function track(control: AnimationPlaybackControls) {
       active.add(control);
@@ -48,10 +63,17 @@ export function MotionSystem() {
       for (const element of candidates) {
         if (seen.has(element) || element.dataset["motionOwned"] === "true" || !element.getClientRects().length) continue;
         // The home sequence owns its entrances; delegation still owns interaction feedback.
-        if (element.closest('[data-home-entrance]') && !element.matches('.site-footer') && !element.matches(sheets)) continue;
+         const belowFold = element.getBoundingClientRect().top >= window.innerHeight || element.dataset["scrollReveal"] === "pending";
+         if (element.closest('[data-home-entrance]') && !element.matches('.site-footer') && !element.matches(sheets) && !belowFold) continue;
         seen.add(element);
         if (preference.matches) continue;
         const isSheet = element.matches(sheets);
+         if (belowFold && !isSheet) {
+           element.dataset["scrollReveal"] = "pending";
+           element.style.opacity = "0";
+           pendingReveals.add(element); revealObserver.observe(element);
+           continue;
+         }
         const isHero = element.matches('.hero-content h1 .line > span');
         track(animate(element, isSheet ? sheetFrames : entranceFrames, {
           duration: isSheet ? motionTokens.duration.standard : isHero ? motionTokens.duration.hero : motionTokens.duration.entrance,
@@ -101,9 +123,12 @@ export function MotionSystem() {
     };
     const down = (event: PointerEvent) => { pressed = controlFor(event.target); interact(pressed, motionTokens.scale.press); };
     const release = () => {
-      if (pressed?.matches('.crew-stepper button') && !preference.matches) {
+      if (pressed?.matches('button, [role="button"]') && !preference.matches) {
         interactions.get(pressed)?.stop();
-        track(animate(pressed, { scale: [motionTokens.scale.press, 1.05, motionTokens.scale.resting] }, { duration: motionTokens.duration.standard, ease: motionTokens.easing.entrance }));
+        const element = pressed;
+        const control = track(animate(element, { scale: element === hovered ? motionTokens.scale.hover : motionTokens.scale.resting }, polishMotion.releaseSpring));
+        interactions.set(element, control);
+        void control.finished.then(() => { if (interactions.get(element) === control) interactions.delete(element); });
       } else interact(pressed, pressed === hovered ? motionTokens.scale.hover : motionTokens.scale.resting);
       pressed = null;
     };
@@ -116,6 +141,8 @@ export function MotionSystem() {
     const keyUp = (event: KeyboardEvent) => { if (["Enter", " "].includes(event.key)) release(); };
     const change = () => {
       if (preference.matches) {
+        pendingReveals.forEach(element => { revealObserver.unobserve(element); element.style.removeProperty("opacity"); element.dataset["scrollReveal"] = "complete"; });
+        pendingReveals.clear();
         active.forEach((control) => control.complete());
         interactions.clear(); hovered = null; pressed = null;
         document.querySelectorAll<HTMLElement>(clickable).forEach((element) => element.style.removeProperty("transform"));
@@ -137,7 +164,7 @@ export function MotionSystem() {
     void configureScrolling();
     return () => {
       disposed = true;
-      observer.disconnect(); stopScrolling?.(); active.forEach((control) => control.stop());
+      observer.disconnect(); revealObserver.disconnect(); pendingReveals.forEach(element => element.style.removeProperty("opacity")); stopScrolling?.(); active.forEach((control) => control.stop());
       document.removeEventListener("pointerover", over);
       document.removeEventListener("pointerout", out);
       document.removeEventListener("pointerdown", down);

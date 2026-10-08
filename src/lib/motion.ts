@@ -17,6 +17,16 @@ export const motionTokens = {
 export const entranceFrames = { opacity: [0, 1], y: [motionTokens.distance.entrance, 0] };
 export const sheetFrames = { opacity: [0, 1], y: [motionTokens.distance.sheet, 0] };
 
+export const polishMotion = {
+  revealRise: 20,
+  releaseSpring: { type: "spring" as const, stiffness: 300, damping: 14 },
+  cursor: { dot: 5, ring: 28, expanded: 44, trail: 0.085 },
+} as const;
+
+export function themeRevealRadius(x: number, y: number, width: number, height: number) {
+  return Math.hypot(Math.max(x, width - x), Math.max(y, height - y));
+}
+
 export const searchMotion = {
   suggestionStagger: 0.03,
   magneticLimit: 8,
