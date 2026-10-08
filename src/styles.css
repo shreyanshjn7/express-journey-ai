@@ -772,9 +772,21 @@ h1 .line:first-child > span { color: var(--foreground); }
   .vibe-chip { height: 44px; min-width: 44px; font-size: 14px; }
   .crew-stepper { min-height: 44px; }
   .crew-stepper button { width: 44px; height: 44px; }
-  .booking-controls .journey-button { position: fixed; left: 16px; right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 40; height: 56px; width: auto; margin: 0; background: var(--primary); color: var(--primary-foreground); box-shadow: 0 14px 40px oklch(0 0 0 / 55%), 0 0 0 6px var(--background); }
+  .booking-controls .journey-button { height: 56px; width: auto; margin: 0; background: var(--primary); color: var(--primary-foreground); }
+  .cta-floating .booking-controls .journey-button { position: fixed; left: 16px; right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 40; box-shadow: 0 14px 40px oklch(0 0 0 / 55%); animation: cta-rise .35s cubic-bezier(.16,1,.3,1); }
+  .cta-floating .booking-controls::after { content: ''; height: 68px; }
   .booking-controls .journey-button > * { color: var(--primary-foreground); }
   .railway-app { padding-bottom: 96px; }
+  .cta-fade { display: none; }
+  .cta-floating .cta-fade { display: block; position: fixed; left: 0; right: 0; bottom: 0; height: 112px; z-index: 39; pointer-events: none; background: linear-gradient(180deg, transparent, var(--background) 62%); }
+  .site-footer { display: flex; flex-direction: column; gap: 24px; }
+  .footer-top { order: 1; flex-direction: column; gap: 14px; }
+  .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+  .scenic-link { order: 2; }
+  .trust-row { order: 3; flex-wrap: nowrap; }
+  .footer-note { order: 4; }
+  .footer-copy { order: 5; }
+  .footer-bottom { display: contents; }
 
   .station-field.sheet-open { position: fixed; inset: 0; z-index: 60; height: 100svh; border-radius: 0 !important; border: 0; padding: 20px 18px; background: var(--background); display: flex; flex-direction: column; gap: 10px; animation: sheet-up .32s cubic-bezier(.22,1,.36,1); }
   .station-field.sheet-open input { height: 56px; border-radius: var(--radius-lg-ui); padding: 0 16px; background: var(--card); border: 1px solid var(--primary); font-size: 20px; }
@@ -788,7 +800,8 @@ h1 .line:first-child > span { color: var(--foreground); }
   .date-dialog .quick-dates button, .date-dialog .rdp-day button, .date-dialog-actions button { min-height: 44px; }
 }
 @keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
-@media (prefers-reduced-motion: reduce) { .station-field.sheet-open, .date-dialog.date-dialog { animation: none; } }
+@keyframes cta-rise { from { transform: translateY(calc(100% + 24px)); } to { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .station-field.sheet-open, .date-dialog.date-dialog, .cta-floating .booking-controls .journey-button { animation: none; } }
 @media (max-width: 760px) {
   .booking-area, .booking-console, .booking-form, .booking-controls, .booking-controls .pop, .booking-form .pop, .booking-form .reveal { transform: none !important; animation: none !important; backdrop-filter: none !important; filter: none !important; }
   .booking-console { background: var(--console-surface); }
