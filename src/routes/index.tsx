@@ -414,7 +414,11 @@ function Index() {
               </span>
               </div>
               </div>
-            <AnimatePresence>{error && <motion.p key={validationAttempt} initial={{ y: reduced ? 0 : -8, opacity: reduced ? 1 : 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }} className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</motion.p>}</AnimatePresence>
+             <button type="button" className="prefs-summary" aria-haspopup="dialog" aria-expanded={prefsOpen} onClick={() => setPrefsOpen(true)}>
+               <span className="prefs-summary-text">{travelClass}<span className="prefs-dot" aria-hidden="true" />{passengers} passenger{passengers > 1 ? "s" : ""}<span className="prefs-dot" aria-hidden="true" />{quota}</span>
+               <ChevronDown size={16} aria-hidden="true" />
+             </button>
+             <AnimatePresence>{error && <motion.p key={validationAttempt} initial={{ y: reduced ? 0 : -8, opacity: reduced ? 1 : 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }} className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</motion.p>}</AnimatePresence>
              <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
               <div className="controls-panel">{prefsControls}</div>
                <SearchAction busy={submitting} />
