@@ -1670,3 +1670,9 @@ html.lenis, html.lenis body { height: auto; }
 
   .hero-dark .booking-console .booking-controls { padding: 12px 0 0; border-radius: 0; }
 }
+
+/* The pinned button lives inside the booking area's stacking context, so the area
+   must sit above the bottom fade while the button is floating. */
+@media (max-width: 760px) {
+  .railway-app.cta-floating .booking-area { z-index: 45; }
+}
