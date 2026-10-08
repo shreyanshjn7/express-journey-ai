@@ -57,14 +57,13 @@ export function RouteCard({ route, index, onChoose }: { route: RouteChoice; inde
         onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)} onFocus={() => setHovered(true)} onBlur={() => setHovered(false)}
         onPointerMove={event => { if (reduced || event.pointerType !== 'mouse') return; const bounds = event.currentTarget.getBoundingClientRect(); x.set(event.clientX - bounds.left - 90); y.set(event.clientY - bounds.top - 90); }}>
         <motion.span className="route-spotlight" aria-hidden="true" style={{ x: sx, y: sy }} animate={{ opacity: hovered && !reduced ? 1 : 0 }} transition={{ duration: motionTokens.duration.standard }} />
-        <svg className="route-border-draw" aria-hidden="true"><motion.rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="11" initial={false} animate={{ pathLength: hovered ? 1 : 0, opacity: hovered ? 1 : 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.standard, ease: motionTokens.easing.entrance }} /></svg>
+        <svg className="route-border-draw" aria-hidden="true"><motion.rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="12" initial={false} animate={{ pathLength: hovered ? 1 : 0, opacity: hovered ? 1 : 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.standard, ease: motionTokens.easing.entrance }} /></svg>
         <span className="route-names"><span data-city="source">{route.fromLabel}</span><span className="route-journey-track"><motion.span className="route-track-line" aria-hidden="true" animate={{ scaleX: hovered ? 1 : 0 }} transition={motionTokens.spring.snappy} /><ArrowRight size={14} /><motion.span className="route-train-dot" aria-hidden="true" animate={hovered && !reduced ? { x: [-9, 9], opacity: [0, 1, 1, 0] } : { x: -9, opacity: 0 }} transition={{ duration: routeMotion.train, repeat: hovered && !reduced ? Infinity : 0, ease: 'linear' }} /></span><span data-city="destination" className="route-to">{route.toLabel}</span><ArrowUpRight className="route-go" size={15} aria-hidden="true" /></span>
         <span className="route-note">{route.note}</span>
       </motion.button>
     </Button>
     {flights.length > 0 && createPortal(<div className="route-flight-layer" aria-hidden="true">{flights.map(flight => {
-      const rect = landing ? flight.end : flight.start;
-      return <motion.span key={flight.id} layoutId={`route-flight-${flight.id}`} className="route-flying-city" style={{ left: rect.left, top: rect.top, width: rect.width, height: rect.height }} transition={{ duration: routeMotion.flight, ease: motionTokens.easing.transition }}>{flight.text}</motion.span>;
+      return <motion.span key={flight.id} layoutId={`route-flight-${flight.id}`} className="route-flying-city" style={{ left: flight.start.left, top: flight.start.top, height: flight.start.height }} initial={{ x: 0, y: 0, scale: 1 }} animate={{ x: landing ? flight.end.left - flight.start.left : 0, y: landing ? flight.end.top - flight.start.top + (flight.end.height - flight.start.height) / 2 : 0, scale: landing ? 22 / 14 : 1 }} transition={{ duration: routeMotion.flight, ease: motionTokens.easing.transition }}>{flight.text}</motion.span>;
     })}</div>, document.body)}
   </>;
 }
