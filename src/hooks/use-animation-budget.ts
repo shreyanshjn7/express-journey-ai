@@ -20,6 +20,9 @@ export function useAnimationBudget() {
         const effect = animation.effect;
         if (!(effect instanceof KeyframeEffect) || !(effect.target instanceof Element)) continue;
         const element = effect.target;
+        // The train deliberately leaves the viewport between cycles; its hero observer
+        // owns pausing so an off-edge engine cannot strand the crossing animation.
+        if (element.matches('.night-train-runner')) continue;
         if (!observed.has(element)) { observed.add(element); observer.observe(element); }
         const hidden = document.hidden || visibility.get(element) === false;
         if (hidden && animation.playState === "running") { animation.pause(); paused.add(animation); }
