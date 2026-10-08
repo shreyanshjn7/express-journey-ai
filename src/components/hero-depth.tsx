@@ -10,6 +10,8 @@ export function useHeroDepth(ref: RefObject<HTMLDivElement | null>) {
     const photo = root?.querySelector<HTMLElement>('.hero-photo-depth');
     const headline = root?.querySelector<HTMLElement>('.hero-content h1');
     const train = root?.querySelector<HTMLElement>('.night-train-runner');
+    const track = root?.querySelector<HTMLElement>('.night-train-track');
+    const card = root?.querySelector<HTMLElement>('.booking-console');
     if (!root || !stage || !photo || !headline || !train) return;
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
     const mobile = window.matchMedia('(max-width: 760px)');
@@ -19,6 +21,15 @@ export function useHeroDepth(ref: RefObject<HTMLDivElement | null>) {
     let ready = false;
     let idleTimer = 0;
     const particles = [...root.querySelectorAll<HTMLElement>('.night-firefly')];
+    function placeTrain() {
+      if (!stage || !track || !card) return;
+      const bounds = stage.getBoundingClientRect();
+      const cardBottom = card.getBoundingClientRect().bottom - bounds.top;
+      const gap = bounds.height - cardBottom;
+      // Use only existing empty space; never move or resize the booking experience.
+      track.dataset['space'] = String(gap >= 84 + 12);
+      track.style.setProperty('--night-track-top', `${cardBottom + Math.max(6, (gap - 84) / 2)}px`);
+    }
     function clearHints() {
       photo?.style.removeProperty('will-change'); headline?.style.removeProperty('will-change');
       train?.style.removeProperty('will-change'); particles.forEach(particle => particle.style.removeProperty('will-change'));
@@ -49,6 +60,7 @@ export function useHeroDepth(ref: RefObject<HTMLDivElement | null>) {
       }
     }
     function configure() {
+      placeTrain();
       controls.forEach(control => control.stop());
       controls = [];
       clearHints();
@@ -67,9 +79,9 @@ export function useHeroDepth(ref: RefObject<HTMLDivElement | null>) {
         }, { duration: heroDepth.particleDuration + motionDuration(index % 6 * 2), delay: -(index * 1.3), repeat: Infinity, ease: 'easeInOut' }));
       });
       if (train && stage) controls.push(animate(train, {
-        x: [-280, -280, stage.clientWidth + 280, stage.clientWidth + 280],
-        opacity: [0, 0.17, 0.17, 0],
-      }, { duration: heroDepth.trainInterval, times: [0, 0.08, 0.48, 1], repeat: Infinity, ease: 'linear' }));
+        x: [-620, -416, stage.clientWidth + 220, stage.clientWidth + 220],
+        opacity: [0, 1, 1, 0],
+      }, { duration: heroDepth.trainInterval, times: [0, 0.08, 0.64, 1], repeat: Infinity, ease: ['easeIn', 'linear', 'easeOut'] }));
       sync(); scroll();
     }
     // Both the image and primary UI must be ready before decorative work starts.
@@ -86,6 +98,9 @@ export function useHeroDepth(ref: RefObject<HTMLDivElement | null>) {
       if (visible) scroll();
     });
     observer.observe(stage);
+    const layoutObserver = new ResizeObserver(placeTrain);
+    layoutObserver.observe(stage);
+    if (card) layoutObserver.observe(card);
     const visibility = () => { sync(); if (!document.hidden) scroll(); };
     window.addEventListener('scroll', scroll, { passive: true });
     window.addEventListener('resize', configure);
@@ -97,6 +112,7 @@ export function useHeroDepth(ref: RefObject<HTMLDivElement | null>) {
       clearTimeout(idleTimer); clearHints(); loadObserver.disconnect();
       controls.forEach(control => control.stop());
       observer.disconnect();
+      layoutObserver.disconnect();
       window.removeEventListener('scroll', scroll);
       window.removeEventListener('resize', configure);
       document.removeEventListener('visibilitychange', visibility);
@@ -112,6 +128,7 @@ export function HeroAtmosphere() {
     <div className="night-train-track">
       <div className="night-train-runner">
         <span className="night-train-trail" />
+        <span className="night-train-headlight" />
         <svg className="night-train-silhouette" viewBox="0 0 260 44" fill="none">
           <path d="M8 10h56v24H8zm62 0h56v24H70zm62 0h56v24h-56zm62 0h38l20 18v6h-58z" fill="currentColor" />
           <path d="M14 15h8m7 0h8m7 0h8m24 0h8m7 0h8m7 0h8m24 0h8m7 0h8m7 0h8m25 0h12" className="night-train-windows" strokeWidth="3" />

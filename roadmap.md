@@ -1,5 +1,9 @@
 # Roadmap
 
+## Hero train visibility
+- [ ] Enlarge the train and add warm windows, bloom, fading trail, rail and headlight below the card.
+- [ ] Verify smooth once-per-cycle crossing and hidden-tab/off-screen pausing without changing the hero layout.
+
 ## Home viewport audit
 - [x] Check 1920, 1440, 1280, 1024, 768 and 390px widths plus 1366×700.
 - [x] Fix and verify any overflow, overlaps or exposed photo edges.
