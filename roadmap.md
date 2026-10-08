@@ -1,8 +1,8 @@
 # Roadmap
 
 ## Payment delight
-- [ ] Add ticket entrance, perforated tear, drawn success burst, QR wipe and staggered details.
-- [ ] Stop marigold sparks after 1.5 seconds and verify desktop, phone and reduced motion.
+- [x] Add ticket entrance, perforated tear, drawn success burst, QR wipe and staggered details.
+- [x] Stop marigold sparks after 1.5 seconds and verify desktop, phone and reduced motion.
 
 ## Booking-flow motion
 - [x] Connect search-to-summary morph and fade-in results.
