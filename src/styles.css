@@ -862,7 +862,8 @@ body { font-size: var(--text-body); line-height: 1.5; }
   --border: oklch(0.265 0.055 270.6 / 14%); --border-strong: oklch(0.265 0.055 270.6 / 32%); --ring: var(--rd-indigo);
   --text-helper: var(--rd-muted); --console-control: oklch(0.265 0.055 270.6 / 4%); --console-surface: var(--rd-cream); --destructive: var(--error);
   background: var(--rd-cream); color: var(--rd-indigo); border: 0; border-radius: 20px; backdrop-filter: none;
-  box-shadow: 0 2px 6px oklch(0 0 0 / 18%), 0 28px 70px -20px oklch(0 0 0 / 60%);
+  --shadow-home-landing: 0 2px 6px oklch(0 0 0 / 18%), 0 28px 70px -20px oklch(0 0 0 / 60%);
+  box-shadow: none;
 }
 .booking-console .station-field label, .booking-console .field-label { color: var(--rd-indigo); font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
 .booking-console .station-field input, .booking-console .date-value { color: var(--rd-indigo); font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
@@ -1165,6 +1166,42 @@ body { font-size: var(--text-body); line-height: 1.5; }
 .motion-ready .nav-button.active::after {
   animation-duration: var(--motion-entrance);
   animation-timing-function: var(--motion-ease-entrance);
+}
+/* Once-per-session home reveal. Shadow growth is opacity, never animated box-shadow. */
+[data-home-entrance] .booking-console { position: relative; }
+.booking-landing-shadow, .booking-landing-surface {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+}
+.booking-landing-shadow { box-shadow: var(--shadow-home-landing); }
+.booking-landing-surface { display: none; background: var(--console-surface); }
+.hero-content h1 .line > .headline-mask {
+  display: inline-block; overflow: hidden; vertical-align: bottom;
+  padding-bottom: .04em; animation: none;
+}
+.headline-word { display: inline-block; }
+.destination-mask { position: relative; }
+.destination-underline {
+  position: absolute; height: 3px; inset: auto 0 0;
+  background: var(--rd-marigold); transform-origin: left center; border-radius: 3px;
+}
+[data-home-entrance="pending"] :is(.wordmark, .site-header > nav, .header-actions, .hero-subhead, .route-card, .routes-head, .route-marquee, .booking-landing-shadow) { opacity: 0; }
+[data-home-entrance="pending"] .headline-word { transform: translateY(100%); }
+[data-home-entrance="pending"] .destination-underline { transform: scaleX(0); }
+[data-home-entrance="pending"] :is(.hero-photo, .hero-placeholder) { transform: scale(1.08); }
+/* Disable the older independent nav draw; it is no longer a competing entrance. */
+[data-home-entrance] .nav-button.active::after { animation: none; }
+[data-home-entrance] :is(.hero-photo, .hero-placeholder) { transition-property: opacity; }
+@media (min-width: 761px) {
+  [data-home-entrance="pending"] .booking-console { opacity: 0; }
+}
+@media (max-width: 760px) {
+  .home-mobile-landing .booking-console { background: transparent; }
+  .home-mobile-landing .booking-landing-surface { display: block; }
+  [data-home-entrance="pending"] :is(.booking-form, .booking-controls) { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-home-entrance="pending"] :is(.wordmark, .site-header > nav, .header-actions, .hero-subhead, .route-card, .routes-head, .route-marquee, .booking-console, .booking-form, .booking-controls, .booking-landing-shadow) { opacity: 1; }
+  [data-home-entrance="pending"] :is(.headline-word, .destination-underline, .hero-photo, .hero-placeholder) { transform: none; }
 }
 /* Lenis never replaces native touch scrolling or scrolling inside a picker. */
 html.lenis, html.lenis body { height: auto; }

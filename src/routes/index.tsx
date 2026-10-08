@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import heroAvif from "@/assets/midnight-lake.avif.asset.json";
 import heroWebp from "@/assets/midnight-lake.webp.asset.json";
 import heroPlaceholder from "@/assets/midnight-lake-placeholder.webp.asset.json";
+import { useHomeEntrance } from "@/hooks/use-home-entrance";
 
 export const Route = createFileRoute("/")({
   head: () => ({ links: [
@@ -220,6 +221,8 @@ function StationField({ id, label, hint, errorText, placeholder, value, invalid,
 }
 
 function Index() {
+  const homeRef = useRef<HTMLDivElement>(null);
+  useHomeEntrance(homeRef);
   const heroRef = useRef<HTMLImageElement>(null);
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -274,7 +277,7 @@ function Index() {
     navigate({ to: "/trains", search: { from: source.trim(), to: destination.trim(), date: format(date!, "yyyy-MM-dd"), cls: travelClass, pax: passengers, quota } });
   }
   return (
-    <div className="railway-app">
+    <div ref={homeRef} className="railway-app" data-home-entrance="pending">
       <div className="hero-dark">
       <header className="site-header reveal" style={{ ["--d" as string]: "0ms" }}>
         <a href="/" className="wordmark" aria-label="Rail Daddy home"><span className="wordmark-type" aria-hidden="true">RAIL <span className="wordmark-daddy">D<span className="wordmark-wink">A</span>DDY</span><span className="wordmark-stop">.</span></span></a>
@@ -306,13 +309,15 @@ function Index() {
 
           <div className="hero-content">
             <div className="hero-eyebrow reveal" style={{ ["--d" as string]: "100ms" }}><span className="status-dot" /> YOUR ROUTE. YOUR SEAT.</div>
-            <h1><span className="line"><span>REACH YOUR <br className="h1-break" /><span className="h1-accent">DESTINATION.</span></span></span><span className="headline-star" aria-hidden="true">✳</span></h1>
+            <h1 aria-label="REACH YOUR DESTINATION."><span className="line" aria-hidden="true"><span className="headline-mask"><span className="headline-word">REACH</span></span>{" "}<span className="headline-mask"><span className="headline-word">YOUR</span></span>{" "}<br className="h1-break" /><span className="headline-mask destination-mask"><span className="headline-word h1-accent">DESTINATION.</span><span className="destination-underline" /></span></span><span className="headline-star" aria-hidden="true">✳</span></h1>
             <p className="hero-subhead reveal" style={{ ["--d" as string]: "400ms" }}>Compare trains, check seat availability, and book in under a minute.</p>
           </div>
 
           <div className="booking-area" id="booking">
             <div className="booking-intro reveal" style={{ ["--d" as string]: "550ms" }}><span><span className="mini-track" /> Start with the route. We'll find the trains.</span>{lastSearch ? <button type="button" className="last-search" aria-label={`Repeat last search: ${shortName(lastSearch.from)} to ${shortName(lastSearch.to)}`} onClick={() => { setSource(lastSearch.from); setDestination(lastSearch.to); const d = new Date(lastSearch.date); if (!Number.isNaN(d.getTime()) && d >= startOfDay(new Date())) setDate(startOfDay(d)); setInvalidFields({ source: false, destination: false, date: false }); setError(""); }}><History size={14} aria-hidden="true" /><span className="last-search-label">Last search</span> {shortName(lastSearch.from)} to {shortName(lastSearch.to)}{lastSearch.date && !Number.isNaN(new Date(lastSearch.date).getTime()) ? `, ${format(new Date(lastSearch.date), "EEE")}` : ""}</button> : <span className="booking-step">01 <span>/ ROUTE BASICS</span></span>}</div>
             <form onSubmit={submit} className="booking-console">
+              <span className="booking-landing-surface" aria-hidden="true" />
+              <span className="booking-landing-shadow" aria-hidden="true" />
               <div className="booking-form">
               <StationField id="source" label="From" hint="City, station or code" errorText="Choose where you're starting from" recent={recent} placeholder="Boarding station" value={source} invalid={invalidFields.source} onChange={(value) => { setSource(value); setInvalidFields((fields) => ({ ...fields, source: false })); setError(""); }} />
               <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" style={{ ["--spin" as string]: `${swapTurns * 180}deg` }} onClick={() => { setSource(destination); setDestination(source); setSwapTurns((t) => t + 1); }}><ArrowDownUp size={18} /></Button>
