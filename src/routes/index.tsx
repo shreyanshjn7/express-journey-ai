@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, TrainFront, AlertCircle, X, Users, Minus, Plus, History, ChevronDown, ShieldCheck, RotateCcw } from "lucide-react";
+import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, Sparkles, TrainFront, AlertCircle, X, Users, Minus, Plus, History, ChevronDown, ShieldCheck, RotateCcw } from "lucide-react";
 import { addDays, format, nextSaturday, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { DatePanel } from "@/components/date-panel";
