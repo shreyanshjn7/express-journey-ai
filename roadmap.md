@@ -1,9 +1,9 @@
 # Roadmap
 
 ## Marquee motion upgrade
-- [ ] Add eased continuous motion, scroll-speed boost and 2–3 degree skew.
-- [ ] Add city hover emphasis, ripple and destination-field flight.
-- [ ] Verify interactions and reduced-motion behavior.
+- [x] Add eased continuous motion, scroll-speed boost and 2–3 degree skew.
+- [x] Add city hover emphasis, ripple and destination-field flight.
+- [x] Verify interactions and reduced-motion behavior.
 
 - [x] Compress the background photo and show a blurred loading placeholder.
 - [x] Match fallback font metrics and verify stable loading.
