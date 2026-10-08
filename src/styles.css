@@ -962,7 +962,7 @@ body { font-size: var(--text-body); line-height: 1.5; }
   .booking-console .vibe-chip { justify-content: center; padding-inline: 14px; }
   .booking-console .vibe-chip.on { box-shadow: none; }
   .booking-console .station-field label, .booking-console .field-label { color: var(--rd-muted); }
-  .booking-console .field-hint { font-size: 13px; opacity: .72; }
+  .booking-console .field-hint { font-size: 13px; color: color-mix(in oklch, var(--rd-muted) 55%, var(--rd-cream)); }
 }
 /* Full-bleed hero without clip-path, so the pinned phone button isn't clipped */
 .booking-console .station-field input:focus-visible { outline: none !important; box-shadow: none; }
