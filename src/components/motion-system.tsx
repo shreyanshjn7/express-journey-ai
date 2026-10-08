@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { animate, type AnimationPlaybackControls } from "framer-motion";
 import { entranceFrames, expoEase, motionCssVariables, motionTokens, polishMotion, sheetFrames } from "@/lib/motion";
+import { useAnimationBudget } from "@/hooks/use-animation-budget";
 
 const clickable = 'button, a[href], select, input:not([type="hidden"]), label[for], summary, [role="button"]';
 const snappy = '[role="radio"], [role="switch"], .theme-toggle, .menu-toggle, .marquee-city, .seat, .quick-dates button, .rdp-day_button';
@@ -10,6 +11,7 @@ const sheets = '.mobile-menu, .station-suggestions, [role="dialog"], .station-fi
 
 /** Delegation also covers Radix portals, calendar days and controls mounted later. */
 export function MotionSystem() {
+  useAnimationBudget();
   useEffect(() => {
     const root = document.documentElement;
     Object.entries(motionCssVariables).forEach(([key, value]) => root.style.setProperty(key, value));
@@ -18,6 +20,9 @@ export function MotionSystem() {
     root.style.setProperty("--cursor-expanded-scale", String(polishMotion.cursor.expanded / polishMotion.cursor.ring));
     root.classList.add("motion-ready");
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mobile = window.matchMedia("(max-width: 760px)");
+    const syncTiming = () => Object.entries(motionCssVariables).forEach(([key, value]) => root.style.setProperty(key, value));
+    mobile.addEventListener("change", syncTiming);
     const seen = new WeakSet<Element>();
     const active = new Set<AnimationPlaybackControls>();
     const interactions = new Map<HTMLElement, AnimationPlaybackControls>();
@@ -174,6 +179,7 @@ export function MotionSystem() {
       document.removeEventListener("keyup", keyUp);
       window.removeEventListener("blur", release);
       preference.removeEventListener("change", change);
+      mobile.removeEventListener("change", syncTiming);
       root.classList.remove("motion-ready");
     };
   }, []);

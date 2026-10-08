@@ -14,6 +14,7 @@ export function useHomeEntrance(ref: RefObject<HTMLDivElement | null>) {
 
     const controls = new Set<AnimationPlaybackControls>();
     const cardControls = new Set<AnimationPlaybackControls>();
+    const photoControls = new Set<AnimationPlaybackControls>();
     const ease = motionTokens.easing.entrance;
     function enter(selector: string, frames: { opacity?: number[]; y?: number[] | string[]; scale?: number[]; scaleX?: number[] }, delay: number, duration: number = motionTokens.duration.entrance, stagger = 0, card = false, linear = false) {
       root?.querySelectorAll<HTMLElement>(selector).forEach((element, index) => {
@@ -23,9 +24,11 @@ export function useHomeEntrance(ref: RefObject<HTMLDivElement | null>) {
         }
         const control = animate(element, frames, { delay: delay + index * stagger, duration, ease: linear ? "linear" : ease });
         controls.add(control);
+        if (element.matches('.hero-photo, .hero-placeholder')) photoControls.add(control);
         if (card) cardControls.add(control);
         void control.finished.then(() => {
           controls.delete(control);
+          photoControls.delete(control);
           cardControls.delete(control);
           // Release containing blocks before any fixed picker is opened.
           if (frames.y || frames.scale) element.style.removeProperty("transform");
@@ -56,6 +59,12 @@ export function useHomeEntrance(ref: RefObject<HTMLDivElement | null>) {
     startPhoto();
     const observer = new MutationObserver(startPhoto);
     observer.observe(root, { attributes: true, subtree: true, attributeFilter: ['class'] });
+    let photoVisible = true;
+    const syncPhoto = () => photoControls.forEach(control => photoVisible && !document.hidden ? control.play() : control.pause());
+    const photoObserver = new IntersectionObserver(([entry]) => { photoVisible = entry?.isIntersecting ?? false; syncPhoto(); });
+    const stage = root.querySelector('.journey-stage');
+    if (stage) photoObserver.observe(stage);
+    document.addEventListener('visibilitychange', syncPhoto);
     function releaseCard() {
       cardControls.forEach(control => control.complete());
       root?.querySelector<HTMLElement>('.booking-console')?.style.removeProperty('transform');
@@ -76,6 +85,7 @@ export function useHomeEntrance(ref: RefObject<HTMLDivElement | null>) {
     return () => {
       controls.forEach(control => control.stop());
       observer.disconnect();
+      photoObserver.disconnect(); document.removeEventListener('visibilitychange', syncPhoto);
       window.clearTimeout(done);
       root.removeEventListener('pointerdown', releaseCard, true);
       root.removeEventListener('focusin', releaseCard);

@@ -49,12 +49,17 @@ export function CityMarquee({ cities, destination, onChoose }: {
   }, [reduced, x, skew, flight]);
 
   useAnimationFrame((_, delta) => {
-    if (reduced || !visible.current || !width.current || document.hidden) return;
+    const track = root.current?.querySelector<HTMLElement>('.marquee-track');
+    if (reduced || !visible.current || !width.current || document.hidden) { track?.style.removeProperty('will-change'); return; }
     const dt = Math.min(delta / 1000, 0.05);
     const decay = Math.exp(-dt / marqueeMotion.boostDecay);
     boost.current *= decay; skewImpulse.current *= decay;
     const stopped = paused.current || focused.current || !!flight;
     speed.current = easeMarqueeSpeed(speed.current, stopped ? 0 : marqueeMotion.speed * (1 + boost.current), dt);
+    if (track) {
+      if (speed.current > 0.1 || Math.abs(skew.get()) > 0.01) track.style.willChange = 'transform';
+      else track.style.removeProperty('will-change');
+    }
     const next = x.get() - speed.current * dt;
     x.set(((next % width.current) + width.current) % width.current - width.current);
     skew.set(easeMarqueeSpeed(skew.get(), stopped ? 0 : skewImpulse.current, dt));

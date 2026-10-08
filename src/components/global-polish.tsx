@@ -15,7 +15,8 @@ export function DesktopCursor() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0, visible = false, x = 0, y = 0, rx = 0, ry = 0, last = 0;
     const root = document.documentElement;
-    function hide() { visible = false; root.classList.remove("custom-cursor-active"); }
+    function clearHints() { dot.current?.style.removeProperty("will-change"); ring.current?.style.removeProperty("will-change"); }
+    function hide() { visible = false; cancelAnimationFrame(frame); frame = 0; clearHints(); root.classList.remove("custom-cursor-active"); }
     function update(time: number) {
       const delta = last ? Math.min((time - last) / 1000, 0.05) : 0;
       last = time;
@@ -23,7 +24,8 @@ export function DesktopCursor() {
       rx += (x - rx) * ease; ry += (y - ry) * ease;
       if (dot.current) dot.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       if (ring.current) ring.current.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-      if (visible) frame = requestAnimationFrame(update); else frame = 0;
+      if (visible && Math.hypot(x - rx, y - ry) > 0.1) frame = requestAnimationFrame(update);
+      else { frame = 0; clearHints(); }
     }
     function move(event: PointerEvent) {
       if (!fine.matches || reduced.matches || event.pointerType !== "mouse") { hide(); return; }
@@ -33,6 +35,8 @@ export function DesktopCursor() {
       x = event.clientX; y = event.clientY;
       if (!visible) { rx = x; ry = y; last = 0; visible = true; root.classList.add("custom-cursor-active"); }
       ring.current?.classList.toggle("cursor-over-control", !!target?.closest(targets));
+      if (dot.current) dot.current.style.willChange = "transform";
+      if (ring.current) ring.current.style.willChange = "transform";
       if (!frame) frame = requestAnimationFrame(update);
     }
     function visibility() { if (document.hidden) hide(); }
