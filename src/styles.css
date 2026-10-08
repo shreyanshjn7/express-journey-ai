@@ -1713,3 +1713,4 @@ html.lenis, html.lenis body { height: auto; }
   .prefs-summary svg { color: var(--rd-muted); flex: none; }
   .booking-controls .controls-panel { display: none; }
 }
+.rolling-number, .rolling-number > span { pointer-events: none; }
