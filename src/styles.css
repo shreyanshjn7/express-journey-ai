@@ -953,6 +953,17 @@ body { font-size: var(--text-body); line-height: 1.5; }
   .booking-console .station-field.sheet-open { background: var(--rd-cream) !important; }
 }
 @media (max-width: 760px) { .hero-dark { z-index: auto; } }
+
+/* ---- Small phones: unified cream card, centered pills, calmer labels ---- */
+@media (max-width: 640px) {
+  .booking-console { margin-bottom: 16px; }
+  .railway-app { padding-bottom: 96px; }
+  .booking-console .booking-controls { background: transparent; }
+  .booking-console .vibe-chip { justify-content: center; padding-inline: 14px; }
+  .booking-console .vibe-chip.on { box-shadow: none; }
+  .booking-console .station-field label, .booking-console .field-label { color: var(--rd-muted); }
+  .booking-console .field-hint { font-size: 13px; opacity: .72; }
+}
 /* Full-bleed hero without clip-path, so the pinned phone button isn't clipped */
 .booking-console .station-field input:focus-visible { outline: none !important; box-shadow: none; }
 .booking-console .swap-button { z-index: 12; }
