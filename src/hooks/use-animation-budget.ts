@@ -28,7 +28,8 @@ export function useAnimationBudget() {
         if (animation instanceof CSSAnimation) animation.playbackRate = 1 / motionDuration(1, mobile.matches);
         if (!hidden && animation.playState === "running" && (element instanceof HTMLElement || element instanceof SVGElement)) {
           const frames = effect.getKeyframes();
-          if (frames.some(frame => "transform" in frame || "opacity" in frame)) active.add(element);
+          // Hinting transform creates a containing block, even for opacity-only motion.
+          if (!element.matches('.booking-form, .booking-controls, .booking-console, .flow-main, .flow-shell, .pay-grid, .station-field.sheet-open') && frames.some(frame => "transform" in frame || "opacity" in frame)) active.add(element);
         }
       }
       hinted.forEach(element => { if (!active.has(element)) { element.style.removeProperty("will-change"); hinted.delete(element); } });
