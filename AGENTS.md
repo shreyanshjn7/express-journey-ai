@@ -25,3 +25,4 @@
 - Keep scroll depth on a separate photo wrapper and the headline only; decorative particles/train are inert clipped layers, with shared motion tokens and reduced-motion/offscreen pausing so booking controls remain viewport-safe.
 - Keep search-specific motion in search-motion with shared timing tokens; mark owned controls to exclude delegated transforms, and compress only independent surfaces on phones so fixed actions and station sheets stay viewport-bound.
 - Route cards own scroll and interaction motion; shared-element flights use a body portal and land before scrolling so fixed mobile controls stay viewport-bound.
+- CityMarquee owns its frame-driven velocity and hover motion with shared tokens; destination flights use a body portal, and reduced motion restores a native scrollable strip so pinned controls remain viewport-safe.
