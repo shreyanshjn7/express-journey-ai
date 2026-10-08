@@ -33,3 +33,7 @@
 ## Home first-load choreography
 - [x] Add once-per-session photo, header, masked words, underline, card, routes and marquee sequence.
 - [x] Verify timing, repeat visits, reduced motion and pinned mobile controls.
+
+## Hero depth
+- [ ] Add scroll parallax, quiet fireflies, passing train and scroll-away headline.
+- [ ] Verify scroll movement, mobile controls and reduced-motion behavior.

@@ -42,6 +42,25 @@ export function expoEase(t: number) {
   return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
 }
 
+export const heroDepth = {
+  photoSpeed: 0.3,
+  particles: 16,
+  particleDuration: 18,
+  trainInterval: 25,
+  headlineScale: 0.94,
+  headlineOpacity: 0.55,
+} as const;
+
+export function heroScrollState(distance: number, height: number) {
+  const travel = Math.max(0, Math.min(distance, height));
+  const progress = height > 0 ? travel / height : 0;
+  return {
+    photoY: travel * (1 - heroDepth.photoSpeed),
+    headlineScale: 1 - progress * (1 - heroDepth.headlineScale),
+    headlineOpacity: 1 - progress * (1 - heroDepth.headlineOpacity),
+  };
+}
+
 /** Export the same values to legacy decorative CSS, not a second token set. */
 export const motionCssVariables = {
   "--motion-ease-entrance": `cubic-bezier(${motionTokens.easing.entrance.join(",")})`,
