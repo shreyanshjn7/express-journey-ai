@@ -1541,7 +1541,7 @@ html.lenis, html.lenis body { height: auto; }
 .booking-console .date-button.date-open { border-color: var(--rd-marigold); }
 .date-button { position: relative; }
 .date-button .date-chevron { position: absolute; top: 14px; right: 14px; transition: transform 180ms ease-out; }
-.date-button.date-open .date-chevron { transform: rotate(180deg); }
+.date-button.date-open .date-chevron { color: var(--rd-marigold); }
 .date-panel { position: fixed; z-index: 1000; width: min(340px, calc(100vw - 32px)); padding: 16px; border-radius: 20px; background: var(--rd-cream); color: var(--rd-indigo); border: 1px solid color-mix(in oklab, var(--rd-indigo) 10%, transparent); box-shadow: 0 1px 2px color-mix(in oklab, var(--rd-indigo) 8%, transparent), 0 8px 24px color-mix(in oklab, var(--rd-indigo) 12%, transparent), 0 24px 48px color-mix(in oklab, var(--rd-indigo) 14%, transparent); font-family: var(--font-sans, Inter, sans-serif); }
 .dp-notch { position: absolute; top: -7px; left: calc(var(--dp-notch) - 7px); width: 14px; height: 14px; background: var(--rd-cream); border-left: 1px solid color-mix(in oklab, var(--rd-indigo) 10%, transparent); border-top: 1px solid color-mix(in oklab, var(--rd-indigo) 10%, transparent); transform: rotate(45deg); border-top-left-radius: 3px; }
 .date-panel.up .dp-notch { top: auto; bottom: -7px; transform: rotate(225deg); }
