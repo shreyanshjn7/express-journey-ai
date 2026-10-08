@@ -432,7 +432,7 @@ h1 > span:first-child { color: var(--foreground); }
   .controls-label, .controls-divider { display: none; }
   .journey-button { grid-column: 1; height: 60px; border-radius: var(--radius-lg-ui); padding: 12px 20px; font-size: 17px; margin-top: 4px; }
   .journey-arrow { width: 38px; height: 38px; }
-  .route-marquee { padding: 24px 0; overflow-x: auto; scrollbar-width: none; mask-image: linear-gradient(90deg, transparent, var(--background) 24px, calc(100% - 24px) var(--background), transparent); -webkit-mask-image: linear-gradient(90deg, transparent, var(--background) 24px, calc(100% - 24px) var(--background), transparent); }
+  .route-marquee { padding: 24px 0; overflow-x: auto; scrollbar-width: none; mask-image: linear-gradient(90deg, transparent, var(--background) 24px, var(--background) calc(100% - 24px), transparent); -webkit-mask-image: linear-gradient(90deg, transparent, var(--background) 24px, var(--background) calc(100% - 24px), transparent); }
   .route-marquee:not(.city-marquee) .marquee-track { animation: none !important; transform: none !important; }
   .route-marquee:not(.city-marquee) .marquee-run[aria-hidden="true"] { display: none; }
   .marquee-city { min-height: 44px; font-size: 13px; padding: 0 14px; }
