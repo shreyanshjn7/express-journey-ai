@@ -723,7 +723,7 @@ h1 .line:first-child > span { color: var(--foreground); }
   .routes-head { margin-bottom: 12px; }
   .routes-label { font-size: 17px; }
   .routes-sub { display: none; }
-  .routes-row { display: flex; overflow-x: auto; scrollbar-width: none; margin-inline: -8px; padding: 4px 8px 2px; scroll-padding-inline: 8px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .routes-row { display: flex; overflow-x: auto; scrollbar-width: none; margin-inline: -8px; padding: 4px 0 2px; scroll-padding-inline: 16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
   .night-train-track { height: 60px; }
   .night-train-track::after { top: 45px; }
   .night-train-runner { scale: 0.7; transform-origin: left bottom; }
