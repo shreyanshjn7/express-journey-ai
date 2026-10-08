@@ -1,5 +1,10 @@
 # Roadmap
 
+## Global polish
+- [ ] Add once-only below-fold reveals and desktop dot/trailing-ring cursor.
+- [ ] Add morphing theme icon and circular theme reveal, spring button release and drawing footer underlines.
+- [ ] Verify desktop, touch and reduced-motion behavior.
+
 ## Payment delight
 - [x] Add ticket entrance, perforated tear, drawn success burst, QR wipe and staggered details.
 - [x] Stop marigold sparks after 1.5 seconds and verify desktop, phone and reduced motion.
