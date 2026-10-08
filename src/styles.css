@@ -1204,6 +1204,45 @@ body { font-size: var(--text-body); line-height: 1.5; }
   [data-home-entrance="pending"] :is(.wordmark, .site-header > nav, .header-actions, .hero-subhead, .route-card, .routes-head, .route-marquee, .booking-console, .booking-form, .booking-controls, .booking-landing-shadow) { opacity: 1; }
   [data-home-entrance="pending"] :is(.headline-word, .destination-underline, .hero-photo, .hero-placeholder) { transform: none; }
 }
+/* Independent night-scene depth, with restrained neutral light tokens. */
+.hero-dark {
+  --night-speck: color-mix(in oklch, var(--rd-cream) 85%, var(--rd-white));
+  --night-train: var(--rd-muted);
+  --night-trail: color-mix(in oklch, var(--rd-cream) 28%, transparent);
+  --night-speck-shadow: 0 0 5px 1px color-mix(in oklch, var(--rd-cream) 20%, transparent);
+}
+.stage-parallax { overflow: clip; }
+.hero-photo-depth { position: absolute; inset: 0; transition: none; will-change: transform; }
+.hero-content h1 { transform-origin: center; transition: none; }
+.hero-atmosphere { position: absolute; inset: 0; pointer-events: none; overflow: clip; }
+.night-fireflies { position: absolute; inset: 0 0 32%; }
+.night-firefly { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--night-speck); box-shadow: var(--night-speck-shadow); opacity: .08; transition: none; }
+.night-firefly:nth-child(1) { left: 8%; top: 20%; }
+.night-firefly:nth-child(2) { left: 17%; top: 62%; }
+.night-firefly:nth-child(3) { left: 25%; top: 34%; }
+.night-firefly:nth-child(4) { left: 34%; top: 12%; }
+.night-firefly:nth-child(5) { left: 43%; top: 74%; }
+.night-firefly:nth-child(6) { left: 51%; top: 25%; }
+.night-firefly:nth-child(7) { left: 59%; top: 57%; }
+.night-firefly:nth-child(8) { left: 67%; top: 16%; }
+.night-firefly:nth-child(9) { left: 76%; top: 42%; }
+.night-firefly:nth-child(10) { left: 85%; top: 70%; }
+.night-firefly:nth-child(11) { left: 93%; top: 29%; }
+.night-firefly:nth-child(12) { left: 12%; top: 86%; }
+.night-firefly:nth-child(13) { left: 31%; top: 91%; }
+.night-firefly:nth-child(14) { left: 56%; top: 88%; }
+.night-firefly:nth-child(15) { left: 72%; top: 82%; }
+.night-firefly:nth-child(16) { left: 91%; top: 93%; }
+.night-train-track { position: absolute; left: 0; right: 0; bottom: 8%; height: 44px; }
+.night-train-runner { position: absolute; left: 0; width: 260px; height: 44px; opacity: 0; transition: none; }
+.night-train-silhouette { position: relative; width: 260px; height: 44px; color: var(--night-train); }
+.night-train-windows { stroke: var(--night-speck); }
+.night-train-trail { position: absolute; right: 250px; top: 26px; width: 170px; height: 2px; background: linear-gradient(90deg, transparent, var(--night-trail)); box-shadow: var(--night-speck-shadow); }
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo-depth { transform: none !important; will-change: auto; }
+  .hero-content h1 { transform: none !important; opacity: 1 !important; }
+  .hero-atmosphere { display: none; }
+}
 /* Lenis never replaces native touch scrolling or scrolling inside a picker. */
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }

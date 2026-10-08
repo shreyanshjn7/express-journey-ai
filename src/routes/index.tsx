@@ -9,6 +9,7 @@ import heroAvif from "@/assets/midnight-lake.avif.asset.json";
 import heroWebp from "@/assets/midnight-lake.webp.asset.json";
 import heroPlaceholder from "@/assets/midnight-lake-placeholder.webp.asset.json";
 import { useHomeEntrance } from "@/hooks/use-home-entrance";
+import { HeroAtmosphere, useHeroDepth } from "@/components/hero-depth";
 
 export const Route = createFileRoute("/")({
   head: () => ({ links: [
@@ -223,6 +224,7 @@ function StationField({ id, label, hint, errorText, placeholder, value, invalid,
 function Index() {
   const homeRef = useRef<HTMLDivElement>(null);
   useHomeEntrance(homeRef);
+  useHeroDepth(homeRef);
   const heroRef = useRef<HTMLImageElement>(null);
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -299,13 +301,16 @@ function Index() {
       <main>
         <section className="journey-stage" aria-label="Find your train">
           <div className={`stage-parallax${heroLoaded ? " hero-loaded" : ""}`} aria-hidden="true">
+            <div className="hero-photo-depth">
             <img src={heroPlaceholder.url} width={1920} height={1088} alt="" className="lights-backdrop hero-placeholder" />
             <picture>
               <source srcSet={heroAvif.url} type="image/avif" />
               <img ref={heroRef} src={heroWebp.url} width={1920} height={1088} alt="" className="lights-backdrop hero-photo" fetchPriority="high" decoding="async" onLoad={() => setHeroLoaded(true)} />
             </picture>
+            </div>
           </div>
           <div className="stage-shade" />
+          <HeroAtmosphere />
 
           <div className="hero-content">
             <div className="hero-eyebrow reveal" style={{ ["--d" as string]: "100ms" }}><span className="status-dot" /> YOUR ROUTE. YOUR SEAT.</div>
