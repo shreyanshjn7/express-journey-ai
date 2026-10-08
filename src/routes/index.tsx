@@ -274,7 +274,7 @@ function Index() {
   useEffect(() => {
     const controls = homeRef.current?.querySelector(".booking-controls");
     if (!controls) return;
-    const observer = new IntersectionObserver(([entry]) => setCtaFloating(!entry.isIntersecting), { threshold: 0 });
+    const observer = new IntersectionObserver((entries) => { const entry = entries[0]; if (entry) setCtaFloating(!entry.isIntersecting); }, { threshold: 0 });
     observer.observe(controls);
     return () => observer.disconnect();
   }, []);
