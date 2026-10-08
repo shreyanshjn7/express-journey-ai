@@ -20,7 +20,7 @@ export function BookingShell({ step, trip, back, children, bar }: {
   const reduced = useReducedMotion();
   return (
     <div className="flow-app">
-      <header className="flow-header">
+      <header className="flow-header" data-motion-owned="true">
         <Link to="/" className="flow-wordmark" aria-label="Rail Daddy home">RAIL <span>DADDY</span>.</Link>
         <BookingSummary><p className="flow-trip"><strong>{trip.from}</strong><ArrowRight size={14} aria-hidden="true" /><strong>{trip.to}</strong><span>· {tripDateLabel(trip.date)} · {trip.cls} · {trip.pax} pax</span></p></BookingSummary>
       </header>
