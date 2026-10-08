@@ -31,8 +31,11 @@ export function CityMarquee({ cities, destination, onChoose }: {
     let previousY = window.scrollY, previousTime = performance.now();
     const scroll = () => {
       const now = performance.now();
-      const impulse = marqueeScrollImpulse((window.scrollY - previousY) / Math.max(0.016, (now - previousTime) / 1000));
-      boost.current = impulse.boost; skewImpulse.current = impulse.skew;
+      const distance = window.scrollY - previousY;
+      if (distance !== 0) {
+        const impulse = marqueeScrollImpulse(distance / Math.max(0.016, Math.min(0.1, (now - previousTime) / 1000)));
+        boost.current = Math.max(boost.current, impulse.boost); skewImpulse.current = impulse.skew;
+      }
       previousY = window.scrollY; previousTime = now;
     };
     window.addEventListener("scroll", scroll, { passive: true });
