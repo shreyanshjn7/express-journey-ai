@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, Sparkles, TrainFront, AlertCircle, X, Users, Minus, Plus, History, ChevronDown, ShieldCheck, RotateCcw } from "lucide-react";
-import { addDays, format, nextSaturday, startOfDay } from "date-fns";
+import { addDays, format, isSameDay, nextSaturday, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { DatePanel } from "@/components/date-panel";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -122,19 +122,34 @@ const classes = [
   { name: "1A", tip: "First AC: private lockable cabins, most comfort" },
 ];
 
+/** True on phone widths, where the search card switches to its compact row layout. */
+function useCompactSearchCard() {
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 640px)");
+    const sync = () => setCompact(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+  return compact;
+}
+
 type StationFieldProps = {
   id: "source" | "destination";
   label: string;
   hint: string;
   errorText: string;
   placeholder: string;
+  compactPlaceholder: string;
+  compact: boolean;
   value: string;
   invalid: boolean;
   recent: string[];
   onChange: (value: string) => void;
 };
 
-function StationField({ id, label, hint, errorText, placeholder, value, invalid, recent, onChange }: StationFieldProps) {
+function StationField({ id, label, hint, errorText, placeholder, compactPlaceholder, compact, value, invalid, recent, onChange }: StationFieldProps) {
   const [open, setOpen] = useState(false);
   const reduced = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -178,6 +193,7 @@ function StationField({ id, label, hint, errorText, placeholder, value, invalid,
   return (
     <div className={`station-field ${id}-field pop${invalid ? " field-invalid" : ""}${open ? " sheet-open" : ""}`}>
       <span className="field-focus-glow" aria-hidden="true" /><label htmlFor={id}><MapPin size={15} /> {label}</label>
+      <span className="row-pin" aria-hidden="true"><MapPin size={16} /></span>
       <button type="button" className="sheet-close" aria-label="Close station search" onMouseDown={(event) => event.preventDefault()} onClick={() => { setOpen(false); (document.activeElement as HTMLElement | null)?.blur(); }}><X size={20} /></button>
       <input
         id={id}
@@ -187,7 +203,8 @@ function StationField({ id, label, hint, errorText, placeholder, value, invalid,
         onFocus={() => setOpen(true)}
         onBlur={() => window.setTimeout(() => setOpen(false), 120)}
         onKeyDown={handleKeyDown}
-        placeholder={placeholder}
+        aria-label={label}
+        placeholder={compact ? compactPlaceholder : placeholder}
         autoComplete="off"
         role="combobox"
         aria-expanded={open && flat.length > 0}
@@ -255,6 +272,8 @@ function Index() {
   }, []);
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
+  const compactCard = useCompactSearchCard();
+  const today = startOfDay(new Date());
   const tomorrow = startOfDay(addDays(new Date(), 1));
   const [date, setDate] = useState<Date | undefined>(tomorrow);
   const [calendarOpen, setCalendarOpen] = useState(false);
