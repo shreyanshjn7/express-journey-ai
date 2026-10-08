@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
-import { AlertCircle, CheckCircle2, CreditCard, Lock, ShieldCheck, Smartphone } from "lucide-react";
+import { AlertCircle, CreditCard, Lock, ShieldCheck, Smartphone } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { BookingShell, FareBar } from "@/components/booking-shell";
+import { PaymentTicket } from "@/components/payment-ticket";
 import { parseTrip, findTrain, offerFor, rupees, tripDateLabel } from "@/lib/trip";
 
 export const Route = createFileRoute("/payment")({
@@ -43,7 +44,7 @@ function Payment() {
   const check = (key: string, value: string) => {
     const schema = key === "upi" ? upiSchema : cardSchema[key as keyof typeof cardSchema];
     const r = schema.safeParse(value);
-    setErrors((e) => ({ ...e, [key]: r.success ? "" : r.error.issues[0]!.message }));
+    setErrors((e) => ({ ...e, [key]: r.success ? "" : r.error.issues[0]?.message ?? "Check this value" }));
     return r.success;
   };
   function pay(e: FormEvent) {
@@ -62,13 +63,7 @@ function Payment() {
 
   if (done) return (
     <BookingShell step={3} trip={trip}>
-      <div className="flow-card pay-done" role="status">
-        <CheckCircle2 size={48} aria-hidden="true" />
-        <h1 className="flow-title">Booking request sent</h1>
-        <p>{train?.name} #{train?.number} · {tripDateLabel(trip.date)} · {trip.seats?.split(",").join(", ")}</p>
-        <p className="flow-sub">This is a design preview — no payment was taken and no ticket was issued.</p>
-        <Button asChild variant="journey" className="flow-cta"><Link to="/">Plan another trip</Link></Button>
-      </div>
+      <PaymentTicket trip={trip} train={train} />
     </BookingShell>
   );
 

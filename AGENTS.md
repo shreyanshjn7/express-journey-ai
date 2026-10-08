@@ -27,3 +27,4 @@
 - Route cards own scroll and interaction motion; shared-element flights use a body portal and land before scrolling so fixed mobile controls stay viewport-bound.
 - CityMarquee owns its frame-driven velocity and hover motion with shared tokens; destination flights use a body portal, and reduced motion restores a native scrollable strip so pinned controls remain viewport-safe.
 - Keep BookingMotionProvider around the root Outlet with a persistent shared-layout portal bridging search and summary; booking cards, progress and fare totals own their motion, leaving fixed mobile action ancestors untransformed. Why: route unmounts must not break the morph or displace pinned controls.
+- Keep payment-success choreography in PaymentTicket with shared motion tokens, a real locally generated non-travel QR and finite sparks; reduced motion reveals the finished preview immediately. Why: the celebration must not imply ticket issuance or alter payment logic.
