@@ -1,5 +1,10 @@
 # Roadmap
 
+## Animation performance
+- [ ] Limit compositor hints to active motion and delay hero decoration until content loads.
+- [ ] Pause off-screen animations and disable cursor, particles and parallax on phones.
+- [ ] Shorten mobile animation durations by 20% and verify behavior.
+
 ## Global polish
 - [x] Add once-only below-fold reveals and desktop dot/trailing-ring cursor.
 - [x] Add morphing theme icon and circular theme reveal, spring button release and drawing footer underlines.
