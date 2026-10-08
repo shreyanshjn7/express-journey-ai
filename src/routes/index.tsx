@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, Sparkles, TrainFront, AlertCircle, X, Users, Minus, Plus, History, ChevronDown, ShieldCheck, RotateCcw } from "lucide-react";
-import { addDays, format, nextSaturday, startOfDay } from "date-fns";
+import { addDays, format, isSameDay, nextSaturday, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { DatePanel } from "@/components/date-panel";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -122,19 +122,34 @@ const classes = [
   { name: "1A", tip: "First AC: private lockable cabins, most comfort" },
 ];
 
+/** True on phone widths, where the search card switches to its compact row layout. */
+function useCompactSearchCard() {
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 640px)");
+    const sync = () => setCompact(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+  return compact;
+}
+
 type StationFieldProps = {
   id: "source" | "destination";
   label: string;
   hint: string;
   errorText: string;
   placeholder: string;
+  compactPlaceholder: string;
+  compact: boolean;
   value: string;
   invalid: boolean;
   recent: string[];
   onChange: (value: string) => void;
 };
 
-function StationField({ id, label, hint, errorText, placeholder, value, invalid, recent, onChange }: StationFieldProps) {
+function StationField({ id, label, hint, errorText, placeholder, compactPlaceholder, compact, value, invalid, recent, onChange }: StationFieldProps) {
   const [open, setOpen] = useState(false);
   const reduced = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -178,6 +193,7 @@ function StationField({ id, label, hint, errorText, placeholder, value, invalid,
   return (
     <div className={`station-field ${id}-field pop${invalid ? " field-invalid" : ""}${open ? " sheet-open" : ""}`}>
       <span className="field-focus-glow" aria-hidden="true" /><label htmlFor={id}><MapPin size={15} /> {label}</label>
+      <span className="row-pin" aria-hidden="true"><MapPin size={16} /></span>
       <button type="button" className="sheet-close" aria-label="Close station search" onMouseDown={(event) => event.preventDefault()} onClick={() => { setOpen(false); (document.activeElement as HTMLElement | null)?.blur(); }}><X size={20} /></button>
       <input
         id={id}
@@ -187,7 +203,8 @@ function StationField({ id, label, hint, errorText, placeholder, value, invalid,
         onFocus={() => setOpen(true)}
         onBlur={() => window.setTimeout(() => setOpen(false), 120)}
         onKeyDown={handleKeyDown}
-        placeholder={placeholder}
+        aria-label={label}
+        placeholder={compact ? compactPlaceholder : placeholder}
         autoComplete="off"
         role="combobox"
         aria-expanded={open && flat.length > 0}
@@ -255,6 +272,8 @@ function Index() {
   }, []);
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
+  const compactCard = useCompactSearchCard();
+  const today = startOfDay(new Date());
   const tomorrow = startOfDay(addDays(new Date(), 1));
   const [date, setDate] = useState<Date | undefined>(tomorrow);
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -368,10 +387,18 @@ function Index() {
               <span className="booking-landing-surface" aria-hidden="true" />
               <span className="booking-landing-shadow" aria-hidden="true" />
               <div className="booking-form">
-              <StationField id="source" label="From" hint="City, station or code" errorText="Choose where you're starting from" recent={recent} placeholder="Boarding station" value={source} invalid={invalidFields.source} onChange={(value) => { setSource(value); setInvalidFields((fields) => ({ ...fields, source: false })); setError(""); }} />
+              <div className="route-block">
+              <StationField id="source" label="From" hint="City, station or code" errorText="Choose where you're starting from" recent={recent} placeholder="Boarding station" compactPlaceholder="From" compact={compactCard} value={source} invalid={invalidFields.source} onChange={(value) => { setSource(value); setInvalidFields((fields) => ({ ...fields, source: false })); setError(""); }} />
               <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" onClick={() => { swapNames(); setSource(destination); setDestination(source); setInvalidFields({ source: false, destination: false, date: false }); setError(""); setSwapTurns((t) => t + 1); }}><span className="swap-glyph"><ArrowDownUp size={18} /></span></Button>
-              <StationField id="destination" label="To" hint="City, station or code" errorText="Choose where you're going" recent={recent} placeholder="Destination city" value={destination} invalid={invalidFields.destination} onChange={(value) => { setDestination(value); setInvalidFields((fields) => ({ ...fields, destination: false })); setError(""); }} />
-              <Button ref={dateButtonRef} variant="date" type="button" aria-label="Open travel calendar" aria-haspopup="dialog" aria-expanded={calendarOpen} data-open={calendarOpen ? "true" : undefined} className={[invalidFields.date ? "field-invalid" : "", calendarOpen ? "date-open" : ""].join(" ").trim()} onClick={() => setCalendarOpen((o) => !o)}><span className="field-focus-glow" aria-hidden="true" /><span className="field-label"><CalendarDays size={15} /> Date</span><span className="date-value">{date ? format(date, "dd MMM yyyy") : "Pick a date"}</span><span className="field-hint">{invalidFields.date ? <><AlertCircle size={15} aria-hidden="true" /> Pick a travel date</> : date ? format(date, "EEEE") : "Open the calendar"}</span><CalendarDays className="date-chevron" size={16} aria-hidden="true" /></Button>
+              <StationField id="destination" label="To" hint="City, station or code" errorText="Choose where you're going" recent={recent} placeholder="Destination city" compactPlaceholder="To" compact={compactCard} value={destination} invalid={invalidFields.destination} onChange={(value) => { setDestination(value); setInvalidFields((fields) => ({ ...fields, destination: false })); setError(""); }} />
+              </div>
+              <div className="date-row">
+              <Button ref={dateButtonRef} variant="date" type="button" aria-label="Open travel calendar" aria-haspopup="dialog" aria-expanded={calendarOpen} data-open={calendarOpen ? "true" : undefined} className={[invalidFields.date ? "field-invalid" : "", calendarOpen ? "date-open" : ""].join(" ").trim()} onClick={() => setCalendarOpen((o) => !o)}><span className="field-focus-glow" aria-hidden="true" /><span className="field-label"><CalendarDays size={15} /> Date</span><span className="date-value">{date ? format(date, "dd MMM yyyy") : "Pick a date"}</span><span className="date-value-short"><CalendarDays size={16} aria-hidden="true" />{date ? format(date, "EEE, d MMM") : "Pick a date"}</span><span className="field-hint">{invalidFields.date ? <><AlertCircle size={15} aria-hidden="true" /> Pick a travel date</> : date ? format(date, "EEEE") : "Open the calendar"}</span><CalendarDays className="date-chevron" size={16} aria-hidden="true" /></Button>
+              <span className="date-quick" role="group" aria-label="Quick travel dates">
+                <button type="button" className={date && isSameDay(date, today) ? "on" : ""} aria-pressed={!!date && isSameDay(date, today)} onClick={() => { setDate(today); setInvalidFields((fields) => ({ ...fields, date: false })); setError(""); }}>Today</button>
+                <button type="button" className={date && isSameDay(date, tomorrow) ? "on" : ""} aria-pressed={!!date && isSameDay(date, tomorrow)} onClick={() => { setDate(tomorrow); setInvalidFields((fields) => ({ ...fields, date: false })); setError(""); }}>Tomorrow</button>
+              </span>
+              </div>
               </div>
             <AnimatePresence>{error && <motion.p key={validationAttempt} initial={{ y: reduced ? 0 : -8, opacity: reduced ? 1 : 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }} className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</motion.p>}</AnimatePresence>
             <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>

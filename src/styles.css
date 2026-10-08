@@ -1605,3 +1605,74 @@ html.lenis, html.lenis body { height: auto; }
 .date-sheet { top: auto !important; left: 0 !important; right: 0; bottom: 0; width: 100%; max-width: none; border-radius: 20px 20px 0 0; padding: 8px 16px calc(20px + env(safe-area-inset-bottom)); touch-action: none; }
 .date-sheet .dp-handle { display: block; width: 40px; height: 4px; margin: 4px auto 14px; border-radius: 999px; background: color-mix(in oklab, var(--rd-indigo) 25%, transparent); }
 .date-sheet .dp-day { width: 44px; height: 44px; }
+
+/* ---- Compact phone search card: one route block, one date row ---- */
+.route-block, .date-row { display: contents; }
+.row-pin, .date-value-short, .date-quick { display: none; }
+@media (max-width: 640px) {
+  .hero-dark .booking-console { padding: 16px; border-radius: 20px; }
+  .hero-dark .booking-console .booking-form { gap: 8px; }
+  .hero-dark .booking-console .form-error { padding: 8px 0 0; }
+
+  /* From and To share one block: two single-line rows, thin divider, swap pinned right. */
+  .hero-dark .booking-console .route-block {
+    display: flex; flex-direction: column; position: relative;
+    border: 1px solid var(--border); border-radius: 16px; background: var(--rd-white);
+  }
+  .hero-dark .booking-console .route-block .station-field:not(.sheet-open) {
+    display: flex; flex-direction: row; align-items: center; gap: 10px;
+    height: 56px; min-height: 56px; padding: 0 62px 0 14px; border: 0; border-radius: 0; background: transparent;
+  }
+  .hero-dark .booking-console .route-block .source-field { border-radius: 0; }
+  .hero-dark .booking-console .route-block .station-field.destination-field { border-top: 1px solid var(--border); }
+  .hero-dark .booking-console .route-block .station-field:not(.sheet-open) label { display: none; }
+  .hero-dark .booking-console .route-block .station-field:not(.sheet-open) .row-pin { display: grid; place-items: center; flex: none; color: var(--rd-muted); }
+  .hero-dark .booking-console .route-block .station-field:not(.sheet-open) input {
+    height: 100%; margin: 0; padding: 0; border-radius: 0;
+    font-size: 17px; font-weight: 700; text-overflow: ellipsis;
+  }
+  .hero-dark .booking-console .route-block .station-field:not(.sheet-open) .field-hint,
+  .hero-dark .booking-console .route-block .station-field:not(.sheet-open) .field-focus-glow { display: none; }
+  .hero-dark .booking-console .route-block .swap-button.swap-button {
+    position: absolute; left: auto; right: 6px; top: 50%; margin: -22px 0 0; align-self: auto;
+    width: 44px; height: 44px; background: var(--rd-white);
+  }
+  .hero-dark .booking-console .route-block .swap-city-ghost,
+  .hero-dark .booking-console .route-block .destination-field .swap-city-ghost { top: 15px; left: 14px; right: 62px; font-size: 17px; }
+  .hero-dark .booking-console .route-block:has(.station-field:focus-within) { border-color: var(--rd-marigold); box-shadow: 0 0 22px -8px color-mix(in oklch, var(--rd-marigold) 55%, transparent); }
+  .hero-dark .booking-console .route-block:has(.field-invalid) { border-color: var(--error); }
+  .hero-dark .booking-console .route-block .station-field.field-invalid { background: color-mix(in oklch, var(--error) 6%, var(--rd-white)); box-shadow: none; }
+
+  /* Date: one 56px row with the quick chips on the right edge. */
+  .hero-dark .booking-console .date-row {
+    display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 8px 0 14px;
+    border: 1px solid var(--border); border-radius: 16px; background: var(--rd-white);
+  }
+  .hero-dark .booking-console .date-row .date-button {
+    display: flex; flex-direction: row; align-items: center; gap: 10px;
+    flex: 1 1 auto; min-width: 0; min-height: 0; height: 100%; padding: 0; border: 0; border-radius: 0; background: transparent;
+  }
+  .hero-dark .booking-console .date-row .date-button :is(.field-label, .date-value, .field-hint, .date-chevron, .field-focus-glow) { display: none; }
+  .hero-dark .booking-console .date-row .date-value-short {
+    display: inline-flex; align-items: center; gap: 8px; min-width: 0;
+    font-size: 17px; font-weight: 700; color: var(--rd-indigo);
+  }
+  .hero-dark .booking-console .date-row .date-value-short svg { flex: none; color: var(--rd-muted); }
+  .hero-dark .booking-console .date-row .date-button.field-invalid { background: color-mix(in oklch, var(--error) 6%, var(--rd-white)); box-shadow: none; }
+  .hero-dark .booking-console .date-row:has(.date-open), .hero-dark .booking-console .date-row:focus-within { border-color: var(--rd-marigold); box-shadow: 0 0 22px -8px color-mix(in oklch, var(--rd-marigold) 55%, transparent); }
+  .hero-dark .booking-console .date-row:has(.field-invalid) { border-color: var(--error); }
+  .hero-dark .booking-console .date-quick { display: flex; flex: none; gap: 6px; }
+  .hero-dark .booking-console .date-quick button {
+    height: 30px; padding: 0 9px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--rd-indigo) 20%, transparent);
+    background: var(--rd-cream); color: var(--rd-indigo); font: 600 12px var(--font-body); cursor: pointer;
+  }
+  .hero-dark .booking-console .date-quick button.on { background: var(--rd-marigold); border-color: var(--rd-marigold); }
+
+  .hero-dark .booking-console .booking-controls { padding: 12px 0 0; border-radius: 0; }
+}
+
+/* The pinned button lives inside the booking area's stacking context, so the area
+   must sit above the bottom fade while the button is floating. */
+@media (max-width: 760px) {
+  .railway-app.cta-floating .booking-area { z-index: 45; }
+}
