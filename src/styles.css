@@ -1168,6 +1168,7 @@ body { font-size: var(--text-body); line-height: 1.5; }
   animation-timing-function: var(--motion-ease-entrance);
 }
 /* Once-per-session home reveal. Shadow growth is opacity, never animated box-shadow. */
+[data-home-entrance] :is(.wordmark, .site-header > nav, .header-actions, .hero-subhead, .headline-mask, .headline-word, .destination-underline, .booking-console, .booking-form, .booking-controls, .booking-landing-surface, .booking-landing-shadow, .routes-head, .route-card, .route-marquee) { transition: none; }
 [data-home-entrance] .booking-console { position: relative; }
 .booking-landing-shadow, .booking-landing-surface {
   position: absolute; inset: 0; border-radius: inherit; pointer-events: none;

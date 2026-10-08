@@ -15,9 +15,9 @@ export function useHomeEntrance(ref: RefObject<HTMLDivElement | null>) {
     const controls = new Set<AnimationPlaybackControls>();
     const cardControls = new Set<AnimationPlaybackControls>();
     const ease = motionTokens.easing.entrance;
-    function enter(selector: string, frames: { opacity?: number[]; y?: number[] | string[]; scale?: number[]; scaleX?: number[] }, delay: number, duration: number = motionTokens.duration.entrance, stagger = 0, card = false) {
+    function enter(selector: string, frames: { opacity?: number[]; y?: number[] | string[]; scale?: number[]; scaleX?: number[] }, delay: number, duration: number = motionTokens.duration.entrance, stagger = 0, card = false, linear = false) {
       root?.querySelectorAll<HTMLElement>(selector).forEach((element, index) => {
-        const control = animate(element, frames, { delay: delay + index * stagger, duration, ease });
+        const control = animate(element, frames, { delay: delay + index * stagger, duration, ease: linear ? "linear" : ease });
         controls.add(control);
         if (card) cardControls.add(control);
         void control.finished.then(() => {
@@ -48,7 +48,7 @@ export function useHomeEntrance(ref: RefObject<HTMLDivElement | null>) {
     function startPhoto() {
       if (photoStarted || !root?.querySelector('.hero-loaded')) return;
       photoStarted = true;
-      enter('.hero-photo, .hero-placeholder', { scale: [timing.zoom.from, timing.zoom.to] }, 0, timing.zoom.duration);
+      enter('.hero-photo, .hero-placeholder', { scale: [timing.zoom.from, timing.zoom.to] }, 0, timing.zoom.duration, 0, false, true);
     }
     startPhoto();
     const observer = new MutationObserver(startPhoto);
