@@ -28,6 +28,17 @@ export const searchMotion = {
 
 export const routeMotion = { rise: 20, lift: -4, stagger: 0.07, flight: 0.7, glow: 0.7, train: 1.4 } as const;
 
+export const marqueeMotion = { speed: 36, settle: 0.35, boostDecay: 0.55, maxBoost: 3, maxSkew: 2.5, hoverScale: 1.08, flight: 0.7 } as const;
+
+export function marqueeScrollImpulse(velocity: number) {
+  const strength = Math.min(1, Math.abs(velocity) / 1600);
+  return { boost: strength * marqueeMotion.maxBoost, skew: Math.sign(velocity) * strength * marqueeMotion.maxSkew };
+}
+
+export function easeMarqueeSpeed(current: number, target: number, delta: number) {
+  return current + (target - current) * (1 - Math.exp(-Math.max(0, delta) / marqueeMotion.settle));
+}
+
 export function magneticOffset(position: number, size: number) {
   if (size <= 0) return 0;
   return Math.max(-searchMotion.magneticLimit, Math.min(searchMotion.magneticLimit, (position / size - 0.5) * searchMotion.magneticLimit * 2));

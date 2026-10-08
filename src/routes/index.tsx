@@ -14,6 +14,7 @@ import { AnimatePresence, LayoutGroup, motion, DrawnCheck, SelectionMark, Rollin
 import { useReducedMotion } from "framer-motion";
 import { motionTokens, searchMotion } from "@/lib/motion";
 import { RouteCard } from "@/components/route-card";
+import { CityMarquee } from "@/components/city-marquee";
 
 export const Route = createFileRoute("/")({
   head: () => ({ links: [
@@ -379,20 +380,7 @@ function Index() {
               ))}
             </div>
           </div>
-        <div className="route-marquee" role="group" aria-label="Pick a destination city">
-          <div className="marquee-track">
-            {Array.from({ length: 2 }).map((_, k) => (
-              <span key={k} className="marquee-run" aria-hidden={k === 1 ? true : undefined}>
-                {marqueeCities.map(([label, city]) => (
-                  <span key={label} className="marquee-item">
-                    <button type="button" className={"marquee-city" + (destination === city ? " on" : "")} tabIndex={k === 1 ? -1 : 0} aria-pressed={destination === city} aria-label={`Set destination to ${city}`} onClick={() => { setDestination(city); setInvalidFields((f) => ({ ...f, destination: false })); setError(""); }}>{label}</button>
-                    <span className="marquee-dot" aria-hidden="true" />
-                  </span>
-                ))}
-              </span>
-            ))}
-          </div>
-        </div>
+        <CityMarquee cities={marqueeCities} destination={destination} onChoose={city => { setDestination(city); setInvalidFields(fields => ({ ...fields, destination: false })); setError(""); }} />
       <footer className="site-footer">
         <div className="footer-top">
           <div className="footer-brand"><span className="footer-wordmark">RAIL DADDY<span className="footer-stop">.</span></span><p className="footer-tagline">Trips worth the ride.</p></div>
