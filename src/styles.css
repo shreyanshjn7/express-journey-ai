@@ -1523,3 +1523,39 @@ html.lenis, html.lenis body { height: auto; }
   }
   .hero-dark .quota-field { scroll-margin-bottom: 96px; }
 }
+
+/* Anchored travel date panel */
+.booking-console .date-button.date-open > .field-focus-glow { opacity: 1; transform: scale(1); }
+.booking-console .date-button.date-open { border-color: var(--rd-marigold); }
+.date-button { position: relative; }
+.date-button .date-chevron { position: absolute; top: 14px; right: 14px; transition: transform 180ms ease-out; }
+.date-button.date-open .date-chevron { transform: rotate(180deg); }
+.date-panel { position: fixed; z-index: 1000; width: min(340px, calc(100vw - 32px)); padding: 16px; border-radius: 20px; background: var(--rd-cream); color: var(--rd-indigo); border: 1px solid color-mix(in oklab, var(--rd-indigo) 10%, transparent); box-shadow: 0 1px 2px color-mix(in oklab, var(--rd-indigo) 8%, transparent), 0 8px 24px color-mix(in oklab, var(--rd-indigo) 12%, transparent), 0 24px 48px color-mix(in oklab, var(--rd-indigo) 14%, transparent); font-family: var(--font-sans, Inter, sans-serif); }
+.dp-notch { position: absolute; top: -7px; left: calc(var(--dp-notch) - 7px); width: 14px; height: 14px; background: var(--rd-cream); border-left: 1px solid color-mix(in oklab, var(--rd-indigo) 10%, transparent); border-top: 1px solid color-mix(in oklab, var(--rd-indigo) 10%, transparent); transform: rotate(45deg); border-top-left-radius: 3px; }
+.date-panel.up .dp-notch { top: auto; bottom: -7px; transform: rotate(225deg); }
+.dp-chips { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.dp-chip { min-height: 36px; padding: 0 14px; border-radius: 999px; background: var(--rd-white); color: var(--rd-indigo); border: 1px solid color-mix(in oklab, var(--rd-indigo) 20%, transparent); font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 150ms, border-color 150ms; }
+.dp-chip.on { background: var(--rd-marigold); border-color: var(--rd-marigold); color: var(--rd-indigo); box-shadow: none; }
+.dp-chip:focus-visible, .dp-day:focus-visible, .dp-arrow:focus-visible, .dp-title:focus-visible, .dp-month:focus-visible { outline: 2px solid var(--rd-indigo); outline-offset: 2px; }
+.dp-head { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; margin-bottom: 6px; }
+.dp-arrow { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 999px; background: transparent; border: 0; color: var(--rd-indigo); cursor: pointer; }
+.dp-arrow:hover:not(:disabled) { background: color-mix(in oklab, var(--rd-indigo) 7%, var(--rd-cream)); }
+.dp-arrow:disabled { opacity: .35; cursor: default; }
+.dp-title { justify-self: center; padding: 6px 12px; border-radius: 12px; background: transparent; border: 0; color: var(--rd-indigo); font-size: 15px; font-weight: 700; cursor: pointer; }
+.dp-title:hover { background: color-mix(in oklab, var(--rd-indigo) 7%, var(--rd-cream)); }
+.dp-grid { display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 2px; }
+.dp-weekday { text-align: center; font-size: 13px; font-weight: 600; color: var(--rd-muted); padding: 6px 0; }
+.dp-cell { display: grid; place-items: center; }
+.dp-day { position: relative; width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; background: transparent; border: 0; color: var(--rd-indigo); font-size: 14px; font-weight: 500; cursor: pointer; font-variant-numeric: tabular-nums; }
+.dp-day:hover:not(:disabled):not(.selected) { background: color-mix(in oklab, var(--rd-indigo) 7%, var(--rd-cream)); }
+.dp-day.today:not(.selected) { box-shadow: inset 0 0 0 1px var(--rd-indigo); }
+.dp-day.past { opacity: .35; cursor: default; }
+.dp-day.selected { font-weight: 700; }
+.dp-selected { position: absolute; inset: 0; border-radius: 999px; background: var(--rd-marigold); }
+.dp-num { position: relative; }
+.dp-months { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-height: 280px; overflow-y: auto; }
+.dp-month { min-height: 40px; border-radius: 12px; background: var(--rd-white); border: 1px solid color-mix(in oklab, var(--rd-indigo) 12%, transparent); color: var(--rd-indigo); font-size: 13px; font-weight: 600; cursor: pointer; }
+.dp-month.on { background: var(--rd-marigold); border-color: var(--rd-marigold); }
+.date-sheet { top: auto !important; left: 0 !important; right: 0; bottom: 0; width: 100%; max-width: none; border-radius: 20px 20px 0 0; padding: 8px 16px calc(20px + env(safe-area-inset-bottom)); touch-action: none; }
+.date-sheet .dp-handle { display: block; width: 40px; height: 4px; margin: 4px auto 14px; border-radius: 999px; background: color-mix(in oklab, var(--rd-indigo) 25%, transparent); }
+.date-sheet .dp-day { width: 44px; height: 44px; }
