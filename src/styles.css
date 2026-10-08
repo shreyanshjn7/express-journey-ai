@@ -952,7 +952,7 @@ body { font-size: var(--text-body); line-height: 1.5; }
   .last-search { font-size: 13px; }
   .booking-console .station-field.sheet-open { background: var(--rd-cream) !important; }
 }
-@media (max-width: 760px) { .hero-dark { z-index: 3; } }
+@media (max-width: 760px) { .hero-dark { z-index: auto; } }
 /* Full-bleed hero without clip-path, so the pinned phone button isn't clipped */
 .booking-console .station-field input:focus-visible { outline: none !important; box-shadow: none; }
 .booking-console .swap-button { z-index: 12; }
@@ -1498,4 +1498,15 @@ html.lenis, html.lenis body { height: auto; }
   }
   .hero-dark .booking-console .crew-stepper,
   .hero-dark .booking-console .quota-field { flex-wrap: wrap; min-width: 0; }
+}
+@media (max-width: 760px) {
+  .hero-dark .site-header {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px;
+  }
+  .hero-dark .site-header .wordmark { min-width: 0; }
+  .hero-dark .header-actions { flex-shrink: 0; }
+  .hero-dark .journey-stage {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  }
+  .hero-dark .quota-field { scroll-margin-bottom: 96px; }
 }
