@@ -50,7 +50,7 @@ export function SearchAction({ busy }: { busy: boolean }) {
 export function useSearchMicroMotion(ref: RefObject<HTMLDivElement | null>, swapTurns: number, validationAttempt: number) {
   const previousSwap = useRef(swapTurns);
   const active = useRef(new Set<AnimationPlaybackControls>());
-  function play(element: HTMLElement, frames: Parameters<typeof animate>[1], options: Parameters<typeof animate>[2]) {
+  function play(element: HTMLElement, frames: { x?: number[]; scale?: number[]; opacity?: number[]; rotate?: number }, options: { duration?: number; ease?: 'linear' | readonly [number, number, number, number]; type?: 'spring'; stiffness?: number; damping?: number }) {
     const control = animate(element, frames, options);
     active.current.add(control);
     void control.finished.then(() => active.current.delete(control));
