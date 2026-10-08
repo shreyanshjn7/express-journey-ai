@@ -15,6 +15,7 @@ import { useReducedMotion } from "framer-motion";
 import { motionTokens, searchMotion } from "@/lib/motion";
 import { RouteCard } from "@/components/route-card";
 import { CityMarquee } from "@/components/city-marquee";
+import { useBookingTransition } from "@/components/booking-motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({ links: [
@@ -232,6 +233,7 @@ function StationField({ id, label, hint, errorText, placeholder, value, invalid,
 }
 
 function Index() {
+  const { begin } = useBookingTransition();
   const homeRef = useRef<HTMLDivElement>(null);
   useHomeEntrance(homeRef);
   useHeroDepth(homeRef);
@@ -298,6 +300,11 @@ function Index() {
     const search = { from: source.trim(), to: destination.trim(), date: date ? date.toISOString() : "" };
     try { window.localStorage.setItem("rd-recent-stations", JSON.stringify(nextRecent)); window.localStorage.setItem("rd-last-search", JSON.stringify(search)); } catch { /* storage unavailable */ }
     await leaveSearch();
+    const consoleElement = homeRef.current?.querySelector<HTMLElement>('.booking-console');
+    if (consoleElement) {
+      begin(consoleElement, { from: source.trim(), to: destination.trim(), date: format(date, "yyyy-MM-dd"), cls: travelClass, pax: passengers, quota });
+      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+    }
     await navigate({ to: "/trains", search: { from: source.trim(), to: destination.trim(), date: format(date, "yyyy-MM-dd"), cls: travelClass, pax: passengers, quota } });
   }
   return (

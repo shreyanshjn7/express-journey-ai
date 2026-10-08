@@ -26,3 +26,4 @@
 - Keep search-specific motion in search-motion with shared timing tokens; mark owned controls to exclude delegated transforms, and compress only independent surfaces on phones so fixed actions and station sheets stay viewport-bound.
 - Route cards own scroll and interaction motion; shared-element flights use a body portal and land before scrolling so fixed mobile controls stay viewport-bound.
 - CityMarquee owns its frame-driven velocity and hover motion with shared tokens; destination flights use a body portal, and reduced motion restores a native scrollable strip so pinned controls remain viewport-safe.
+- Keep BookingMotionProvider around the root Outlet with a persistent shared-layout portal bridging search and summary; booking cards, progress and fare totals own their motion, leaving fixed mobile action ancestors untransformed. Why: route unmounts must not break the morph or displace pinned controls.
