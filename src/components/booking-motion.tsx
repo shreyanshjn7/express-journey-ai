@@ -31,7 +31,7 @@ export function BookingMotionProvider({ children }: { children: ReactNode }) {
       clearTimer.current = setTimeout(() => setFlight(null), bookingMotion.morph * 1000);
     },
   }}><LayoutGroup id="booking-flow">{children}
-    {flight && createPortal(<motion.div key="search-flight" layout layoutId="booking-summary-flight" className="booking-summary-flight" aria-hidden="true" style={{ top: flight.top, left: flight.left, width: flight.width, height: flight.height }} transition={{ duration: bookingMotion.morph, ease: motionTokens.easing.transition }}><strong>{flight.trip.from}</strong><ArrowRight size={18} /><strong>{flight.trip.to}</strong></motion.div>, document.body)}
+    {flight && createPortal(<motion.div key="search-flight" layoutId="booking-summary-flight" className="booking-summary-flight" aria-hidden="true" initial={false} animate={{ top: flight.top, left: flight.left, width: flight.width, height: flight.height }} transition={{ duration: bookingMotion.morph, ease: motionTokens.easing.transition }}><strong>{flight.trip.from}</strong><ArrowRight size={18} /><strong>{flight.trip.to}</strong></motion.div>, document.body)}
   </LayoutGroup></FlowContext.Provider>;
 }
 
