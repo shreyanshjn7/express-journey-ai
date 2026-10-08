@@ -681,7 +681,6 @@ h1 .line:first-child > span { color: var(--foreground); }
 .mobile-menu-theme { display: none; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 8px 6px; border-top: 1px solid var(--border); font-size: 13px; font-weight: 500; color: var(--text-helper); }
 .mobile-menu-theme .theme-toggle { flex-shrink: 0; }
 @media (max-width: 640px) {
-  .hero-dark .site-header { gap: 16px; }
   .site-header .theme-toggle, .site-header .ai-cta { display: none; }
   .site-header .ai-icon-btn { display: inline-grid; }
   .mobile-menu-theme { display: flex; }
