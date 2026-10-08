@@ -24,3 +24,8 @@
 - [ ] Contact page needs real email / phone from the owner (placeholder copy only)
 - [x] Post-search screens: results, seats, passengers, payment (light theme, 4-step progress, sticky mobile fare bar)
 - [x] Mobile-first pass: 2-line headline, swipeable class pills, verified at 360px
+
+## Shared motion system
+- [ ] Define and test shared easing, duration, spring, stagger and distance tokens.
+- [ ] Apply transform/opacity entrances and hover/press feedback across pages without layout or color changes.
+- [ ] Add Lenis scrolling with reduced-motion and picker support; verify desktop and 360px behavior.
