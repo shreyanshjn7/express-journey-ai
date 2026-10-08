@@ -1,5 +1,10 @@
 # Roadmap
 
+## Adaptive hero
+- [ ] Center a full-viewport minimum-height hero, fluid headline and equally bounded search card.
+- [ ] Stack fields and wrap controls below 900px; retain safe background overscan.
+- [ ] Verify 360–2560px widths, short laptop heights, and picker behavior.
+
 ## Animation performance
 - [x] Limit compositor hints to active motion and delay hero decoration until content loads.
 - [x] Pause off-screen animations and disable cursor, particles and parallax on phones.
