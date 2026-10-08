@@ -55,7 +55,7 @@ export const searchMotion = {
   get submitPause() { return motionDuration(0.5); },
 } as const;
 
-export const routeMotion = { rise: 20, lift: -4, ...timed({ stagger: 0.07 }) , get stagger() { return motionDuration(0.07); }, get flight() { return motionDuration(0.7); }, get glow() { return motionDuration(0.7); }, get train() { return motionDuration(1.4); } } as const;
+export const routeMotion = { rise: 20, lift: -4, get stagger() { return motionDuration(0.07); }, get flight() { return motionDuration(0.7); }, get glow() { return motionDuration(0.7); }, get train() { return motionDuration(1.4); } } as const;
 
 export const bookingMotion = timed({ cardStagger: 0.06, chipStagger: 0.06, count: 0.7, expand: 0.35, loadingPreview: 0.7, rail: 1.1, morph: 0.7 });
 
