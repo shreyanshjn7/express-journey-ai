@@ -1,6 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { CheckCircle2, Clock, AlertTriangle, XCircle, ArrowRight, CalendarDays, TrainFront } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { CountFare, TrainSkeletons, useBookingReducedMotion } from "@/components/booking-motion";
+import { bookingMotion, motionTokens } from "@/lib/motion";
+import { CheckCircle2, Clock, AlertTriangle, XCircle, ArrowRight, CalendarDays, TrainFront, ChevronDown } from "lucide-react";
 import { addDays, format, parseISO } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { BookingShell, FareBar } from "@/components/booking-shell";
@@ -24,6 +27,12 @@ const statusText = (s: Availability, n: number) => s === "Available" ? `Availabl
 
 function Results() {
   const trip = Route.useSearch();
+  const reduced = useBookingReducedMotion();
+  const [readyKey, setReadyKey] = useState("");
+  const resultsKey = `${trip.from}:${trip.to}:${trip.date}`;
+  const loading = !reduced && readyKey !== resultsKey;
+  useEffect(() => { const timer = window.setTimeout(() => setReadyKey(resultsKey), reduced ? 0 : bookingMotion.loadingPreview * 1000); return () => clearTimeout(timer); }, [resultsKey, reduced]);
+  const [expanded, setExpanded] = useState<string[]>([]);
   const navigate = useNavigate();
   const trains = sampleTrains(trip.from, trip.to, trip.date);
   const [pick, setPick] = useState<{ train: string; cls: string } | null>(null);
@@ -34,16 +43,16 @@ function Results() {
   return (
     <BookingShell step={1} trip={trip}
       back={<Link to="/">Edit search</Link>}
-      bar={<FareBar note={picked ? `${pick!.cls} · ${trip.pax} passenger${trip.pax > 1 ? "s" : ""}` : "Pick a class to continue"} total={picked ? rupees(picked.fare * trip.pax) : "—"} action={<Button variant="journey" className="flow-cta" disabled={!picked} onClick={go}>Choose seats <ArrowRight size={18} /></Button>} />}>
+      bar={<FareBar note={picked && pick ? `${pick.cls} · ${trip.pax} passenger${trip.pax > 1 ? "s" : ""}` : "Pick a class to continue"} total={picked ? rupees(picked.fare * trip.pax) : "—"} action={<Button variant="journey" className="flow-cta" disabled={!picked} onClick={go}>Choose seats <ArrowRight size={18} /></Button>} />}>
       <div className="flow-title-row">
         <h1 className="flow-title">{trains.length} trains · {tripDateLabel(trip.date)}</h1>
         <p className="flow-sub">Sample timings and fares — live availability isn’t connected yet.</p>
       </div>
-      <ul className="train-list">
-        {trains.map((t) => {
+      {loading ? <TrainSkeletons /> : <motion.ul key={resultsKey} className="train-list" initial={{ opacity: reduced ? 1 : 0 }} animate={{ opacity: 1 }} transition={{ duration: reduced ? 0 : motionTokens.duration.standard }}>
+        {trains.map((t, index) => {
           const full = isFull(t);
           return (
-            <li key={t.number} className={`train-card ${full ? "is-full" : ""}`}>
+            <motion.li key={t.number} data-motion-owned="true" className={`train-card ${full ? "is-full" : ""}`} initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.entrance, delay: reduced ? 0 : index * bookingMotion.cardStagger, ease: motionTokens.easing.entrance }}>
               <div className="train-head">
                 <div><h2 className="train-name">{t.name}</h2><span className="train-number"><TrainFront size={14} aria-hidden="true" />#{t.number}</span></div>
                 {full && <span className="status-tag waitlist"><XCircle size={14} aria-hidden="true" />Train full</span>}
@@ -54,24 +63,27 @@ function Results() {
                 <div className="end"><strong>{t.arrive}{t.days && <sup>{t.days}</sup>}</strong><span>{trip.to}</span></div>
               </div>
               <div className="class-offers" role="radiogroup" aria-label={`Classes on ${t.name}`}>
-                {t.offers.map((o) => {
+                {t.offers.map((o, chipIndex) => {
                   const Icon = statusIcon[o.status];
                   const on = pick?.train === t.number && pick.cls === o.cls;
                   return (
-                    <button key={o.cls} type="button" role="radio" aria-checked={on} className={`offer-chip ${o.status.toLowerCase()} ${on ? "on" : ""}`} onClick={() => setPick({ train: t.number, cls: o.cls })}>
-                      <span className="offer-top"><b>{o.cls}</b><span className="offer-fare">{rupees(o.fare)}</span></span>
+                    <Button variant="ghost" asChild key={o.cls}>
+                    <motion.button type="button" data-motion-owned="true" role="radio" aria-checked={on} className={`offer-chip ${o.status.toLowerCase()} ${on ? "on" : ""}`} onClick={() => setPick({ train: t.number, cls: o.cls })} initial={{ scale: reduced ? 1 : 0.9, opacity: reduced ? 1 : 0 }} animate={{ scale: 1, opacity: 1 }} whileHover={reduced ? {} : { scale: motionTokens.scale.hover }} whileTap={reduced ? {} : { scale: motionTokens.scale.press }} transition={{ ...motionTokens.spring.snappy, delay: reduced ? 0 : index * bookingMotion.cardStagger + chipIndex * bookingMotion.chipStagger }}>
+                      <span className="offer-top"><b>{o.cls}</b><span className="offer-fare"><CountFare value={o.fare} delay={reduced ? 0 : index * bookingMotion.cardStagger + chipIndex * bookingMotion.chipStagger} /></span></span>
                       <span className="offer-status"><Icon size={14} aria-hidden="true" />{statusText(o.status, o.count)}</span>
-                    </button>
+                    </motion.button></Button>
                   );
                 })}
               </div>
+              <Button variant="ghost" className="train-details-toggle" aria-expanded={expanded.includes(t.number)} aria-controls={`details-${t.number}`} onClick={() => setExpanded(current => current.includes(t.number) ? current.filter(n => n !== t.number) : [...current, t.number])}>Journey details <motion.span animate={{ rotate: expanded.includes(t.number) ? 180 : 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }}><ChevronDown size={16} /></motion.span></Button>
+              <AnimatePresence initial={false}>{expanded.includes(t.number) && <motion.div id={`details-${t.number}`} className="train-expansion" initial={{ height: reduced ? 'auto' : 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} transition={{ duration: reduced ? 0 : bookingMotion.expand, ease: motionTokens.easing.transition }}><motion.div className="train-details" initial={{ opacity: reduced ? 1 : 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro, delay: reduced ? 0 : bookingMotion.expand }}><span><TrainFront size={16} />{trip.from} → {trip.to}</span><span><Clock size={16} />{t.duration} · {t.depart}–{t.arrive}</span><span><CalendarDays size={16} />{tripDateLabel(trip.date)} · {trip.quota} quota</span></motion.div></motion.div>}</AnimatePresence>
               {full && <Alternates trip={trip} trains={trains.filter((x) => !isFull(x) && x.number !== t.number).slice(0, 2)} />}
-            </li>
+            </motion.li>
           );
         })}
-      </ul>
+      </motion.ul>}
       <div className="flow-desktop-cta">
-        {picked ? <p>{pick!.cls} on #{pick!.train} · <strong>{rupees(picked.fare * trip.pax)}</strong> for {trip.pax}</p> : <p>Pick a class on any train to continue.</p>}
+        {picked && pick ? <p>{pick.cls} on #{pick.train} · <strong>{rupees(picked.fare * trip.pax)}</strong> for {trip.pax}</p> : <p>Pick a class on any train to continue.</p>}
         <Button variant="journey" className="flow-cta" disabled={!picked} onClick={go}>Choose seats <ArrowRight size={18} /></Button>
       </div>
     </BookingShell>

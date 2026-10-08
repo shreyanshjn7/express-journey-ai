@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ComponentProps, type RefObject } from "react";
 import { animate, AnimatePresence, LayoutGroup, motion, useMotionValue, useReducedMotion, useSpring, type AnimationPlaybackControls } from "framer-motion";
-import { ArrowRight, LoaderCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { RailLoader, useBookingReducedMotion } from "@/components/booking-motion";
 import { DayButton } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { CalendarDayButton } from "@/components/ui/calendar";
@@ -14,7 +15,7 @@ export function SelectionMark({ id, circle = false }: { id: string; circle?: boo
 }
 
 export function DrawnCheck() {
-  const reduced = useReducedMotion();
+  const reduced = useBookingReducedMotion();
   return <svg className="drawn-check" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><motion.path d="m5 12 4 4L19 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" initial={{ pathLength: reduced ? 1 : 0 }} animate={{ pathLength: 1 }} transition={{ duration: motionTokens.duration.micro }} /></svg>;
 }
 
@@ -41,7 +42,7 @@ export function SearchAction({ busy }: { busy: boolean }) {
     }} onPointerLeave={() => { x.set(0); y.set(0); }} asChild>
     <motion.button style={{ x: springX, y: springY }} whileHover={reduced || busy ? {} : { scale: motionTokens.scale.hover }} whileTap={reduced || busy ? {} : { scale: motionTokens.scale.press }} transition={motionTokens.spring.soft}>
       <motion.span className="button-shine" aria-hidden="true" initial={{ x: '-200%', opacity: 0 }} animate={reduced || busy ? { opacity: 0 } : { x: ['-200%', '500%', '500%'], opacity: [0, 0.35, 0] }} transition={{ duration: searchMotion.shineInterval, times: [0, 0.2, 1], repeat: Infinity, ease: 'linear' }} />
-      <span className="search-action-label"><AnimatePresence mode="wait" initial={false}><motion.span className="search-action-state" key={busy ? 'busy' : 'ready'} initial={{ opacity: 0, scale: reduced ? 1 : 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: reduced ? 1 : 0.9 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }}>{busy ? <><LoaderCircle className="search-spinner" size={20} aria-hidden="true" /><span className="sr-only">Finding trains</span></> : <><span className="journey-title">Find my train</span><ArrowRight className="search-arrow" size={18} aria-hidden="true" /></>}</motion.span></AnimatePresence></span>
+      <span className="search-action-label"><AnimatePresence mode="wait" initial={false}><motion.span className="search-action-state" key={busy ? 'busy' : 'ready'} initial={{ opacity: 0, scale: reduced ? 1 : 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: reduced ? 1 : 0.9 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }}>{busy ? <RailLoader compact /> : <><span className="journey-title">Find my train</span><ArrowRight className="search-arrow" size={18} aria-hidden="true" /></>}</motion.span></AnimatePresence></span>
     </motion.button>
   </Button>;
 }
@@ -101,11 +102,6 @@ export function useSearchMicroMotion(ref: RefObject<HTMLDivElement | null>, swap
   async function leaveSearch() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     await new Promise(resolve => window.setTimeout(resolve, searchMotion.submitPause * 1000));
-    const root = ref.current;
-    if (!root) return;
-    const mobile = window.matchMedia('(max-width: 760px)').matches;
-    const targets = root.querySelectorAll<HTMLElement>(mobile ? '.booking-landing-surface, .booking-landing-shadow, .search-action' : '.booking-console');
-    await Promise.all([...targets].map(element => play(element, { scale: [1, 0.97], opacity: [1, 0] }, { duration: motionTokens.duration.standard, ease: motionTokens.easing.transition }).finished));
   }
   return { swapNames, leaveSearch };
 }
