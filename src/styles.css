@@ -373,14 +373,14 @@ h1 > span:first-child { color: var(--foreground); }
 .footer-tagline { margin: 0; font-size: 14px; color: var(--text-helper); }
 .footer-links { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 14px; }
 .footer-links a { color: var(--foreground); text-decoration: none; border-radius: 4px; transition: color .2s; }
-.footer-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.footer-links a:hover { text-decoration: none; }
 .footer-note { margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-helper); max-width: 68ch; }
 .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 16px; border-top: 1px solid var(--border); }
 .footer-copy { font-size: 13px; }
 .trust-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .trust-badge { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 0 13px; border-radius: 999px; border: 1px solid var(--border); background: var(--card); font-size: 13px; font-weight: 600; color: var(--foreground); }
 .scenic-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--foreground); text-decoration: none; border-radius: 4px; }
-.scenic-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.scenic-link:hover { text-decoration: none; }
 .railway-dialog { border-radius: var(--radius-lg-ui); box-shadow: var(--shadow-dialog); }
 .dialog-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: var(--radius-lg-ui); background: var(--primary); color: var(--block-ink); margin-bottom: 14px; }
 .journey-summary { background: var(--secondary); padding: 20px; border-radius: var(--radius-lg-ui); }
@@ -1398,6 +1398,27 @@ html.lenis, html.lenis body { height: auto; }
 }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: hidden; }
+/* Global polish uses semantic ink, not the primary-action accent. */
+:root { --cursor-ink: oklch(1 0 0); --theme-mask-paper: oklch(1 0 0); --theme-mask-cutout: oklch(0 0 0); }
+.desktop-cursor { position: fixed; inset: 0; z-index: 10000; pointer-events: none; mix-blend-mode: difference; opacity: 0; }
+.custom-cursor-active .desktop-cursor { opacity: 1; }
+.cursor-dot, .cursor-ring { position: absolute; top: 0; left: 0; will-change: transform; transition: none !important; }
+.cursor-dot::after { content: ''; position: absolute; width: var(--cursor-dot-size, 5px); height: var(--cursor-dot-size, 5px); border-radius: 50%; background: var(--cursor-ink); transform: translate(-50%, -50%); }
+.cursor-ring > span { display: block; width: var(--cursor-ring-size, 28px); height: var(--cursor-ring-size, 28px); border: 1px solid var(--cursor-ink); border-radius: 50%; opacity: .65; transform: translate(-50%, -50%) scale(1); transition: transform var(--motion-standard) var(--motion-ease-entrance); }
+.cursor-ring.cursor-over-control > span { transform: translate(-50%, -50%) scale(var(--cursor-expanded-scale, 1.5714)); }
+@media (min-width: 761px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .custom-cursor-active, .custom-cursor-active :is(button, a, select, label, summary, [role="button"]) { cursor: none !important; }
+}
+.theme-toggle .theme-glyph { width: 20px; height: 20px; transition: none !important; }
+.theme-mask-paper { fill: var(--theme-mask-paper); }
+.theme-mask-cutout { fill: var(--theme-mask-cutout); }
+.theme-revealing::view-transition-old(root), .theme-revealing::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+.theme-revealing::view-transition-old(root) { z-index: 1; }
+.theme-revealing::view-transition-new(root) { z-index: 2; }
+.site-footer :is(.footer-links a, .scenic-link) { position: relative; text-decoration: none; }
+.site-footer :is(.footer-links a, .scenic-link)::after { content: ''; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left center; transition: transform var(--motion-standard) var(--motion-ease-entrance); }
+.site-footer :is(.footer-links a, .scenic-link):is(:hover, :focus-visible)::after { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse), (max-width: 760px) { .desktop-cursor { display: none; } }
 .city-marquee { overflow: hidden; }
 .city-marquee .marquee-track { animation: none; will-change: transform; }
 .city-marquee .marquee-run { flex-shrink: 0; }

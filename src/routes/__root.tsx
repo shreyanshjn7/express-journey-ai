@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { MotionSystem } from "../components/motion-system";
 import { BookingMotionProvider } from "../components/booking-motion";
+import { DesktopCursor } from "../components/global-polish";
 
 function NotFoundComponent() {
   return (
@@ -124,6 +125,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <MotionSystem />
+      <DesktopCursor />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <BookingMotionProvider><Outlet /></BookingMotionProvider>
     </QueryClientProvider>
