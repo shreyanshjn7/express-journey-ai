@@ -24,3 +24,4 @@
 - Keep home first-load orchestration in useHomeEntrance with sessionStorage gating and shared motion tokens; exclude home entrances from the delegated scanner, and move only an independent landing surface on phones so pinned actions and pickers retain viewport positioning.
 - Keep scroll depth on a separate photo wrapper and the headline only; decorative particles/train are inert clipped layers, with shared motion tokens and reduced-motion/offscreen pausing so booking controls remain viewport-safe.
 - Keep search-specific motion in search-motion with shared timing tokens; mark owned controls to exclude delegated transforms, and compress only independent surfaces on phones so fixed actions and station sheets stay viewport-bound.
+- Route cards own scroll and interaction motion; shared-element flights use a body portal and land before scrolling so fixed mobile controls stay viewport-bound.

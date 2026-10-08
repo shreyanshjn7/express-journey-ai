@@ -685,7 +685,7 @@ h1 .line:first-child > span { color: var(--foreground); }
   background: var(--card);
   cursor: pointer; transition: transform .25s ease, border-color .25s, background .25s, box-shadow .25s;
 }
-.route-card:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow-soft); }
+.route-card:hover { box-shadow: var(--shadow-soft); }
 .route-card:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
 .route-names { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 700; color: var(--foreground); white-space: nowrap; max-width: 100%; overflow: hidden; }
 .route-names svg { color: var(--muted-foreground); flex-shrink: 0; }
@@ -693,6 +693,21 @@ h1 .line:first-child > span { color: var(--foreground); }
 .route-go { margin-left: auto; color: var(--primary) !important; opacity: 0; transform: translate(-4px, 4px); transition: opacity .2s, transform .2s; }
 .route-card:hover .route-go, .route-card:focus-visible .route-go { opacity: 1; transform: translate(0, 0); }
 .route-note { font-size: 13px; color: var(--text-helper); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.route-card { position: relative; isolation: isolate; overflow: hidden; height: auto; justify-content: flex-start; transition: none; }
+.route-card:hover { background: var(--card); }
+:root { --route-spotlight: radial-gradient(circle, color-mix(in srgb, var(--rd-marigold) 14%, transparent), transparent 70%); }
+.route-spotlight { position: absolute; width: 180px; height: 180px; top: 0; left: 0; background: var(--route-spotlight); pointer-events: none; z-index: 0; }
+.route-card .route-names, .route-card .route-note { position: relative; }
+.route-card[data-flying="true"] [data-city] { opacity: 0; }
+.route-card .route-border-draw { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; fill: none; stroke: var(--rd-marigold); stroke-width: 1.5; }
+.route-journey-track { position: relative; width: 24px; flex: 0 0 24px; height: 14px; display: grid; place-items: center; }
+.route-track-line { position: absolute; width: 24px; height: 1px; background: var(--muted-foreground); transform-origin: left; }
+.route-train-dot { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--rd-marigold); }
+.route-flight-layer { position: fixed; inset: 0; z-index: 100; pointer-events: none; }
+.route-flying-city { position: absolute; display: flex; align-items: center; white-space: nowrap; font: 700 14px var(--font-body); color: var(--foreground); transform-origin: left center; }
+.route-field-arrival .field-focus-glow { animation: route-arrival-glow 1.3s ease-out; }
+@keyframes route-arrival-glow { 0%, 100% { opacity: 0; } 25%, 60% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .route-field-arrival .field-focus-glow { animation: none; } .route-spotlight, .route-train-dot { display: none; } }
 @media (max-width: 940px) and (min-width: 761px) {
   .booking-controls { grid-template-columns: 1fr; }
   .controls-panel { justify-content: flex-start; }
@@ -1185,7 +1200,7 @@ body { font-size: var(--text-body); line-height: 1.5; }
   position: absolute; height: 3px; inset: auto 0 0;
   background: var(--rd-marigold); transform-origin: left center; border-radius: 3px;
 }
-[data-home-entrance="pending"] :is(.wordmark, .site-header > nav, .header-actions, .hero-subhead, .route-card, .routes-head, .route-marquee, .booking-landing-shadow) { opacity: 0; }
+[data-home-entrance="pending"] :is(.wordmark, .site-header > nav, .header-actions, .hero-subhead, .routes-head, .route-marquee, .booking-landing-shadow) { opacity: 0; }
 [data-home-entrance="pending"] .headline-word { transform: translateY(100%); }
 [data-home-entrance="pending"] .destination-underline { transform: scaleX(0); }
 [data-home-entrance="pending"] :is(.hero-photo, .hero-placeholder) { transform: scale(1.08); }

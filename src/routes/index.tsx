@@ -13,6 +13,7 @@ import { HeroAtmosphere, useHeroDepth } from "@/components/hero-depth";
 import { AnimatePresence, LayoutGroup, motion, DrawnCheck, SelectionMark, RollingNumber, SearchAction, SearchCalendarDay, useSearchMicroMotion } from "@/components/search-motion";
 import { useReducedMotion } from "framer-motion";
 import { motionTokens, searchMotion } from "@/lib/motion";
+import { RouteCard } from "@/components/route-card";
 
 export const Route = createFileRoute("/")({
   head: () => ({ links: [
@@ -373,11 +374,8 @@ function Index() {
           <div className="popular-routes reveal" style={{ ["--d" as string]: "1080ms" }}>
             <div className="routes-head"><span className="routes-label">Popular routes</span><span className="routes-sub">Tap one — it fills the form</span></div>
             <div className="routes-row">
-              {popularRoutes.map((route) => (
-                <button key={route.from + route.to} type="button" className="route-card" onClick={() => { setSource(route.from); setDestination(route.to); setInvalidFields({ source: false, destination: false, date: false }); setError(""); document.querySelector(".booking-console")?.scrollIntoView({ behavior: "smooth", block: "center" }); }}>
-                  <span className="route-names"><span>{route.fromLabel}</span><ArrowRight size={14} /><span className="route-to">{route.toLabel}</span><ArrowUpRight className="route-go" size={15} aria-hidden="true" /></span>
-                  <span className="route-note">{route.note}</span>
-                </button>
+              {popularRoutes.map((route, index) => (
+                <RouteCard key={route.from + route.to} route={route} index={index} onChoose={() => { setSource(route.from); setDestination(route.to); setInvalidFields({ source: false, destination: false, date: false }); setError(""); }} />
               ))}
             </div>
           </div>

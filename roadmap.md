@@ -42,3 +42,8 @@
 - [x] Add field, autocomplete, swap, calendar, class and passenger feedback.
 - [x] Add magnetic search action, submit transition and validation shake.
 - [x] Verify desktop, phone and reduced-motion interactions.
+
+## Route-card motion
+- [x] Add scroll entrances, lift, drawn border, traveling train dot and spotlight.
+- [x] Fly city values into the fields, scroll to search and glow the fields.
+- [x] Verify desktop, phone and reduced motion.

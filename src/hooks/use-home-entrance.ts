@@ -41,7 +41,6 @@ export function useHomeEntrance(ref: RefObject<HTMLDivElement | null>) {
     if (mobile) enter('.booking-form, .booking-controls', { opacity: [0, 1] }, timing.card.delay, timing.card.duration, 0, true);
     enter('.booking-landing-shadow', { opacity: [0, 1] }, timing.card.delay, timing.card.duration, 0, true);
     enter('.routes-head', { opacity: [0, 1] }, timing.routes.delay);
-    enter('.route-card', { opacity: [0, 1], y: [motionTokens.distance.entrance, 0] }, timing.routes.delay, timing.routes.duration, timing.routes.stagger);
     enter('.route-marquee', { opacity: [0, 1] }, timing.marquee.delay, timing.marquee.duration);
 
     let photoStarted = false;
