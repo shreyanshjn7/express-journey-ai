@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 
 import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, TrainFront, AlertCircle, X, Users, Minus, Plus, History, ChevronDown, ShieldCheck, RotateCcw } from "lucide-react";
 import { addDays, format, nextSaturday, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { DatePanel } from "@/components/date-panel";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import heroAvif from "@/assets/midnight-lake.avif.asset.json";
 import heroWebp from "@/assets/midnight-lake.webp.asset.json";
@@ -258,7 +258,8 @@ function Index() {
   const tomorrow = startOfDay(addDays(new Date(), 1));
   const [date, setDate] = useState<Date | undefined>(tomorrow);
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [draftDate, setDraftDate] = useState<Date | undefined>(tomorrow);
+  const dateButtonRef = useRef<HTMLButtonElement>(null);
+  const closeCalendar = useCallback(() => setCalendarOpen(false), []);
   const [error, setError] = useState("");
   const [invalidFields, setInvalidFields] = useState({ source: false, destination: false, date: false });
   const [travelClass, setTravelClass] = useState("3A");
@@ -357,7 +358,7 @@ function Index() {
               <StationField id="source" label="From" hint="City, station or code" errorText="Choose where you're starting from" recent={recent} placeholder="Boarding station" value={source} invalid={invalidFields.source} onChange={(value) => { setSource(value); setInvalidFields((fields) => ({ ...fields, source: false })); setError(""); }} />
               <Button variant="swap" size="icon" type="button" aria-label="Swap start and destination" title="Swap start and destination" onClick={() => { swapNames(); setSource(destination); setDestination(source); setInvalidFields({ source: false, destination: false, date: false }); setError(""); setSwapTurns((t) => t + 1); }}><span className="swap-glyph"><ArrowDownUp size={18} /></span></Button>
               <StationField id="destination" label="To" hint="City, station or code" errorText="Choose where you're going" recent={recent} placeholder="Destination city" value={destination} invalid={invalidFields.destination} onChange={(value) => { setDestination(value); setInvalidFields((fields) => ({ ...fields, destination: false })); setError(""); }} />
-              <Button variant="date" type="button" aria-label="Open travel calendar" aria-haspopup="dialog" className={invalidFields.date ? "field-invalid" : ""} onClick={() => { setDraftDate(date); setCalendarOpen(true); }}><span className="field-focus-glow" aria-hidden="true" /><span className="field-label"><CalendarDays size={15} /> Date</span><span className="date-value">{date ? format(date, "dd MMM yyyy") : "Pick a date"}</span><span className="field-hint">{invalidFields.date ? <><AlertCircle size={15} aria-hidden="true" /> Pick a travel date</> : date ? format(date, "EEEE") : "Open the calendar"}</span></Button>
+              <Button ref={dateButtonRef} variant="date" type="button" aria-label="Open travel calendar" aria-haspopup="dialog" aria-expanded={calendarOpen} data-open={calendarOpen ? "true" : undefined} className={[invalidFields.date ? "field-invalid" : "", calendarOpen ? "date-open" : ""].join(" ").trim()} onClick={() => setCalendarOpen((o) => !o)}><span className="field-focus-glow" aria-hidden="true" /><span className="field-label"><CalendarDays size={15} /> Date</span><span className="date-value">{date ? format(date, "dd MMM yyyy") : "Pick a date"}</span><span className="field-hint">{invalidFields.date ? <><AlertCircle size={15} aria-hidden="true" /> Pick a travel date</> : date ? format(date, "EEEE") : "Open the calendar"}</span><ChevronDown className="date-chevron" size={16} aria-hidden="true" /></Button>
               </div>
             <AnimatePresence>{error && <motion.p key={validationAttempt} initial={{ y: reduced ? 0 : -8, opacity: reduced ? 1 : 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }} className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</motion.p>}</AnimatePresence>
             <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
@@ -409,38 +410,7 @@ function Index() {
       </footer>
       </section>
       <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "No plan? No problem. Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class, ${quota} quota, for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
-      <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
-        <DialogContent className="date-dialog" data-motion-owned="true" aria-label="Choose travel date">
-          <motion.div className="calendar-motion-surface" initial={{ scale: reduced ? 1 : 0.96, opacity: reduced ? 1 : 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ ...motionTokens.spring.soft, duration: reduced ? 0 : motionTokens.duration.standard }}>
-          <LayoutGroup id="search-calendar">
-          <div className="date-dialog-head"><span className="date-dialog-title">Travel Date</span><span className="date-dialog-nav" aria-hidden="true"><ArrowRight size={15} /></span></div>
-          <div className="date-dialog-body">
-            <div className="quick-dates" aria-label="Quick date choices">
-              {[
-                { label: "Today", value: startOfDay(new Date()) },
-                { label: "Tomorrow", value: tomorrow },
-                { label: "This weekend", value: new Date().getDay() === 6 || new Date().getDay() === 0 ? startOfDay(new Date()) : nextSaturday(startOfDay(new Date())) },
-              ].map((option) => <Button key={option.label} variant="ghost" type="button" className={draftDate && format(draftDate, "yyyy-MM-dd") === format(option.value, "yyyy-MM-dd") ? "active" : ""} onClick={() => setDraftDate(option.value)}><motion.span key={`${option.label}-${draftDate?.getTime()}`} initial={reduced ? false : { scale: 0.95 }} animate={{ scale: 1 }} transition={motionTokens.spring.snappy}>{option.label}</motion.span></Button>)}
-            </div>
-            <Calendar
-              mode="single"
-              selected={draftDate}
-              onSelect={setDraftDate}
-              disabled={{ before: startOfDay(new Date()) }}
-              captionLayout="dropdown"
-              startMonth={new Date()}
-              endMonth={new Date(new Date().getFullYear() + 1, 11)}
-              className="rail-calendar micro-calendar"
-               components={{ DayButton: SearchCalendarDay }}
-            />
-          </div>
-          <div className="date-dialog-actions">
-            <Button variant="journey" type="button" className="date-confirm" disabled={!draftDate} onClick={() => { if (draftDate) { setDate(draftDate); setInvalidFields((fields) => ({ ...fields, date: false })); setError(""); } setCalendarOpen(false); }}>Confirm</Button>
-            <Button variant="nav" type="button" className="date-cancel" onClick={() => setCalendarOpen(false)}>Cancel</Button>
-          </div>
-          </LayoutGroup></motion.div>
-        </DialogContent>
-      </Dialog>
+      <DatePanel open={calendarOpen} anchor={dateButtonRef} value={date} onClose={closeCalendar} onSelect={(d) => { setDate(d); setInvalidFields((fields) => ({ ...fields, date: false })); setError(""); }} />
     </div>
   );
 }
