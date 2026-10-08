@@ -203,13 +203,12 @@
   --rd-indigo: oklch(0.265 0.055 270.6);    /* #1B2340 */
   --rd-muted: oklch(0.444 0.051 272.7);     /* #4A5270 */
   --rd-marigold: oklch(0.818 0.157 82.3);   /* #F5B82E */
-  --rd-hero: oklch(0.155 0.009 274.3);      /* #0B0C10 */
+  --rd-hero: #0B0C10;
   --success: oklch(0.53 0.116 156.4);       /* #1E7F4F */
   --warning: oklch(0.605 0.135 65.7);       /* #B76E00 */
   --error: oklch(0.543 0.174 29.7);         /* #C0392B */
 
   --background: var(--rd-cream);
-  --hero-fade-to: var(--rd-cream); /* gradient target below the hero; .dark swaps it to the hero ink */
   --foreground: var(--rd-indigo);
   --card: var(--rd-white);
   --card-foreground: var(--rd-indigo);
@@ -816,12 +815,11 @@ h1 .line:first-child > span { color: var(--foreground); }
 }
 body { font-size: var(--text-body); line-height: 1.5; }
 .railway-app { background: var(--background); color: var(--foreground); }
-.dark { --hero-fade-to: var(--rd-hero); }
 .hero-dark { position: relative; flex: 1; display: flex; flex-direction: column; min-height: 100svh; overflow: hidden; background: var(--background); color: var(--foreground); }
-/* Soft fade from the dark hero into the light section below (about 120px). */
-.hero-dark::after { content: ''; position: absolute; left: -100vmax; right: -100vmax; bottom: 0; height: 120px; z-index: 1; pointer-events: none; background: linear-gradient(180deg, transparent, var(--hero-fade-to)); }
+/* Settle the photo into hero ink beneath the overlapping content sheet. */
+.hero-dark::after { content: ''; position: absolute; inset: auto 0 0; height: 64px; z-index: 1; pointer-events: none; background: linear-gradient(180deg, transparent, var(--rd-hero)); }
 .hero-dark > main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-.content-light { position: relative; padding: var(--space-5) 0 0; display: flex; flex-direction: column; gap: var(--space-1); }
+.content-light { position: relative; z-index: 2; margin-top: -24px; border-radius: 24px 24px 0 0; background: var(--background); padding: var(--space-5) 0 0; display: flex; flex-direction: column; gap: var(--space-1); }
 .content-light .popular-routes { padding: 0; }
 
 /* Typography scale */
