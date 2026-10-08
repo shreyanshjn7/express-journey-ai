@@ -852,7 +852,7 @@ body { font-size: var(--text-body); line-height: 1.5; }
 .form-error strong { font-weight: 700; }
 
 /* Theme toggle + mobile menu button */
-.theme-toggle { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--foreground); cursor: pointer; transition: background .2s, transform .3s; }
+.theme-toggle { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--foreground); cursor: pointer; transition: background .2s, transform .3s; }
 .theme-toggle:hover { background: var(--accent); transform: rotate(-12deg); }
 .menu-toggle { display: none; place-items: center; width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--foreground); cursor: pointer; flex-shrink: 0; transition: background .2s, transform .3s; }
 .menu-toggle:hover { background: var(--accent); }
@@ -860,14 +860,14 @@ body { font-size: var(--text-body); line-height: 1.5; }
 @media (max-width: 760px) {
   .hero-dark { min-height: 0; }
   .content-light { padding-top: var(--space-3); gap: var(--space-3); }
-  .theme-toggle { width: 44px; height: 44px; flex-shrink: 0; }
+  .theme-toggle { width: 40px; height: 40px; flex-shrink: 0; }
 }
 @media (max-width: 760px) {
   .site-header { display: flex; gap: 6px; }
   .wordmark { flex-shrink: 0; }
   .header-actions { margin-left: auto; min-width: 0; gap: 6px; }
   .site-header .travel-button { padding: 0 12px; height: 42px; font-size: 12px; }
-  .theme-toggle, .menu-toggle { width: 42px; height: 42px; }
+  .theme-toggle { width: 40px; height: 40px; }
   .menu-toggle { display: inline-grid; }
 }
 
@@ -1400,7 +1400,7 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: hidden; }
 /* Global polish uses semantic ink, not the primary-action accent. */
-:root { --cursor-ink: oklch(1 0 0); --theme-mask-paper: oklch(1 0 0); --theme-mask-cutout: oklch(0 0 0); }
+:root { --cursor-ink: oklch(1 0 0); }
 .desktop-cursor { position: fixed; inset: 0; z-index: 10000; pointer-events: none; mix-blend-mode: difference; opacity: 0; }
 .custom-cursor-active .desktop-cursor { opacity: 1; }
 .cursor-dot, .cursor-ring { position: absolute; top: 0; left: 0; transition: none !important; }
@@ -1410,9 +1410,7 @@ html.lenis, html.lenis body { height: auto; }
 @media (min-width: 761px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .custom-cursor-active, .custom-cursor-active :is(button, a, select, label, summary, [role="button"]) { cursor: none !important; }
 }
-.theme-toggle .theme-glyph { width: 20px; height: 20px; transition: none !important; }
-.theme-mask-paper { fill: var(--theme-mask-paper); }
-.theme-mask-cutout { fill: var(--theme-mask-cutout); }
+.theme-toggle .theme-glyph { width: 20px; height: 20px; overflow: visible; transition: none !important; }
 .theme-revealing::view-transition-old(root), .theme-revealing::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 .theme-revealing::view-transition-old(root) { z-index: 1; }
 .theme-revealing::view-transition-new(root) { z-index: 2; }
