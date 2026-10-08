@@ -26,7 +26,7 @@ export function MotionSystem() {
 
     function track(control: AnimationPlaybackControls) {
       active.add(control);
-      control.then(() => active.delete(control));
+      void control.finished.then(() => active.delete(control));
       return control;
     }
     function controlFor(target: EventTarget | null) {
@@ -40,7 +40,7 @@ export function MotionSystem() {
       interactions.get(element)?.stop();
       const control = track(animate(element, { scale }, element.matches(snappy) ? motionTokens.spring.snappy : motionTokens.spring.soft));
       interactions.set(element, control);
-      control.then(() => { if (interactions.get(element) === control) interactions.delete(element); });
+      void control.finished.then(() => { if (interactions.get(element) === control) interactions.delete(element); });
     }
     function scan() {
       const candidates = [...document.querySelectorAll<HTMLElement>(`${entrances}, ${sheets}`)];
@@ -75,7 +75,8 @@ export function MotionSystem() {
         prevent: (node) => !!node.closest('[role="dialog"], [role="listbox"], .sheet-open, .vibe-chips, .routes-row, .route-marquee'),
       });
       const syncLock = () => {
-        const locked = document.body.hasAttribute("data-scroll-locked") || !!document.querySelector('.station-field.sheet-open, [role="dialog"][data-state="open"]');
+        const stationSheet = window.matchMedia("(max-width: 760px)").matches && !!document.querySelector('.station-field.sheet-open');
+        const locked = document.body.hasAttribute("data-scroll-locked") || stationSheet || !!document.querySelector('[role="dialog"][data-state="open"]');
         if (locked) lenis.stop(); else lenis.start();
       };
       const locks = new MutationObserver(syncLock);
