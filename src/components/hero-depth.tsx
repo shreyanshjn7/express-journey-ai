@@ -129,12 +129,19 @@ export function HeroAtmosphere() {
       <div className="night-train-runner">
         <span className="night-train-trail" />
         <span className="night-train-headlight" />
+        <span className="night-train-ground" />
         <svg className="night-train-silhouette" viewBox="0 0 260 44" fill="none">
-          <path d="M8 10h56v24H8zm62 0h56v24H70zm62 0h56v24h-56zm62 0h38l20 18v6h-58z" fill="currentColor" />
-          <path d="M14 15h8m7 0h8m7 0h8m24 0h8m7 0h8m7 0h8m24 0h8m7 0h8m7 0h8m25 0h12" className="night-train-windows" strokeWidth="3" />
-          <path d="M64 29h6m56 0h6m56 0h6" stroke="currentColor" strokeWidth="3" />
-          {[18,54,80,116,142,178,207,235].map(x => <circle key={x} cx={x} cy="36" r="4" fill="currentColor" />)}
-          <path d="M246 27h8" className="night-train-windows" strokeWidth="3" />
+          {[8, 68.5, 129].map(start => <g key={start}>
+            <rect x={start} y="10" width="58" height="27" rx="1.5" fill="currentColor" />
+            <path d={`M${start + 1.5} 10h55`} className="night-train-edge" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+            {Array.from({ length: 9 }, (_, index) => <rect key={index} x={start + 4 + index * 5.8} y="15" width="3.6" height="4.5" rx="1" className="night-train-windows" />)}
+          </g>)}
+          <path d="M189.5 10H232l20 18v9h-62.5Z" fill="currentColor" />
+          <path d="M191 10h41l20 18" className="night-train-edge" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+          {[66, 126.5, 187].map(x => <rect key={x} x={x} y="20" width="2.5" height="13" fill="currentColor" className="night-train-edge" strokeWidth="0.5" />)}
+          {Array.from({ length: 8 }, (_, index) => <rect key={index} x={194 + index * 4.8} y="15" width="3.2" height="4.5" rx="1" className="night-train-windows" />)}
+          {[18,54,80,116,142,178,207,235].map(x => <circle key={x} cx={x} cy="38.4" r="1.6" fill="currentColor" className="night-train-edge" strokeWidth="0.5" vectorEffect="non-scaling-stroke" />)}
+          <rect x="246" y="25.5" width="8" height="3" rx="1" className="night-train-windows" />
         </svg>
       </div>
     </div>

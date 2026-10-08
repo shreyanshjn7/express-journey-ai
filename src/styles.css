@@ -1304,12 +1304,14 @@ body { font-size: var(--text-body); line-height: 1.5; }
 /* Independent night-scene depth and warm passing-train light tokens. */
 .hero-dark {
   --night-speck: color-mix(in oklch, var(--rd-cream) 85%, var(--rd-white));
-  --night-train: color-mix(in oklch, var(--rd-white) 42%, var(--rd-hero));
-  --night-window: color-mix(in srgb, var(--rd-marigold) 70%, transparent);
-  --night-window-bloom: 0 0 4px color-mix(in srgb, var(--rd-marigold) 35%, transparent);
+  --night-train: #14161F;
+  --night-train-edge: #2A2E3D;
+  --night-window: color-mix(in srgb, var(--rd-marigold) 85%, transparent);
+  --night-window-bloom: 0 0 6px color-mix(in srgb, var(--rd-marigold) 40%, transparent);
+  --night-ground-spill: color-mix(in srgb, var(--rd-marigold) 14%, transparent);
   --night-trail: color-mix(in srgb, var(--rd-marigold) 32%, transparent);
-  --night-rail: color-mix(in srgb, var(--rd-white) 15%, transparent);
-  --night-headlight: color-mix(in srgb, var(--rd-cream) 24%, transparent);
+  --night-rail: color-mix(in srgb, var(--rd-white) 10%, transparent);
+  --night-headlight: color-mix(in srgb, var(--rd-cream) 15%, transparent);
   --night-speck-shadow: 0 0 5px 1px color-mix(in oklch, var(--rd-cream) 20%, transparent);
 }
 .stage-parallax { overflow: clip; }
@@ -1336,12 +1338,15 @@ body { font-size: var(--text-body); line-height: 1.5; }
 .night-firefly:nth-child(16) { left: 91%; top: 93%; }
 .night-train-track { position: absolute; left: 0; right: 0; top: var(--night-track-top, 100%); height: 84px; visibility: hidden; }
 .night-train-track[data-space="true"] { visibility: visible; }
-.night-train-track::after { content: ''; position: absolute; left: 0; right: 0; top: 64px; height: 1px; background: var(--night-rail); }
+.night-train-track::after { content: ''; position: absolute; left: 0; right: 0; top: 64px; height: 1px; background: var(--night-rail); mask-image: linear-gradient(90deg, transparent, black 15%, black 85%, transparent); }
 .night-train-runner { position: absolute; left: 0; width: 416px; height: 70.4px; opacity: 0; transition: none; }
 .night-train-silhouette { position: relative; width: 416px; height: 70.4px; color: var(--night-train); overflow: visible; }
-.night-train-windows { stroke: var(--night-window); filter: drop-shadow(var(--night-window-bloom)); }
-.night-train-trail { position: absolute; right: 403px; top: 42px; width: 200px; height: 4px; border-radius: 50%; background: linear-gradient(90deg, transparent, var(--night-trail)); filter: blur(2px); }
-.night-train-headlight { position: absolute; left: 400px; top: 22px; width: 96px; height: 42px; background: linear-gradient(90deg, var(--night-headlight), transparent); clip-path: polygon(0 42%, 100% 0, 100% 100%, 0 58%); filter: blur(5px); }
+.night-train-windows { fill: var(--night-window); filter: drop-shadow(var(--night-window-bloom)); }
+.night-train-edge { stroke: var(--night-train-edge); }
+.night-train-ground { position: absolute; left: 13px; top: 57px; width: 360px; height: 20px; border-radius: 50%; background: radial-gradient(ellipse, var(--night-ground-spill), transparent 72%); filter: blur(6px); }
+.night-train-trail { position: absolute; right: 403px; top: 42px; width: 150px; height: 4px; border-radius: 50%; background: linear-gradient(90deg, transparent, var(--night-trail)); filter: blur(3px); }
+.night-train-headlight { position: absolute; left: 400px; top: 22px; width: 300px; height: 42px; }
+.night-train-headlight::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--night-headlight), transparent); clip-path: polygon(0 42%, 100% 0, 100% 100%, 0 58%); filter: blur(8px); }
 @media (prefers-reduced-motion: reduce) {
   .hero-photo-depth { transform: none !important; will-change: auto; }
   .hero-content h1 { transform: none !important; opacity: 1 !important; }
