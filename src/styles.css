@@ -198,6 +198,7 @@
 
 /* Rail Daddy design system: hybrid theme. Light content by default; hero is always dark. */
 :root {
+  color-scheme: light;
   /* Brand palette */
   --rd-cream: oklch(0.974 0.011 84.6);      /* #FAF6EE */
   --rd-white: oklch(1 0 0);                 /* #FFFFFF */
