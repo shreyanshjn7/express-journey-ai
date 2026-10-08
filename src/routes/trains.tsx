@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { CountFare, TrainSkeletons } from "@/components/booking-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { CountFare, TrainSkeletons, useBookingReducedMotion } from "@/components/booking-motion";
 import { bookingMotion, motionTokens } from "@/lib/motion";
 import { CheckCircle2, Clock, AlertTriangle, XCircle, ArrowRight, CalendarDays, TrainFront, ChevronDown } from "lucide-react";
 import { addDays, format, parseISO } from "date-fns";
@@ -27,7 +27,7 @@ const statusText = (s: Availability, n: number) => s === "Available" ? `Availabl
 
 function Results() {
   const trip = Route.useSearch();
-  const reduced = useReducedMotion();
+  const reduced = useBookingReducedMotion();
   const [readyKey, setReadyKey] = useState("");
   const resultsKey = `${trip.from}:${trip.to}:${trip.date}`;
   const loading = !reduced && readyKey !== resultsKey;

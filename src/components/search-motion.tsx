@@ -1,7 +1,7 @@
 import { useEffect, useRef, type ComponentProps, type RefObject } from "react";
 import { animate, AnimatePresence, LayoutGroup, motion, useMotionValue, useReducedMotion, useSpring, type AnimationPlaybackControls } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { RailLoader } from "@/components/booking-motion";
+import { RailLoader, useBookingReducedMotion } from "@/components/booking-motion";
 import { DayButton } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { CalendarDayButton } from "@/components/ui/calendar";
@@ -15,7 +15,7 @@ export function SelectionMark({ id, circle = false }: { id: string; circle?: boo
 }
 
 export function DrawnCheck() {
-  const reduced = useReducedMotion();
+  const reduced = useBookingReducedMotion();
   return <svg className="drawn-check" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><motion.path d="m5 12 4 4L19 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" initial={{ pathLength: reduced ? 1 : 0 }} animate={{ pathLength: 1 }} transition={{ duration: motionTokens.duration.micro }} /></svg>;
 }
 

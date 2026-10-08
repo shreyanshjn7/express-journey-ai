@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { bookingMotion, bookingProgress, motionTokens } from "@/lib/motion";
 import { DrawnCheck } from "@/components/search-motion";
-import { BookingSummary, FareBarMotion, RollingFare } from "@/components/booking-motion";
+import { BookingSummary, FareBarMotion, RollingFare, useBookingReducedMotion } from "@/components/booking-motion";
 import { tripDateLabel, type Trip } from "@/lib/trip";
 
 const steps = ["Search", "Choose train", "Passengers", "Pay"];
@@ -17,7 +17,7 @@ export function BookingShell({ step, trip, back, children, bar }: {
   children: ReactNode;
   bar?: ReactNode | undefined;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useBookingReducedMotion();
   return (
     <div className="flow-app">
       <header className="flow-header" data-motion-owned="true">

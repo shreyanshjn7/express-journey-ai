@@ -6,12 +6,18 @@ import { bookingMotion, motionTokens } from "@/lib/motion";
 import { rupees, type Trip } from "@/lib/trip";
 
 type Flight = { top: number; left: number; width: number; height: number; trip: Trip };
+export function useBookingReducedMotion() {
+  const preference = useReducedMotion();
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+  return hydrated && !!preference;
+}
 const FlowContext = createContext({ begin: (_element: HTMLElement, _trip: Trip) => {}, land: () => {} });
 
 /** A persistent portal bridges route unmounts without transforming pinned controls. */
 export function BookingMotionProvider({ children }: { children: ReactNode }) {
   const [flight, setFlight] = useState<Flight | null>(null);
-  const reduced = useReducedMotion();
+  const reduced = useBookingReducedMotion();
   return <FlowContext.Provider value={{
     begin: (element, trip) => { if (reduced) return; const rect = element.getBoundingClientRect(); setFlight({ top: rect.top, left: rect.left, width: rect.width, height: rect.height, trip }); },
     land: () => setFlight(null),
@@ -24,13 +30,13 @@ export const useBookingTransition = () => useContext(FlowContext);
 
 export function BookingSummary({ children }: { children: ReactNode }) {
   const { land } = useBookingTransition();
-  const reduced = useReducedMotion();
+  const reduced = useBookingReducedMotion();
   useEffect(() => { const frame = requestAnimationFrame(() => land()); return () => cancelAnimationFrame(frame); }, []);
   return <motion.div data-motion-owned="true" className="booking-summary" {...(reduced ? {} : { layoutId: "booking-summary" })} transition={{ duration: reduced ? 0 : bookingMotion.morph, ease: motionTokens.easing.transition }}>{children}</motion.div>;
 }
 
 export function CountFare({ value, delay = 0 }: { value: number; delay?: number }) {
-  const reduced = useReducedMotion();
+  const reduced = useBookingReducedMotion();
   const [shown, setShown] = useState(value);
   useEffect(() => {
     if (reduced) { setShown(value); return; }
@@ -42,13 +48,13 @@ export function CountFare({ value, delay = 0 }: { value: number; delay?: number 
 }
 
 export function RollingFare({ total }: { total: string }) {
-  const reduced = useReducedMotion();
+  const reduced = useBookingReducedMotion();
   return <span className="rolling-fare" aria-live="polite" aria-atomic="true"><span className="sr-only">{total}</span><AnimatePresence initial={false} mode="popLayout"><motion.span key={total} aria-hidden="true" initial={{ y: reduced ? 0 : 20, opacity: reduced ? 1 : 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: reduced ? 0 : -20, opacity: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.standard, ease: motionTokens.easing.entrance }}>{total}</motion.span></AnimatePresence></span>;
 }
 
 export function FareBarMotion({ total, children }: { total: string; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useBookingReducedMotion();
   useEffect(() => {
     if (!ref.current || reduced) return;
     const control = animate(ref.current, { y: [20, 0], opacity: [0.65, 1] }, { duration: motionTokens.duration.standard, ease: motionTokens.easing.entrance });
