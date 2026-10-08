@@ -51,7 +51,7 @@ export function RouteCard({ route, index, onChoose }: { route: RouteChoice; inde
   }
 
   return <>
-    <Button ref={ref} variant="ghost" asChild className="route-card" data-motion-owned="true" type="button" onClick={choose} aria-label={`${route.fromLabel} to ${route.toLabel}, ${route.note}`}>
+    <Button ref={ref} variant="ghost" asChild className="route-card" data-motion-owned="true" data-flying={flights.length > 0} type="button" onClick={choose} aria-label={`${route.fromLabel} to ${route.toLabel}, ${route.note}`}>
       <motion.button initial={reduced ? false : { opacity: 0, y: routeMotion.rise }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: reduced ? 0 : motionTokens.duration.entrance, delay: reduced ? 0 : index * routeMotion.stagger, ease: motionTokens.easing.entrance }}
         whileHover={reduced ? {} : { y: routeMotion.lift, transition: motionTokens.spring.soft }} whileTap={reduced ? {} : { scale: motionTokens.scale.press }}
         onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)} onFocus={() => setHovered(true)} onBlur={() => setHovered(false)}
