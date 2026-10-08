@@ -26,6 +26,8 @@ export const searchMotion = {
   submitPause: 0.5,
 } as const;
 
+export const routeMotion = { rise: 20, lift: -4, stagger: 0.07, flight: 0.7, glow: 0.7, train: 1.4 } as const;
+
 export function magneticOffset(position: number, size: number) {
   if (size <= 0) return 0;
   return Math.max(-searchMotion.magneticLimit, Math.min(searchMotion.magneticLimit, (position / size - 0.5) * searchMotion.magneticLimit * 2));
