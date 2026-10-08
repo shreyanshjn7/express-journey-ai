@@ -1406,7 +1406,12 @@ html.lenis, html.lenis body { height: auto; }
 /* Global polish uses semantic ink, not the primary-action accent. */
 :root { --cursor-ink: oklch(1 0 0); }
 .desktop-cursor { position: fixed; inset: 0; z-index: 10000; pointer-events: none; mix-blend-mode: difference; opacity: 0; }
-.custom-cursor-active .desktop-cursor { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .custom-cursor-active .desktop-cursor { opacity: 1; }
+}
+@media not all and (hover: hover) and (pointer: fine) {
+  .desktop-cursor { display: none; }
+}
 .cursor-dot, .cursor-ring { position: absolute; top: 0; left: 0; transition: none !important; }
 .cursor-dot::after { content: ''; position: absolute; width: var(--cursor-dot-size, 5px); height: var(--cursor-dot-size, 5px); border-radius: 50%; background: var(--cursor-ink); transform: translate(-50%, -50%); }
 .cursor-ring > span { display: block; width: var(--cursor-ring-size, 28px); height: var(--cursor-ring-size, 28px); border: 1px solid var(--cursor-ink); border-radius: 50%; opacity: .65; transform: translate(-50%, -50%) scale(1); transition: transform var(--motion-standard) var(--motion-ease-entrance); }
