@@ -21,3 +21,4 @@
 - Keep shared motion values in src/lib/motion.ts and mount MotionSystem once at the root; delegated Framer Motion covers dynamic controls and portals without extra layout wrappers, and exports identical timing tokens for decorative CSS.
 - Import Lenis only in the client effect and preserve native touch/nested picker scrolling; stop it for dialogs and reduced-motion preferences so form and accessibility behavior stay intact.
 - Never animate a transform on an ancestor of fixed booking actions or station sheets; transform containing blocks would displace pinned mobile controls.
+- Keep home first-load orchestration in useHomeEntrance with sessionStorage gating and shared motion tokens; exclude home entrances from the delegated scanner, and move only an independent landing surface on phones so pinned actions and pickers retain viewport positioning.
