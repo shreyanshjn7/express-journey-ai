@@ -585,9 +585,10 @@ h1 .line:first-child > span { color: var(--foreground); }
 }
 
 /* Unified midnight-gold booking console; image remains completely still. */
+/* Oversized photo layer: parallax and Ken Burns never reveal its edges. */
 .lights-backdrop {
-  inset: 0 -40px auto; width: calc(100% + 80px); height: 100%;
-  object-position: center 60%; opacity: .58;
+  inset: -6%; width: 112%; height: 112%;
+  object-fit: cover; object-position: center center; opacity: .58;
   mask-image: none; -webkit-mask-image: none; animation: none;
 }
 .stage-shade {
@@ -714,7 +715,7 @@ h1 .line:first-child > span { color: var(--foreground); }
 }
 @media (max-width: 760px) {
   .journey-stage { gap: 20px; }
-  .lights-backdrop { inset: 0 -20px auto; width: calc(100% + 40px); height: 100%; opacity: .35; object-position: 65% center; }
+  .lights-backdrop { inset: -6%; width: 112%; height: 112%; opacity: .35; object-position: 65% center; }
   .stage-shade { background: linear-gradient(180deg, var(--background), transparent 40%, var(--background)); }
   .routes-head { margin-bottom: 8px; }
   .routes-label { font-size: 17px; }
@@ -1307,7 +1308,7 @@ body { font-size: var(--text-body); line-height: 1.5; }
   --night-speck-shadow: 0 0 5px 1px color-mix(in oklch, var(--rd-cream) 20%, transparent);
 }
 .stage-parallax { overflow: clip; }
-.hero-photo-depth { position: absolute; inset: 0; transition: none; }
+.hero-photo-depth { position: absolute; inset: 0; overflow: hidden; transition: none; }
 .hero-content h1 { transform-origin: center; transition: none; }
 .hero-atmosphere { position: absolute; inset: 0; pointer-events: none; overflow: clip; }
 .night-fireflies { position: absolute; inset: 0 0 32%; }
