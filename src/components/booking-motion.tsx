@@ -12,27 +12,36 @@ export function useBookingReducedMotion() {
   useEffect(() => setHydrated(true), []);
   return hydrated && !!preference;
 }
-const FlowContext = createContext({ begin: (_element: HTMLElement, _trip: Trip) => {}, land: () => {} });
+const FlowContext = createContext({ begin: (_element: HTMLElement, _trip: Trip) => {}, land: () => {}, flying: false });
 
 /** A persistent portal bridges route unmounts without transforming pinned controls. */
 export function BookingMotionProvider({ children }: { children: ReactNode }) {
   const [flight, setFlight] = useState<Flight | null>(null);
+  const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (clearTimer.current) clearTimeout(clearTimer.current); }, []);
   const reduced = useBookingReducedMotion();
   return <FlowContext.Provider value={{
     begin: (element, trip) => { if (reduced) return; const rect = element.getBoundingClientRect(); setFlight({ top: rect.top, left: rect.left, width: rect.width, height: rect.height, trip }); },
-    land: () => setFlight(null),
+    flying: !!flight,
+    land: () => {
+      const target = document.querySelector<HTMLElement>('.booking-summary');
+      if (!target) return;
+      const rect = target.getBoundingClientRect();
+      setFlight(current => current ? { ...current, top: rect.top, left: rect.left, width: rect.width, height: rect.height } : null);
+      clearTimer.current = setTimeout(() => setFlight(null), bookingMotion.morph * 1000);
+    },
   }}><LayoutGroup id="booking-flow">{children}
-    {flight && createPortal(<AnimatePresence><motion.div key="search-flight" layoutId="booking-summary" className="booking-summary-flight" aria-hidden="true" style={{ top: flight.top, left: flight.left, width: flight.width, height: flight.height }} transition={{ duration: bookingMotion.morph, ease: motionTokens.easing.transition }}><strong>{flight.trip.from}</strong><ArrowRight size={18} /><strong>{flight.trip.to}</strong></motion.div></AnimatePresence>, document.body)}
+    {flight && createPortal(<motion.div key="search-flight" layout layoutId="booking-summary-flight" className="booking-summary-flight" aria-hidden="true" style={{ top: flight.top, left: flight.left, width: flight.width, height: flight.height }} transition={{ duration: bookingMotion.morph, ease: motionTokens.easing.transition }}><strong>{flight.trip.from}</strong><ArrowRight size={18} /><strong>{flight.trip.to}</strong></motion.div>, document.body)}
   </LayoutGroup></FlowContext.Provider>;
 }
 
 export const useBookingTransition = () => useContext(FlowContext);
 
 export function BookingSummary({ children }: { children: ReactNode }) {
-  const { land } = useBookingTransition();
+  const { land, flying } = useBookingTransition();
   const reduced = useBookingReducedMotion();
-  useEffect(() => { const timer = window.setTimeout(() => land(), bookingMotion.morph * 1000 + 50); return () => clearTimeout(timer); }, []);
-  return <motion.div data-motion-owned="true" className="booking-summary" {...(reduced ? {} : { layoutId: "booking-summary" })} transition={{ duration: reduced ? 0 : bookingMotion.morph, ease: motionTokens.easing.transition }}>{children}</motion.div>;
+  useEffect(() => { const frame = requestAnimationFrame(() => land()); return () => cancelAnimationFrame(frame); }, []);
+  return <motion.div data-motion-owned="true" className="booking-summary" initial={false} animate={{ opacity: flying && !reduced ? 0 : 1 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }}>{children}</motion.div>;
 }
 
 export function CountFare({ value, delay = 0 }: { value: number; delay?: number }) {
