@@ -5,7 +5,7 @@ import { RailLoader, useBookingReducedMotion } from "@/components/booking-motion
 import { DayButton } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { CalendarDayButton } from "@/components/ui/calendar";
-import { magneticOffset, motionTokens, searchMotion } from "@/lib/motion";
+import { magneticOffset, motionTokens, polishMotion, searchMotion } from "@/lib/motion";
 
 export { AnimatePresence, LayoutGroup, motion };
 
@@ -40,7 +40,7 @@ export function SearchAction({ busy }: { busy: boolean }) {
       x.set(magneticOffset(event.clientX - bounds.left, bounds.width));
       y.set(magneticOffset(event.clientY - bounds.top, bounds.height));
     }} onPointerLeave={() => { x.set(0); y.set(0); }} asChild>
-    <motion.button style={{ x: springX, y: springY }} whileHover={reduced || busy ? {} : { scale: motionTokens.scale.hover }} whileTap={reduced || busy ? {} : { scale: motionTokens.scale.press }} transition={motionTokens.spring.soft}>
+    <motion.button style={{ x: springX, y: springY }} whileHover={reduced || busy ? {} : { scale: motionTokens.scale.hover }} whileTap={reduced || busy ? {} : { scale: motionTokens.scale.press }} transition={polishMotion.releaseSpring}>
       <motion.span className="button-shine" aria-hidden="true" initial={{ x: '-200%', opacity: 0 }} animate={reduced || busy ? { opacity: 0 } : { x: ['-200%', '500%', '500%'], opacity: [0, 0.35, 0] }} transition={{ duration: searchMotion.shineInterval, times: [0, 0.2, 1], repeat: Infinity, ease: 'linear' }} />
       <span className="search-action-label"><AnimatePresence mode="wait" initial={false}><motion.span className="search-action-state" key={busy ? 'busy' : 'ready'} initial={{ opacity: 0, scale: reduced ? 1 : 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: reduced ? 1 : 0.9 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }}>{busy ? <RailLoader compact /> : <><span className="journey-title">Find my train</span><ArrowRight className="search-arrow" size={18} aria-hidden="true" /></>}</motion.span></AnimatePresence></span>
     </motion.button>
