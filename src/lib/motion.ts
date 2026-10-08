@@ -28,6 +28,10 @@ export const searchMotion = {
 
 export const routeMotion = { rise: 20, lift: -4, stagger: 0.07, flight: 0.7, glow: 0.7, train: 1.4 } as const;
 
+export const bookingMotion = { cardStagger: 0.06, chipStagger: 0.06, count: 0.7, expand: 0.35, loadingPreview: 0.7, rail: 1.1, morph: 0.7 } as const;
+
+export function bookingProgress(step: number) { return Math.max(0, Math.min(3, step)) / 3; }
+
 export const marqueeMotion = { speed: 36, settle: 0.35, boostDecay: 0.55, maxBoost: 3, maxSkew: 2.5, hoverScale: 1.08, flight: 0.7 } as const;
 
 export function marqueeScrollImpulse(velocity: number) {
