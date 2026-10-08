@@ -1624,7 +1624,7 @@ html.lenis, html.lenis body { height: auto; }
     height: 56px; min-height: 56px; padding: 0 62px 0 14px; border: 0; border-radius: 0; background: transparent;
   }
   .hero-dark .booking-console .route-block .source-field { border-radius: 0; }
-  .hero-dark .booking-console .route-block .destination-field { border-top: 1px solid var(--border); }
+  .hero-dark .booking-console .route-block .station-field.destination-field { border-top: 1px solid var(--border); }
   .hero-dark .booking-console .route-block .station-field:not(.sheet-open) label { display: none; }
   .hero-dark .booking-console .route-block .station-field:not(.sheet-open) .row-pin { display: grid; place-items: center; flex: none; color: var(--rd-muted); }
   .hero-dark .booking-console .route-block .station-field:not(.sheet-open) input {
