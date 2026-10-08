@@ -13,7 +13,7 @@
 - Define palette, typography and control shapes in src/styles.css and use shared UI primitives to keep presentation consistent.
 - Keep route inputs and the search action inside one booking form styled as a unified console, so submission and visual grouping stay aligned.
 - Render the header wordmark as live typography using the shared display-font token, so it stays matched to the page headings at every screen size.
-- Use a viewport-height flex layout with a growing main stage and bounded centered content; this keeps the footer on screen without clipping the booking controls on smaller displays.
+- Use a content-driven, full-viewport minimum-height hero with a growing centered flex stage and equally bounded search margins; cap photo parallax within its overscan so resizing cannot expose edges or clip booking controls.
 - Serve the background through an AVIF/WebP picture with intrinsic dimensions and a same-size blurred loading layer; this reduces transfer size without shifting the booking layout.
 - Keep swap-font definitions and metric-adjusted local fallback faces in the global typography system; this preserves shared heading and control geometry during font loading.
 - Theme is hybrid: `:root` holds light content tokens, `.dark`/`.hero-dark` hold dark tokens; the header + booking stage live inside `.hero-dark` so they stay dark regardless of the user's theme toggle. Why: one token set themes both zones.

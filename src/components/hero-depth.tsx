@@ -30,7 +30,8 @@ export function useHeroDepth(ref: RefObject<HTMLDivElement | null>) {
       if (!bounds || !photo || !headline) return;
       const state = heroScrollState(-bounds.top, bounds.height);
       photo.style.willChange = 'transform'; headline.style.willChange = 'transform, opacity';
-      photo.style.transform = `translateY(${state.photoY}px)`;
+      // Keep scroll depth inside the photo's six-percent overscan at rest/zoom end.
+      photo.style.transform = `translateY(${Math.min(state.photoY, bounds.height * 0.05)}px)`;
       headline.style.transform = `scale(${state.headlineScale})`;
       headline.style.opacity = String(state.headlineOpacity);
       clearTimeout(idleTimer);
