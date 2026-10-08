@@ -458,6 +458,16 @@ function Index() {
         </div>
       </footer>
       </section>
+      {prefsOpen && (
+        <div className="prefs-sheet-root" role="dialog" aria-modal="true" aria-label="Class, passengers and quota">
+          <button type="button" className="prefs-sheet-backdrop" aria-label="Close" onClick={() => setPrefsOpen(false)} />
+          <div className="prefs-sheet">
+            <span className="prefs-sheet-handle" aria-hidden="true" />
+            <div className="prefs-sheet-body">{prefsControls}</div>
+            <Button variant="travel" type="button" className="prefs-sheet-done" onClick={() => setPrefsOpen(false)}>Done</Button>
+          </div>
+        </div>
+      )}
       <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "No plan? No problem. Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class, ${quota} quota, for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
       <DatePanel open={calendarOpen} anchor={dateButtonRef} value={date} onClose={closeCalendar} onSelect={(d) => { setDate(d); setInvalidFields((fields) => ({ ...fields, date: false })); setError(""); }} />
       <div className="cta-fade" aria-hidden="true" />
