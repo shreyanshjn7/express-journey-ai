@@ -402,17 +402,8 @@ function Index() {
               </div>
               </div>
             <AnimatePresence>{error && <motion.p key={validationAttempt} initial={{ y: reduced ? 0 : -8, opacity: reduced ? 1 : 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }} className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</motion.p>}</AnimatePresence>
-            <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
-              <div className="controls-panel">
-                <span className="controls-label">Class:</span>
-                <LayoutGroup id="search-class"><div className="vibe-chips" role="radiogroup" aria-label="Travel class">
-                  {classes.map(({ name, tip }) => <Button variant="ghost" key={name} type="button" role="radio" aria-checked={travelClass === name} aria-describedby={`tip-${name}`} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{travelClass === name && <SelectionMark id="class-highlight" />}<span className="class-choice-content"><span className="class-check-slot">{travelClass === name && <DrawnCheck />}</span>{name}</span><span id={`tip-${name}`} role="tooltip" className="class-tip">{tip}</span></Button>)}
-                </div></LayoutGroup>
-                <span className="controls-divider" aria-hidden="true" />
-                <div className="crew-stepper"><Users size={15} /><span>Passengers</span><Button variant="ghost" size="icon" type="button" aria-label="Fewer passengers" disabled={passengers <= 1} onClick={() => { setCounterDirection(-1); setPassengers(c => Math.max(1, c - 1)); }}><Minus size={16} /></Button><RollingNumber value={passengers} direction={counterDirection} /><Button variant="ghost" size="icon" type="button" aria-label="More passengers" disabled={passengers >= 9} onClick={() => { setCounterDirection(1); setPassengers(c => Math.min(9, c + 1)); }}><Plus size={16} /></Button></div>
-                <span className="controls-divider" aria-hidden="true" />
-                <label className="quota-field"><span className="controls-label">Quota</span><span className="quota-select"><select value={quota} onChange={(e) => setQuota(e.target.value)} aria-label="Quota">{["General", "Tatkal", "Ladies", "Senior Citizen"].map((q) => <option key={q} value={q}>{q}</option>)}</select><ChevronDown size={16} aria-hidden="true" /></span></label>
-              </div>
+             <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
+              <div className="controls-panel">{prefsControls}</div>
                <SearchAction busy={submitting} />
             </div>
             </form>
