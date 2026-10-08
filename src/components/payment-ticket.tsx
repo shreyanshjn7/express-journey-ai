@@ -32,7 +32,7 @@ export function PaymentTicket({ trip, train }: { trip: Trip; train: Train | unde
     const timer = setTimeout(() => setSparks(false), (ticketMotion.checkDelay + ticketMotion.sparks) * 1000);
     return () => clearTimeout(timer);
   }, [reduced]);
-  const timing = (delay: number, duration = motionTokens.duration.standard) => ({
+  const timing = (delay: number, duration: number = motionTokens.duration.standard) => ({
     delay: reduced ? 0 : delay, duration: reduced ? 0 : duration, ease: motionTokens.easing.entrance,
   });
   const details = [
