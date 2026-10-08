@@ -326,12 +326,17 @@ function Index() {
         <div className="header-actions">
           <ThemeToggle theme={theme} onChange={setTheme} />
           <Button variant="travel" className="ai-cta" onClick={() => setDialog("ai")}>Ask Daddy AI <ArrowUpRight size={14} /><span className="ai-tip" role="tooltip">Ask: best train to Goa this weekend</span></Button>
+          <Button variant="ghost" type="button" className="ai-icon-btn" aria-label="Ask Daddy AI" onClick={() => setDialog("ai")}><Sparkles size={18} aria-hidden="true" /></Button>
           <button type="button" className="menu-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(o => !o)}><Menu size={20} /></button>
           {menuOpen && (
             <div className="mobile-menu" role="menu" aria-label="Site menu">
               <Button variant="nav" role="menuitem" onClick={() => { setMenuOpen(false); document.getElementById("booking")?.scrollIntoView({ behavior: "smooth", block: "center" }); }}>Find a train</Button>
               <Button variant="nav" role="menuitem" onClick={() => { setMenuOpen(false); setDialog("about"); }}>Why rail? <ArrowUpRight size={13} /></Button>
               <Button variant="nav" role="menuitem" onClick={() => { setMenuOpen(false); setDialog("ai"); }}>Ask Daddy AI <ArrowUpRight size={13} /></Button>
+              <div className="mobile-menu-theme" role="group" aria-label="Theme">
+                <span>Theme</span>
+                <ThemeToggle theme={theme} onChange={setTheme} />
+              </div>
             </div>
           )}
         </div>
