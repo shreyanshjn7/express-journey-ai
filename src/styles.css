@@ -318,7 +318,7 @@ h1 { font-family: var(--font-display); font-weight: 700; font-size: 82px; line-h
 h1 > span:first-child { color: var(--foreground); }
 .h1-accent { color: var(--foreground); }
 .headline-star { font-family: var(--font-body); position: absolute; color: var(--primary); font-size: 46px; top: 2px; right: -56px; font-weight: 400; animation: star-turn 24s linear infinite; }
-.hero-subhead { font-size: 18px; color: color-mix(in oklch, var(--foreground) 85%, transparent); line-height: 1.55; margin: 10px 0 0; }
+.hero-subhead { font-size: 18px; color: color-mix(in oklch, var(--foreground) 85%, transparent); line-height: 1.55; margin: 10px 0 0; text-wrap: balance; }
 
 /* Booking spotlight: the inputs are the hero of the page. */
 .booking-area { position: relative; z-index: 2; max-width: 1200px; margin-inline: auto; width: 100%; }
@@ -1375,6 +1375,7 @@ html.lenis, html.lenis body { height: auto; }
 .vibe-chip .selection-highlight { box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--primary); }
 .class-choice-content { display: inline-flex; align-items: center; gap: 4px; position: relative; z-index: 1; }
 .class-check-slot { width: 14px; height: 14px; display: inline-flex; flex: none; }
+.class-check-slot:empty { width: 0; }
 .booking-console .drawn-check { display: block; }
 .motion-ready .booking-console .swap-button, .motion-ready .booking-console .swap-button:hover { rotate: var(--base); transition: none; }
 .swap-glyph { display: inline-flex; transition: none !important; }
