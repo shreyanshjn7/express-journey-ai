@@ -1,5 +1,9 @@
 # Roadmap
 
+## Home viewport audit
+- [ ] Check 1920, 1440, 1280, 1024, 768 and 390px widths plus 1366×700.
+- [ ] Fix and verify any overflow, overlaps or exposed photo edges.
+
 ## Adaptive hero
 - [x] Center a full-viewport minimum-height hero, fluid headline and equally bounded search card.
 - [x] Stack fields and wrap controls below 900px; retain safe background overscan.
