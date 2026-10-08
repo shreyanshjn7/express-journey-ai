@@ -684,6 +684,7 @@ h1 .line:first-child > span { color: var(--foreground); }
   .site-header .theme-toggle, .site-header .ai-cta { display: none; }
   .site-header .ai-icon-btn { display: inline-grid; }
   .mobile-menu-theme { display: flex; }
+  .mobile-menu-theme .theme-toggle { display: inline-grid; }
 }
 
 /* ---- Popular routes strip: fills the gap between the form and the marquee ---- */
