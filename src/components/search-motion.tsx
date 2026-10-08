@@ -10,7 +10,7 @@ export { AnimatePresence, LayoutGroup, motion };
 
 export function SelectionMark({ id, circle = false }: { id: string; circle?: boolean }) {
   const reduced = useReducedMotion();
-  return <motion.span aria-hidden="true" className={circle ? "date-selection-highlight" : "selection-highlight"} layoutId={reduced ? undefined : id} transition={motionTokens.spring.snappy} />;
+  return <motion.span aria-hidden="true" className={circle ? "date-selection-highlight" : "selection-highlight"} {...(reduced ? {} : { layoutId: id })} transition={motionTokens.spring.snappy} />;
 }
 
 export function DrawnCheck() {
