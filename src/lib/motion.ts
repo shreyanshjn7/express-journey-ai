@@ -32,6 +32,12 @@ export const bookingMotion = { cardStagger: 0.06, chipStagger: 0.06, count: 0.7,
 
 export function bookingProgress(step: number) { return Math.max(0, Math.min(3, step)) / 3; }
 
+export const ticketMotion = {
+  rise: 24, tilt: -3, entrance: 0.7, tearDelay: 0.45, tear: 0.35,
+  checkDelay: 0.65, check: 0.35, sparks: 1.5,
+  qrDelay: 0.9, qr: 0.7, detailsDelay: 0.8, detailStagger: 0.08,
+} as const;
+
 export const marqueeMotion = { speed: 36, settle: 0.35, boostDecay: 0.55, maxBoost: 3, maxSkew: 2.5, hoverScale: 1.08, flight: 0.7 } as const;
 
 export function marqueeScrollImpulse(velocity: number) {
