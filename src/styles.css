@@ -1237,7 +1237,7 @@ body { font-size: var(--text-body); line-height: 1.5; }
 .night-train-runner { position: absolute; left: 0; width: 260px; height: 44px; opacity: 0; transition: none; }
 .night-train-silhouette { position: relative; width: 260px; height: 44px; color: var(--night-train); }
 .night-train-windows { stroke: var(--night-speck); }
-.night-train-trail { position: absolute; right: 20px; top: 26px; width: 170px; height: 2px; background: linear-gradient(90deg, transparent, var(--night-trail)); box-shadow: var(--night-speck-shadow); }
+.night-train-trail { position: absolute; right: 250px; top: 26px; width: 170px; height: 2px; background: linear-gradient(90deg, transparent, var(--night-trail)); box-shadow: var(--night-speck-shadow); }
 @media (prefers-reduced-motion: reduce) {
   .hero-photo-depth { transform: none !important; will-change: auto; }
   .hero-content h1 { transform: none !important; opacity: 1 !important; }
