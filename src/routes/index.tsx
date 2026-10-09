@@ -464,7 +464,7 @@ function Index() {
           <div className="prefs-sheet">
             <span className="prefs-sheet-handle" aria-hidden="true" />
             <div className="prefs-sheet-body">{renderPrefsControls("search-class-sheet")}</div>
-            <Button variant="travel" type="button" className="prefs-sheet-done" onClick={() => setPrefsOpen(false)}>Done</Button>
+            <Button variant="journey" type="button" className="prefs-sheet-done" onClick={() => setPrefsOpen(false)}>Done</Button>
           </div>
         </div>
       )}

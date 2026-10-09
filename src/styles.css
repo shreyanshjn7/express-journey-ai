@@ -1695,7 +1695,8 @@ html.lenis, html.lenis body { height: auto; }
 .prefs-sheet-body .vibe-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .prefs-sheet-body .crew-stepper { justify-content: space-between; }
 .prefs-sheet-body .quota-field { display: flex; flex-direction: column; gap: 6px; }
-.prefs-sheet-body .quota-field .controls-label { display: block; }
+.prefs-sheet-body .quota-field .controls-label { display: none; }
+.prefs-sheet-body .quota-field { display: block; }
 .prefs-sheet-done { width: 100%; margin-top: 16px; height: 48px; }
 @keyframes prefs-sheet-up { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .prefs-sheet { animation: none; } }
