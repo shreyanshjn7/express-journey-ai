@@ -1711,6 +1711,6 @@ html.lenis, html.lenis body { height: auto; }
   .prefs-summary-text { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
   .prefs-dot { width: 3px; height: 3px; border-radius: 999px; background: var(--rd-muted); flex: none; }
   .prefs-summary svg { color: var(--rd-muted); flex: none; }
-  .booking-controls .controls-panel { display: none; }
+  .booking-console .booking-controls .controls-panel { display: none; }
 }
 .rolling-number, .rolling-number > span { pointer-events: none; }
