@@ -1256,9 +1256,10 @@ body { font-size: var(--text-body); line-height: 1.5; }
 .h1-break { display: none; }
 @media (max-width: 760px) {
   .h1-break { display: inline; }
-  h1, .hero-content h1 { font-size: 2rem; line-height: .95; white-space: normal; width: auto; max-width: 100%; margin: 0; }
+  h1, .hero-content h1, .hero-dark .hero-content h1 { font-size: 2rem; line-height: .95; white-space: normal; width: auto; max-width: 100%; margin: 0; }
   .headline-star { display: none; }
   .hero-subhead { font-size: 15px; margin: 16px 0 0; }
+  .booking-area { margin-top: -4px; }
   /* Phones: no floating specks, no train silhouette, no city marquee. */
   .night-fireflies, .night-train-track { display: none; }
   .route-marquee { display: none; }
