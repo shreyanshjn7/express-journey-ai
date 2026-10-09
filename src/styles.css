@@ -783,8 +783,8 @@ h1 .line:first-child > span { color: var(--foreground); }
   .vibe-chip { height: 44px; min-width: 44px; font-size: 14px; }
   .crew-stepper { min-height: 44px; }
   .crew-stepper button { width: 44px; height: 44px; }
-  .booking-controls .journey-button { height: 52px; width: 100%; margin: 16px 0 0; background: var(--primary); color: var(--primary-foreground); }
-  .cta-floating .booking-controls .journey-button { position: fixed; left: 16px; right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 40; box-shadow: 0 14px 40px oklch(0 0 0 / 55%); animation: cta-rise .35s cubic-bezier(.16,1,.3,1); }
+  .booking-console .booking-controls .journey-button { height: 52px; width: 100%; margin: 16px 0 0; background: var(--primary); color: var(--primary-foreground); }
+  .cta-floating .booking-console .booking-controls .journey-button { position: fixed; left: 16px; right: 16px; width: auto; margin: 0; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 40; box-shadow: 0 14px 40px oklch(0 0 0 / 55%); animation: cta-rise .35s cubic-bezier(.16,1,.3,1); }
   .cta-floating .booking-controls::after { content: ''; height: 68px; }
   .booking-controls .journey-button > * { color: var(--primary-foreground); }
   .railway-app { padding-bottom: 96px; }
