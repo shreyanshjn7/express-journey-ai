@@ -94,3 +94,8 @@
 - [x] One 48px summary row ("3A · 2 passengers · General") with chevron replaces the controls panel under 640px.
 - [x] Bottom sheet with drag handle, 55% backdrop, class pills, passenger counter, quota dropdown and Done; selections update the row live.
 - [x] Desktop layout unchanged; verified 393px and 1280px.
+
+## Phone Find my train placement
+- [x] Button lives inside the card as its last element: full width, 52px tall, 16px space above.
+- [x] Sticky version with gradient fade appears only after the card scrolls out of view; footer stays fully visible.
+- [x] Verified 393px: no cutoff or overlap at the card bottom.
