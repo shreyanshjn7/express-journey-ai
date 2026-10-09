@@ -1714,3 +1714,6 @@ html.lenis, html.lenis body { height: auto; }
   .booking-console .booking-controls .controls-panel { display: none; }
 }
 .rolling-number, .rolling-number > span { pointer-events: none; }
+.prefs-sheet .vibe-chip { position: relative; isolation: isolate; height: 44px; padding: 0 14px; border-radius: 12px; background: var(--rd-white); border: 1px solid var(--border-strong); color: var(--rd-indigo); font-weight: 600; }
+.prefs-sheet .crew-stepper { color: var(--rd-indigo); font-weight: 600; }
+.prefs-sheet .crew-stepper button { width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid var(--border-strong); background: var(--rd-white); color: var(--rd-indigo); }
