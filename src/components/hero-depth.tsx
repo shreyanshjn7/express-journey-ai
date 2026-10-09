@@ -81,7 +81,7 @@ export function useHeroDepth(ref: RefObject<HTMLDivElement | null>) {
           opacity: [0.04, 0.18, 0.04],
         }, { duration: heroDepth.particleDuration + motionDuration(index % 6 * 2), delay: -(index * 1.3), repeat: Infinity, ease: 'easeInOut' }));
       });
-      if (train && stage) controls.push(animate(train, {
+      if (train && stage && !mobile.matches) controls.push(animate(train, {
         x: [-620, -416, stage.clientWidth + 220, stage.clientWidth + 220],
         opacity: [0, 1, 1, 0],
       }, { duration: heroDepth.trainInterval, times: [0, 0.08, 0.64, 1], repeat: Infinity, ease: ['easeIn', 'linear', 'easeOut'] }));
