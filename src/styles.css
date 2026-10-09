@@ -1723,3 +1723,12 @@ html.lenis, html.lenis body { height: auto; }
 .prefs-sheet .vibe-chip { position: relative; isolation: isolate; height: 44px; padding: 0 14px; border-radius: 12px; background: var(--rd-white); border: 1px solid var(--border-strong); color: var(--rd-indigo); font-weight: 600; }
 .prefs-sheet .crew-stepper { color: var(--rd-indigo); font-weight: 600; }
 .prefs-sheet .crew-stepper button { width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid var(--border-strong); background: var(--rd-white); color: var(--rd-indigo); }
+
+/* Phone hero tidy-up: compact headline, no specks/train/marquee (desktop untouched). */
+@media (max-width: 760px) {
+  .hero-dark .hero-content h1 { font-size: 2rem; }
+  .hero-subhead { font-size: 15px; margin: 16px 0 0; }
+  .booking-area { margin-top: -4px; }
+  .night-fireflies, .night-train-track { display: none; }
+  .route-marquee { display: none; }
+}
