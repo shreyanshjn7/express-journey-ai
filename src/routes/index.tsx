@@ -420,7 +420,7 @@ function Index() {
              </button>
              <AnimatePresence>{error && <motion.p key={validationAttempt} initial={{ y: reduced ? 0 : -8, opacity: reduced ? 1 : 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }} className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</motion.p>}</AnimatePresence>
              <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
-              <div className="controls-panel">{prefsControls}</div>
+              <div className="controls-panel">{renderPrefsControls("search-class")}</div>
                <SearchAction busy={submitting} />
             </div>
             </form>
@@ -463,7 +463,7 @@ function Index() {
           <button type="button" className="prefs-sheet-backdrop" aria-label="Close" onClick={() => setPrefsOpen(false)} />
           <div className="prefs-sheet">
             <span className="prefs-sheet-handle" aria-hidden="true" />
-            <div className="prefs-sheet-body">{prefsControls}</div>
+            <div className="prefs-sheet-body">{renderPrefsControls("search-class-sheet")}</div>
             <Button variant="travel" type="button" className="prefs-sheet-done" onClick={() => setPrefsOpen(false)}>Done</Button>
           </div>
         </div>
