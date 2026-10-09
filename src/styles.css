@@ -1676,3 +1676,45 @@ html.lenis, html.lenis body { height: auto; }
 @media (max-width: 760px) {
   .railway-app.cta-floating .booking-area { z-index: 45; }
 }
+
+/* Mobile class/passengers/quota summary row + bottom sheet */
+.prefs-summary { display: none; }
+.prefs-sheet-root { position: fixed; inset: 0; z-index: 70; }
+.prefs-sheet-backdrop { position: absolute; inset: 0; border: 0; background: oklch(0 0 0 / 55%); cursor: default; }
+.prefs-sheet {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: var(--rd-cream); color: var(--rd-indigo);
+  border-radius: 20px 20px 0 0; padding: 12px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -18px 50px oklch(0 0 0 / 35%);
+  animation: prefs-sheet-up 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.prefs-sheet-handle { display: block; width: 40px; height: 4px; border-radius: 999px; background: oklch(0.265 0.055 270.6 / 25%); margin: 0 auto 12px; }
+.prefs-sheet-body { display: flex; flex-direction: column; gap: 14px; }
+.prefs-sheet-body .controls-label { display: none; }
+.prefs-sheet-body .controls-divider { display: none; }
+.prefs-sheet-body .vibe-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.prefs-sheet-body .crew-stepper { justify-content: space-between; }
+.prefs-sheet-body .quota-field { display: flex; flex-direction: column; gap: 6px; }
+.prefs-sheet-body .quota-field .controls-label { display: none; }
+.prefs-sheet-body .quota-field { display: block; }
+.prefs-sheet-done { width: 100%; margin-top: 16px; height: 48px; }
+@keyframes prefs-sheet-up { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .prefs-sheet { animation: none; } }
+
+@media (max-width: 640px) {
+  .prefs-summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    height: 48px; padding: 0 16px; border-radius: 12px;
+    background: var(--rd-white); border: 1px solid var(--border);
+    color: var(--rd-indigo); font: inherit; font-size: 14px; font-weight: 600;
+    cursor: pointer;
+  }
+  .prefs-summary-text { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+  .prefs-dot { width: 3px; height: 3px; border-radius: 999px; background: var(--rd-muted); flex: none; }
+  .prefs-summary svg { color: var(--rd-muted); flex: none; }
+  .booking-console .booking-controls .controls-panel { display: none; }
+}
+.rolling-number, .rolling-number > span { pointer-events: none; }
+.prefs-sheet .vibe-chip { position: relative; isolation: isolate; height: 44px; padding: 0 14px; border-radius: 12px; background: var(--rd-white); border: 1px solid var(--border-strong); color: var(--rd-indigo); font-weight: 600; }
+.prefs-sheet .crew-stepper { color: var(--rd-indigo); font-weight: 600; }
+.prefs-sheet .crew-stepper button { width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid var(--border-strong); background: var(--rd-white); color: var(--rd-indigo); }

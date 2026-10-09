@@ -286,6 +286,7 @@ function Index() {
   const [dialog, setDialog] = useState<"journey" | "ai" | "about" | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [quota, setQuota] = useState("General");
+  const [prefsOpen, setPrefsOpen] = useState(false);
   const [swapTurns, setSwapTurns] = useState(0);
   const [validationAttempt, setValidationAttempt] = useState(0);
   const [submitting, setSubmitting] = useState(false);
@@ -336,6 +337,19 @@ function Index() {
     }
     await navigate({ to: "/trains", search: { from: source.trim(), to: destination.trim(), date: format(date, "yyyy-MM-dd"), cls: travelClass, pax: passengers, quota } });
   }
+  const renderPrefsControls = (groupId: string) => (
+    <>
+      <span className="controls-label">Class:</span>
+      <LayoutGroup id={groupId}><div className="vibe-chips" role="radiogroup" aria-label="Travel class">
+        {classes.map(({ name, tip }) => <Button variant="ghost" key={name} type="button" role="radio" aria-checked={travelClass === name} aria-describedby={`tip-${groupId}-${name}`} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{travelClass === name && <SelectionMark id="class-highlight" />}<span className="class-choice-content"><span className="class-check-slot">{travelClass === name && <DrawnCheck />}</span>{name}</span><span id={`tip-${groupId}-${name}`} role="tooltip" className="class-tip">{tip}</span></Button>)}
+      </div></LayoutGroup>
+      <span className="controls-divider" aria-hidden="true" />
+      <div className="crew-stepper"><Users size={15} /><span>Passengers</span><Button variant="ghost" size="icon" type="button" aria-label="Fewer passengers" disabled={passengers <= 1} onClick={() => { setCounterDirection(-1); setPassengers(c => Math.max(1, c - 1)); }}><Minus size={16} /></Button><RollingNumber value={passengers} direction={counterDirection} /><Button variant="ghost" size="icon" type="button" aria-label="More passengers" disabled={passengers >= 9} onClick={() => { setCounterDirection(1); setPassengers(c => Math.min(9, c + 1)); }}><Plus size={16} /></Button></div>
+      <span className="controls-divider" aria-hidden="true" />
+      <label className="quota-field"><span className="controls-label">Quota</span><span className="quota-select"><select value={quota} onChange={(e) => setQuota(e.target.value)} aria-label="Quota">{["General", "Tatkal", "Ladies", "Senior Citizen"].map((q) => <option key={q} value={q}>{q}</option>)}</select><ChevronDown size={16} aria-hidden="true" /></span></label>
+    </>
+  );
+
   return (
     <div ref={homeRef} className={`railway-app${ctaFloating ? " cta-floating" : ""}`} data-home-entrance="pending">
       <div className="hero-dark">
@@ -400,18 +414,13 @@ function Index() {
               </span>
               </div>
               </div>
-            <AnimatePresence>{error && <motion.p key={validationAttempt} initial={{ y: reduced ? 0 : -8, opacity: reduced ? 1 : 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }} className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</motion.p>}</AnimatePresence>
-            <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
-              <div className="controls-panel">
-                <span className="controls-label">Class:</span>
-                <LayoutGroup id="search-class"><div className="vibe-chips" role="radiogroup" aria-label="Travel class">
-                  {classes.map(({ name, tip }) => <Button variant="ghost" key={name} type="button" role="radio" aria-checked={travelClass === name} aria-describedby={`tip-${name}`} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{travelClass === name && <SelectionMark id="class-highlight" />}<span className="class-choice-content"><span className="class-check-slot">{travelClass === name && <DrawnCheck />}</span>{name}</span><span id={`tip-${name}`} role="tooltip" className="class-tip">{tip}</span></Button>)}
-                </div></LayoutGroup>
-                <span className="controls-divider" aria-hidden="true" />
-                <div className="crew-stepper"><Users size={15} /><span>Passengers</span><Button variant="ghost" size="icon" type="button" aria-label="Fewer passengers" disabled={passengers <= 1} onClick={() => { setCounterDirection(-1); setPassengers(c => Math.max(1, c - 1)); }}><Minus size={16} /></Button><RollingNumber value={passengers} direction={counterDirection} /><Button variant="ghost" size="icon" type="button" aria-label="More passengers" disabled={passengers >= 9} onClick={() => { setCounterDirection(1); setPassengers(c => Math.min(9, c + 1)); }}><Plus size={16} /></Button></div>
-                <span className="controls-divider" aria-hidden="true" />
-                <label className="quota-field"><span className="controls-label">Quota</span><span className="quota-select"><select value={quota} onChange={(e) => setQuota(e.target.value)} aria-label="Quota">{["General", "Tatkal", "Ladies", "Senior Citizen"].map((q) => <option key={q} value={q}>{q}</option>)}</select><ChevronDown size={16} aria-hidden="true" /></span></label>
-              </div>
+             <button type="button" className="prefs-summary" aria-haspopup="dialog" aria-expanded={prefsOpen} onClick={() => setPrefsOpen(true)}>
+               <span className="prefs-summary-text">{travelClass}<span className="prefs-dot" aria-hidden="true" />{passengers} passenger{passengers > 1 ? "s" : ""}<span className="prefs-dot" aria-hidden="true" />{quota}</span>
+               <ChevronDown size={16} aria-hidden="true" />
+             </button>
+             <AnimatePresence>{error && <motion.p key={validationAttempt} initial={{ y: reduced ? 0 : -8, opacity: reduced ? 1 : 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : motionTokens.duration.micro }} className="form-error" role="alert"><AlertCircle size={16} aria-hidden="true" /><strong>Error:</strong> {error}</motion.p>}</AnimatePresence>
+             <div className="booking-controls reveal" style={{ ["--d" as string]: "870ms" }}>
+              <div className="controls-panel">{renderPrefsControls("search-class")}</div>
                <SearchAction busy={submitting} />
             </div>
             </form>
@@ -449,6 +458,16 @@ function Index() {
         </div>
       </footer>
       </section>
+      {prefsOpen && (
+        <div className="prefs-sheet-root" role="dialog" aria-modal="true" aria-label="Class, passengers and quota">
+          <button type="button" className="prefs-sheet-backdrop" aria-label="Close" onClick={() => setPrefsOpen(false)} />
+          <div className="prefs-sheet">
+            <span className="prefs-sheet-handle" aria-hidden="true" />
+            <div className="prefs-sheet-body">{renderPrefsControls("search-class-sheet")}</div>
+            <Button variant="journey" type="button" className="prefs-sheet-done" onClick={() => setPrefsOpen(false)}>Done</Button>
+          </div>
+        </div>
+      )}
       <Dialog open={dialog !== null} onOpenChange={(open) => { if (!open) setDialog(null); }}><DialogContent className="railway-dialog"><DialogHeader><div className="dialog-icon">{dialog === "ai" ? <MessageCircle /> : <TrainFront />}</div><DialogTitle>{dialog === "ai" ? "Hey, Daddy AI here." : dialog === "journey" ? "Your route." : "Why travel by rail?"}</DialogTitle><DialogDescription>{dialog === "ai" ? "No plan? No problem. Tell me your route, budget and dates and I’ll find the best train options for you. Live AI chat isn’t connected in this design preview." : dialog === "journey" ? `${travelClass} class, ${quota} quota, for ${passengers} passenger${passengers > 1 ? "s" : ""}. Live train availability and fares aren’t connected in this design preview.` : "Rail travel means no airport stress, more scenery and a journey that’s part of the holiday. Rail Daddy finds the right train for you."}</DialogDescription></DialogHeader>{dialog === "journey" && <div className="journey-summary"><div><span>{source}</span><ArrowRight /><span>{destination}</span></div><p><CalendarDays size={16} />{date ? format(date, "EEEE, dd MMMM yyyy") : ""}</p></div>}<Button variant="travel" onClick={() => setDialog(null)}>{dialog === "journey" ? "Back to search" : "Got it"}<X size={16} /></Button></DialogContent></Dialog>
       <DatePanel open={calendarOpen} anchor={dateButtonRef} value={date} onClose={closeCalendar} onSelect={(d) => { setDate(d); setInvalidFields((fields) => ({ ...fields, date: false })); setError(""); }} />
       <div className="cta-fade" aria-hidden="true" />

@@ -89,3 +89,8 @@
 - [x] Combine From and To into one block with two single-line rows, thin divider and swap on the right edge.
 - [x] Put the date on one row with Today and Tomorrow chips; card padding 16px, row gap 8px, radius 20px.
 - [x] Verify 393px, desktop 1280px, reduced motion and the pinned button layering.
+
+## Phone class/passengers/quota summary row
+- [x] One 48px summary row ("3A · 2 passengers · General") with chevron replaces the controls panel under 640px.
+- [x] Bottom sheet with drag handle, 55% backdrop, class pills, passenger counter, quota dropdown and Done; selections update the row live.
+- [x] Desktop layout unchanged; verified 393px and 1280px.
