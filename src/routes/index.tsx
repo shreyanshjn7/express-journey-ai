@@ -337,11 +337,11 @@ function Index() {
     }
     await navigate({ to: "/trains", search: { from: source.trim(), to: destination.trim(), date: format(date, "yyyy-MM-dd"), cls: travelClass, pax: passengers, quota } });
   }
-  const prefsControls = (
+  const renderPrefsControls = (groupId: string) => (
     <>
       <span className="controls-label">Class:</span>
-      <LayoutGroup id="search-class"><div className="vibe-chips" role="radiogroup" aria-label="Travel class">
-        {classes.map(({ name, tip }) => <Button variant="ghost" key={name} type="button" role="radio" aria-checked={travelClass === name} aria-describedby={`tip-${name}`} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{travelClass === name && <SelectionMark id="class-highlight" />}<span className="class-choice-content"><span className="class-check-slot">{travelClass === name && <DrawnCheck />}</span>{name}</span><span id={`tip-${name}`} role="tooltip" className="class-tip">{tip}</span></Button>)}
+      <LayoutGroup id={groupId}><div className="vibe-chips" role="radiogroup" aria-label="Travel class">
+        {classes.map(({ name, tip }) => <Button variant="ghost" key={name} type="button" role="radio" aria-checked={travelClass === name} aria-describedby={`tip-${groupId}-${name}`} className={`vibe-chip ${travelClass === name ? "on" : ""}`} onClick={() => setTravelClass(name)}>{travelClass === name && <SelectionMark id="class-highlight" />}<span className="class-choice-content"><span className="class-check-slot">{travelClass === name && <DrawnCheck />}</span>{name}</span><span id={`tip-${groupId}-${name}`} role="tooltip" className="class-tip">{tip}</span></Button>)}
       </div></LayoutGroup>
       <span className="controls-divider" aria-hidden="true" />
       <div className="crew-stepper"><Users size={15} /><span>Passengers</span><Button variant="ghost" size="icon" type="button" aria-label="Fewer passengers" disabled={passengers <= 1} onClick={() => { setCounterDirection(-1); setPassengers(c => Math.max(1, c - 1)); }}><Minus size={16} /></Button><RollingNumber value={passengers} direction={counterDirection} /><Button variant="ghost" size="icon" type="button" aria-label="More passengers" disabled={passengers >= 9} onClick={() => { setCounterDirection(1); setPassengers(c => Math.min(9, c + 1)); }}><Plus size={16} /></Button></div>
