@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, Sparkles, TrainFront, AlertCircle, X, Users, Minus, Plus, History, ChevronDown, ShieldCheck, RotateCcw } from "lucide-react";
+import { ArrowDownUp, ArrowRight, ArrowUpRight, CalendarDays, Check, MapPin, Menu, MessageCircle, Sparkles, TrainFront, AlertCircle, X, Users, Minus, Plus, History, ChevronDown, ShieldCheck, RotateCcw, Mic, Send } from "lucide-react";
 import { addDays, format, isSameDay, nextSaturday, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { DatePanel } from "@/components/date-panel";
@@ -277,6 +277,8 @@ function Index() {
   const tomorrow = startOfDay(addDays(new Date(), 1));
   const [date, setDate] = useState<Date | undefined>(tomorrow);
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const [cardMode, setCardMode] = useState<"search" | "ai">("search");
+  const [askText, setAskText] = useState("");
   const dateButtonRef = useRef<HTMLButtonElement>(null);
   const closeCalendar = useCallback(() => setCalendarOpen(false), []);
   const [error, setError] = useState("");
@@ -359,7 +361,7 @@ function Index() {
         <div className="header-actions">
           <ThemeToggle theme={theme} onChange={setTheme} />
           <Button variant="travel" className="ai-cta" onClick={() => setDialog("ai")}>Ask Daddy AI <ArrowUpRight size={14} /><span className="ai-tip" role="tooltip">Ask: best train to Goa this weekend</span></Button>
-          <Button variant="ghost" type="button" className="ai-icon-btn" aria-label="Ask Daddy AI" onClick={() => setDialog("ai")}><Sparkles size={18} aria-hidden="true" /></Button>
+          <button type="button" className="ai-icon-btn" aria-label="Ask Daddy AI" onClick={() => setDialog("ai")}><Sparkles size={16} aria-hidden="true" /><span>Ask Daddy</span></button>
           <button type="button" className="menu-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(o => !o)}><Menu size={20} /></button>
           {menuOpen && (
             <div className="mobile-menu" role="menu" aria-label="Site menu">
@@ -397,9 +399,33 @@ function Index() {
 
           <div className="booking-area" id="booking">
             <div className="booking-intro reveal" style={{ ["--d" as string]: "550ms" }}><span><span className="mini-track" /> Start with the route. We'll find the trains.</span>{lastSearch ? <button type="button" className="last-search" aria-label={`Repeat last search: ${shortName(lastSearch.from)} to ${shortName(lastSearch.to)}`} onClick={() => { setSource(lastSearch.from); setDestination(lastSearch.to); const d = new Date(lastSearch.date); if (!Number.isNaN(d.getTime()) && d >= startOfDay(new Date())) setDate(startOfDay(d)); setInvalidFields({ source: false, destination: false, date: false }); setError(""); }}><History size={14} aria-hidden="true" /><span className="last-search-label">Last search</span> {shortName(lastSearch.from)} to {shortName(lastSearch.to)}{lastSearch.date && !Number.isNaN(new Date(lastSearch.date).getTime()) ? `, ${format(new Date(lastSearch.date), "EEE")}` : ""}</button> : <span className="booking-step">01 <span>/ ROUTE BASICS</span></span>}</div>
-            <form onSubmit={submit} className={`booking-console${submitting ? " search-submitting" : ""}`} aria-busy={submitting}>
+            <form onSubmit={submit} data-mode={cardMode} className={`booking-console${submitting ? " search-submitting" : ""}`} aria-busy={submitting}>
               <span className="booking-landing-surface" aria-hidden="true" />
               <span className="booking-landing-shadow" aria-hidden="true" />
+              <div className="mode-switch" role="tablist" aria-label="Search mode">
+                {(["search", "ai"] as const).map((m) => (
+                  <button key={m} type="button" role="tab" aria-selected={cardMode === m} className={cardMode === m ? "on" : ""} onClick={() => setCardMode(m)}>
+                    {cardMode === m && <motion.span layoutId="mode-switch-pill" className="mode-switch-pill" transition={{ type: "spring", stiffness: 300, damping: 24 }} />}
+                    <span className="mode-switch-label">{m === "ai" && <Sparkles size={15} aria-hidden="true" />}{m === "search" ? "Search trains" : "Ask Daddy"}</span>
+                  </button>
+                ))}
+              </div>
+              {cardMode === "ai" && (
+                <div className="ask-pane" role="tabpanel" aria-label="Ask Daddy">
+                  <div className="ask-box">
+                    <textarea aria-label="Ask Daddy" value={askText} onChange={(e) => setAskText(e.target.value)} placeholder="Where do you want to go? Try: 'Beach trip from Mumbai this weekend under Rs 1500'" rows={4} />
+                    <div className="ask-actions">
+                      <button type="button" className="ask-mic" aria-label="Speak your trip"><Mic size={18} aria-hidden="true" /></button>
+                      <button type="button" className="ask-send" aria-label="Send to Daddy" onClick={() => setDialog("ai")}><Send size={17} aria-hidden="true" /></button>
+                    </div>
+                  </div>
+                  <div className="ask-chips">
+                    {["Weekend getaway", "Cheapest to Goa", "Overnight to Delhi"].map((c) => (
+                      <button key={c} type="button" onClick={() => setAskText(c)}>{c}</button>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div className="booking-form">
               <div className="route-block">
               <StationField id="source" label="From" hint="City, station or code" errorText="Choose where you're starting from" recent={recent} placeholder="Boarding station" compactPlaceholder="From" compact={compactCard} value={source} invalid={invalidFields.source} onChange={(value) => { setSource(value); setInvalidFields((fields) => ({ ...fields, source: false })); setError(""); }} />

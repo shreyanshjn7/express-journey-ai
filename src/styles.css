@@ -1732,3 +1732,44 @@ html.lenis, html.lenis body { height: auto; }
   .night-fireflies, .night-train-track { display: none; }
   .route-marquee { display: none; }
 }
+
+/* Phone: Ask Daddy as a main feature (desktop untouched). */
+.mode-switch, .ask-pane { display: none; }
+@media (max-width: 640px) {
+  .site-header .ai-icon-btn {
+    position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 6px;
+    width: auto; height: 36px; padding: 0 14px; border-radius: 999px;
+    border: 1px solid var(--rd-marigold); background: color-mix(in oklch, var(--rd-marigold) 8%, transparent);
+    color: var(--foreground); font: inherit; font-size: 14px; font-weight: 600;
+    box-shadow: 0 0 14px color-mix(in oklch, var(--rd-marigold) 28%, transparent);
+  }
+  .site-header .ai-icon-btn svg { color: var(--rd-marigold); }
+  .site-header .ai-icon-btn::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(105deg, transparent 35%, color-mix(in oklch, var(--rd-marigold) 45%, transparent) 50%, transparent 65%);
+    transform: translateX(-120%); animation: ask-shimmer 6s ease-in-out infinite;
+  }
+  .mode-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 8px; border-radius: 14px; background: var(--console-control); border: 1px solid var(--border); }
+  .mode-switch button { position: relative; height: 40px; border: 0; background: transparent; border-radius: 10px; color: var(--rd-muted); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .mode-switch button.on { color: var(--rd-indigo); }
+  .mode-switch-pill { position: absolute; inset: 0; border-radius: 10px; background: var(--rd-marigold); z-index: 0; }
+  .mode-switch-label { position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+  .booking-console[data-mode="ai"] > :not(.mode-switch, .ask-pane, .booking-landing-surface, .booking-landing-shadow) { display: none !important; }
+  .booking-console[data-mode="search"] > .booking-form, .booking-console[data-mode="search"] > .prefs-summary, .ask-pane { animation: mode-fade 200ms ease-out; }
+  .ask-pane { display: flex; flex-direction: column; gap: 12px; }
+  .ask-box { position: relative; border-radius: 16px; background: var(--rd-white); border: 1px solid var(--border-strong); padding: 14px 14px 56px; }
+  .ask-box:focus-within { border-color: var(--rd-marigold); box-shadow: 0 0 0 3px color-mix(in oklch, var(--rd-marigold) 25%, transparent); }
+  .ask-box textarea { width: 100%; min-height: 104px; border: 0; outline: 0; resize: none; background: transparent; color: var(--rd-indigo); font: inherit; font-size: 16px; line-height: 1.45; }
+  .ask-box textarea::placeholder { color: var(--rd-muted); opacity: .75; }
+  .ask-actions { position: absolute; right: 10px; bottom: 10px; display: flex; gap: 8px; }
+  .ask-actions button { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 999px; cursor: pointer; }
+  .ask-mic { border: 1px solid var(--border-strong); background: var(--rd-white); color: var(--rd-indigo); }
+  .ask-send { border: 0; background: var(--rd-marigold); color: var(--rd-indigo); }
+  .ask-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ask-chips button { height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--rd-white); color: var(--rd-indigo); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .booking-console .prefs-summary { width: 100%; box-sizing: border-box; margin-top: 8px; }
+  .booking-console .booking-controls { border-top: 0; }
+}
+@keyframes ask-shimmer { 0%, 80% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+@keyframes mode-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .site-header .ai-icon-btn::after, .ask-pane, .booking-console > .booking-form { animation: none !important; } }
